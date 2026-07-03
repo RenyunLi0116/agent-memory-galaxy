@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "agent-memory-galaxy",
+  "description": "Privacy-first multi-machine memory graph for AI agents.",
+  "owner": {
+    "name": "YourOrg",
+    "url": "https://github.com/your-org"
+  },
+  "plugins": [
+    {
+      "name": "agent-memory-galaxy",
+      "description": "Connect Claude, Codex, Cursor, and human work memory across machines into a private interactive knowledge galaxy.",
+      "source": "./plugins/agent-memory-galaxy",
+      "category": "productivity",
+      "tags": ["agents", "memory", "knowledge-graph", "privacy", "codex", "claude", "cursor"]
+    }
+  ]
+}

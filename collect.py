@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-CyberMemory 采集器
+Agent Memory Galaxy collector
 =========================
 把分散在多台机器、两套格式里的 agent 工作记录解析成一张规范的知识图谱 graph.json。
 
@@ -749,7 +749,7 @@ def main():
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     json.dump(out, open(args.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(json.dumps(out["meta"], ensure_ascii=False, indent=2))
-    print(f"\n✓ 写出 {args.out}(完整, 仅本地)。公开 Pages 请跑 encrypt.py 生成 docs/graph.enc.json(加密)。",
+    print(f"\n✓ 写出 {args.out}(完整, 仅本地)。如需发布加密 viewer，请配置双密码后运行 ./update.sh。",
           file=sys.stderr)
     # 注：sanitize_public() 仍保留，供"不加密、改用脱敏公开"的备选方案；当前默认走加密。
 

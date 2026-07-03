@@ -2,6 +2,13 @@
 /graph.json
 /standalone.html
 /docs/graph.json
+/docs/galaxy/graph.json
+/docs/galaxy/graph.enc.json
+# Real memory fragments and live presence are private by default.
+/fragments/*.json
+!/fragments/README.md
+/presence/*.json
+!/presence/README.md
 # 加密密码——绝不入库（请 chmod 600）；双密码方案两文件都不入库
 .amg_password
 .amg_password2

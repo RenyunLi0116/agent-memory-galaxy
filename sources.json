@@ -30,7 +30,7 @@
       "roots": ["~"],
       "enabled": false,
       "remote_collect": true,
-      "repo": "/home/youruser/CyberMemory",
+      "repo": "/home/youruser/agent-memory-galaxy",
       "tool": "claude",
       "note": "基站模式：汇总端 update.sh --pull 主动 ssh 到该机远程跑 collect+distill 并取回 fragment。server 只需一份本仓库副本，无需 push 权限/无需自己的 cron。enabled 保持 false（那是旧 md-拉取路径）。"
     }

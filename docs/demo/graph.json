@@ -1,0 +1,493 @@
+{
+  "meta": {
+    "generated": "2026-07-03T10:31:07Z",
+    "sanitized": true,
+    "demo": true,
+    "node_count": 31,
+    "edge_count": 35,
+    "type_counts": {
+      "machine": 3,
+      "agent": 3,
+      "project": 3,
+      "dataset": 2,
+      "model": 2,
+      "file": 3,
+      "wandb": 1,
+      "method": 2,
+      "tech": 3,
+      "notion": 1,
+      "server": 2,
+      "entry": 3,
+      "fact": 1,
+      "liveagent": 2
+    },
+    "machines": [
+      "demo-workstation-a",
+      "demo-laptop-b",
+      "demo-gpu-node-c"
+    ],
+    "projects": [
+      "Project Aurora Loom",
+      "Project Harbor Lens",
+      "Project Meridian Sync"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "machine:demo-workstation-a",
+      "type": "machine",
+      "label": "demo-workstation-a",
+      "primary": "Project Aurora Loom",
+      "weight": 12,
+      "degree": 4
+    },
+    {
+      "id": "machine:demo-laptop-b",
+      "type": "machine",
+      "label": "demo-laptop-b",
+      "primary": "Project Harbor Lens",
+      "weight": 10,
+      "degree": 2
+    },
+    {
+      "id": "machine:demo-gpu-node-c",
+      "type": "machine",
+      "label": "demo-gpu-node-c",
+      "primary": "Project Meridian Sync",
+      "weight": 11,
+      "degree": 4
+    },
+    {
+      "id": "agent:codex",
+      "type": "agent",
+      "label": "codex",
+      "tool": "codex",
+      "weight": 14,
+      "degree": 1
+    },
+    {
+      "id": "agent:claude",
+      "type": "agent",
+      "label": "claude",
+      "tool": "claude",
+      "weight": 14,
+      "degree": 1
+    },
+    {
+      "id": "agent:human",
+      "type": "agent",
+      "label": "human",
+      "tool": "human",
+      "weight": 9,
+      "degree": 1
+    },
+    {
+      "id": "project:aurora-loom",
+      "type": "project",
+      "label": "Project Aurora Loom",
+      "machines": [
+        "demo-workstation-a",
+        "demo-gpu-node-c"
+      ],
+      "weight": 72,
+      "degree": 6
+    },
+    {
+      "id": "project:harbor-lens",
+      "type": "project",
+      "label": "Project Harbor Lens",
+      "machines": [
+        "demo-laptop-b"
+      ],
+      "weight": 58,
+      "degree": 4
+    },
+    {
+      "id": "project:meridian-sync",
+      "type": "project",
+      "label": "Project Meridian Sync",
+      "machines": [
+        "demo-gpu-node-c"
+      ],
+      "weight": 66,
+      "degree": 4
+    },
+    {
+      "id": "dataset:synthetic-city-rgbd-1k",
+      "type": "dataset",
+      "label": "SyntheticCity-RGBD-1K",
+      "weight": 44,
+      "degree": 2
+    },
+    {
+      "id": "dataset:toyfleet-mcap-v0",
+      "type": "dataset",
+      "label": "ToyFleet-MCAP-v0",
+      "weight": 34,
+      "degree": 1
+    },
+    {
+      "id": "model:demo-vlm-small-v0",
+      "type": "model",
+      "label": "demo-vlm-small-v0",
+      "weight": 36,
+      "degree": 1
+    },
+    {
+      "id": "model:aurora-checkpoint-042",
+      "type": "model",
+      "label": "aurora-checkpoint-042",
+      "weight": 40,
+      "degree": 1
+    },
+    {
+      "id": "file:train-pipeline",
+      "type": "file",
+      "label": "train_pipeline.py",
+      "weight": 28,
+      "degree": 1
+    },
+    {
+      "id": "file:dataset-manifest",
+      "type": "file",
+      "label": "dataset_manifest.json",
+      "weight": 24,
+      "degree": 1
+    },
+    {
+      "id": "file:eval-report",
+      "type": "file",
+      "label": "eval_report.ipynb",
+      "weight": 25,
+      "degree": 1
+    },
+    {
+      "id": "wandb:demo-run-aurora-001",
+      "type": "wandb",
+      "label": "demo-run-aurora-001",
+      "weight": 21,
+      "degree": 1
+    },
+    {
+      "id": "method:idea-1",
+      "type": "method",
+      "label": "Idea 1",
+      "weight": 18,
+      "degree": 1
+    },
+    {
+      "id": "method:idea-2",
+      "type": "method",
+      "label": "Idea 2",
+      "weight": 18,
+      "degree": 0
+    },
+    {
+      "id": "tech:webgpu",
+      "type": "tech",
+      "label": "WebGPU",
+      "weight": 22,
+      "degree": 0
+    },
+    {
+      "id": "tech:sqlite",
+      "type": "tech",
+      "label": "SQLite",
+      "weight": 19,
+      "degree": 1
+    },
+    {
+      "id": "tech:canvas-3d",
+      "type": "tech",
+      "label": "Canvas 3D",
+      "weight": 24,
+      "degree": 1
+    },
+    {
+      "id": "notion:weekly-progress",
+      "type": "notion",
+      "label": "Weekly Progress",
+      "weight": 18,
+      "degree": 1
+    },
+    {
+      "id": "server:demo-server-a",
+      "type": "server",
+      "label": "demo-server-a",
+      "weight": 20,
+      "degree": 1
+    },
+    {
+      "id": "server:demo-server-b",
+      "type": "server",
+      "label": "demo-server-b",
+      "weight": 20,
+      "degree": 0
+    },
+    {
+      "id": "entry:demo-workstation-a:aurora:2026-01-14",
+      "type": "entry",
+      "label": "Wired synthetic dataset manifest into Aurora Loom",
+      "date": "2026-01-14",
+      "status": "done",
+      "task": "data",
+      "tool": "codex",
+      "machine": "demo-workstation-a",
+      "project": "Project Aurora Loom",
+      "excerpt": "Created a clean manifest schema for a synthetic RGB-D dataset and linked it to evaluation notes.",
+      "weight": 84,
+      "degree": 6
+    },
+    {
+      "id": "entry:demo-laptop-b:harbor:2026-01-15",
+      "type": "entry",
+      "label": "Compared Harbor Lens outputs against Aurora references",
+      "date": "2026-01-15",
+      "status": "logged",
+      "task": "evaluation",
+      "tool": "claude",
+      "machine": "demo-laptop-b",
+      "project": "Project Harbor Lens",
+      "excerpt": "Summarized evaluation differences using only fictional benchmark labels and toy artifacts.",
+      "weight": 76,
+      "degree": 6
+    },
+    {
+      "id": "entry:demo-gpu-node-c:meridian:2026-01-16",
+      "type": "entry",
+      "label": "Scheduled demo checkpoint training",
+      "date": "2026-01-16",
+      "status": "doing",
+      "task": "training",
+      "tool": "human",
+      "machine": "demo-gpu-node-c",
+      "project": "Project Meridian Sync",
+      "excerpt": "Prepared a toy GPU job that writes progress into the shared memory graph.",
+      "weight": 88,
+      "degree": 6
+    },
+    {
+      "id": "fact:demo:derived:aurora:2026-01-16",
+      "type": "fact",
+      "label": "Derived session metadata linked Canvas 3D viewer work to Aurora Loom",
+      "date": "2026-01-16",
+      "status": "logged",
+      "task": "derived",
+      "tool": "cursor",
+      "machine": "demo-workstation-a",
+      "project": "Project Aurora Loom",
+      "derived": true,
+      "memtype": "session-summary",
+      "excerpt": "Derived from synthetic session metadata only; no raw conversation text is present.",
+      "weight": 60,
+      "degree": 5
+    },
+    {
+      "id": "liveagent:demo-workstation-a:codex",
+      "type": "liveagent",
+      "label": "codex@demo-workstation-a",
+      "agent": "codex",
+      "machine": "demo-workstation-a",
+      "project": "Project Aurora Loom",
+      "project_canonical": "aurora-loom",
+      "status": "working",
+      "current": "reviewing the synthetic demo graph wiring",
+      "heartbeat": "2026-07-03T10:31:07Z",
+      "tool": "codex",
+      "weight": 92,
+      "degree": 3
+    },
+    {
+      "id": "liveagent:demo-gpu-node-c:claude",
+      "type": "liveagent",
+      "label": "claude@demo-gpu-node-c",
+      "agent": "claude",
+      "machine": "demo-gpu-node-c",
+      "project": "Project Meridian Sync",
+      "project_canonical": "meridian-sync",
+      "status": "working",
+      "current": "drafting a privacy checklist for encrypted publishing",
+      "heartbeat": "2026-07-03T10:31:07Z",
+      "tool": "claude",
+      "weight": 86,
+      "degree": 3
+    }
+  ],
+  "edges": [
+    {
+      "source": "project:aurora-loom",
+      "target": "machine:demo-workstation-a",
+      "type": "on"
+    },
+    {
+      "source": "project:aurora-loom",
+      "target": "machine:demo-gpu-node-c",
+      "type": "on"
+    },
+    {
+      "source": "project:harbor-lens",
+      "target": "machine:demo-laptop-b",
+      "type": "on"
+    },
+    {
+      "source": "project:meridian-sync",
+      "target": "machine:demo-gpu-node-c",
+      "type": "on"
+    },
+    {
+      "source": "entry:demo-workstation-a:aurora:2026-01-14",
+      "target": "project:aurora-loom",
+      "type": "in"
+    },
+    {
+      "source": "entry:demo-workstation-a:aurora:2026-01-14",
+      "target": "machine:demo-workstation-a",
+      "type": "located"
+    },
+    {
+      "source": "agent:codex",
+      "target": "entry:demo-workstation-a:aurora:2026-01-14",
+      "type": "did"
+    },
+    {
+      "source": "entry:demo-workstation-a:aurora:2026-01-14",
+      "target": "dataset:synthetic-city-rgbd-1k",
+      "type": "uses"
+    },
+    {
+      "source": "entry:demo-workstation-a:aurora:2026-01-14",
+      "target": "file:dataset-manifest",
+      "type": "touches"
+    },
+    {
+      "source": "entry:demo-workstation-a:aurora:2026-01-14",
+      "target": "tech:sqlite",
+      "type": "uses"
+    },
+    {
+      "source": "entry:demo-laptop-b:harbor:2026-01-15",
+      "target": "project:harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "entry:demo-laptop-b:harbor:2026-01-15",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "agent:claude",
+      "target": "entry:demo-laptop-b:harbor:2026-01-15",
+      "type": "did"
+    },
+    {
+      "source": "entry:demo-laptop-b:harbor:2026-01-15",
+      "target": "file:eval-report",
+      "type": "touches"
+    },
+    {
+      "source": "entry:demo-laptop-b:harbor:2026-01-15",
+      "target": "dataset:synthetic-city-rgbd-1k",
+      "type": "uses"
+    },
+    {
+      "source": "entry:demo-laptop-b:harbor:2026-01-15",
+      "target": "notion:weekly-progress",
+      "type": "syncs"
+    },
+    {
+      "source": "entry:demo-gpu-node-c:meridian:2026-01-16",
+      "target": "project:meridian-sync",
+      "type": "in"
+    },
+    {
+      "source": "entry:demo-gpu-node-c:meridian:2026-01-16",
+      "target": "machine:demo-gpu-node-c",
+      "type": "located"
+    },
+    {
+      "source": "agent:human",
+      "target": "entry:demo-gpu-node-c:meridian:2026-01-16",
+      "type": "did"
+    },
+    {
+      "source": "entry:demo-gpu-node-c:meridian:2026-01-16",
+      "target": "model:aurora-checkpoint-042",
+      "type": "trains"
+    },
+    {
+      "source": "entry:demo-gpu-node-c:meridian:2026-01-16",
+      "target": "wandb:demo-run-aurora-001",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:demo-gpu-node-c:meridian:2026-01-16",
+      "target": "server:demo-server-a",
+      "type": "on"
+    },
+    {
+      "source": "fact:demo:derived:aurora:2026-01-16",
+      "target": "project:aurora-loom",
+      "type": "in"
+    },
+    {
+      "source": "fact:demo:derived:aurora:2026-01-16",
+      "target": "machine:demo-workstation-a",
+      "type": "located"
+    },
+    {
+      "source": "fact:demo:derived:aurora:2026-01-16",
+      "target": "tech:canvas-3d",
+      "type": "uses"
+    },
+    {
+      "source": "fact:demo:derived:aurora:2026-01-16",
+      "target": "method:idea-1",
+      "type": "explores"
+    },
+    {
+      "source": "fact:demo:derived:aurora:2026-01-16",
+      "target": "file:train-pipeline",
+      "type": "touches"
+    },
+    {
+      "source": "project:aurora-loom",
+      "target": "project:harbor-lens",
+      "type": "references"
+    },
+    {
+      "source": "project:harbor-lens",
+      "target": "project:meridian-sync",
+      "type": "references"
+    },
+    {
+      "source": "model:demo-vlm-small-v0",
+      "target": "dataset:toyfleet-mcap-v0",
+      "type": "uses"
+    },
+    {
+      "source": "liveagent:demo-workstation-a:codex",
+      "target": "project:aurora-loom",
+      "type": "working_on"
+    },
+    {
+      "source": "liveagent:demo-workstation-a:codex",
+      "target": "machine:demo-workstation-a",
+      "type": "located"
+    },
+    {
+      "source": "liveagent:demo-gpu-node-c:claude",
+      "target": "project:meridian-sync",
+      "type": "working_on"
+    },
+    {
+      "source": "liveagent:demo-gpu-node-c:claude",
+      "target": "machine:demo-gpu-node-c",
+      "type": "located"
+    },
+    {
+      "source": "liveagent:demo-gpu-node-c:claude",
+      "target": "liveagent:demo-workstation-a:codex",
+      "type": "link"
+    }
+  ]
+}

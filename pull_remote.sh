@@ -25,7 +25,7 @@ for src in cfg['sources']:
         continue
     host, user, port = src['host'], src.get('user', ''), src.get('port')
     tgt = f"{user}@{host}" if user else host
-    repo = src.get('repo', '~/CyberMemory')
+    repo = src.get('repo', '~/agent-memory-galaxy')
     roots = ','.join(src.get('roots') or ['~'])
     tool = src.get('tool', 'claude')
     sshb = ['ssh', '-o', 'ConnectTimeout=12', '-o', 'ServerAliveInterval=10', '-o', 'BatchMode=yes']

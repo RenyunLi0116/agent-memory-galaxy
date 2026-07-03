@@ -76,7 +76,7 @@ HOME_ROOT_FILES = {os.path.join(_HOME, "agent_memory.md"),
 ALIAS = {}    # squash(原目录名) -> canonical id(raw)
 LABELS = {}   # squash(canonical id) -> 友好显示名
 PROJ_TEXT = {}  # project key -> 该项目全部记忆文本(小写)，用于检测跨项目引用/派生
-STOP_KEYS = {"localenv", "nas", "cybermemory"}  # 非研究伪项目：不作为引用/派生关系端点；可由 projects.json 的 "stop_keys" 扩展
+STOP_KEYS = {"localenv", "nas", "privatehub"}  # 非研究伪项目：不作为引用/派生关系端点；可由 projects.json 的 "stop_keys" 扩展
 
 def load_projects():
     fp = os.path.join(HERE, "projects.json")

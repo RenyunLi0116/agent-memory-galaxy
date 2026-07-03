@@ -37,7 +37,7 @@ Use this when the user wants to connect the current machine:
 If the repo is not present, clone it first:
 
 ```bash
-git clone https://github.com/your-org/agent-memory-galaxy.git
+git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git
 cd agent-memory-galaxy
 ```
 

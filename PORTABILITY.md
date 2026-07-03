@@ -7,7 +7,7 @@ Agent Memory Galaxy is intentionally simple: Python scripts produce a JSON graph
 On the new aggregator:
 
 ```bash
-git clone git@github.com:your-org/<private-hub>.git
+git clone git@github.com:RenyunLi0116/<private-hub>.git
 cd <private-hub>
 ./update.sh
 ```

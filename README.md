@@ -22,7 +22,7 @@ Agent Memory Galaxy turns those traces into a durable graph so a future agent ca
 Run these as two separate Claude Code messages:
 
 ```text
-/plugin marketplace add https://github.com/your-org/agent-memory-galaxy
+/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy
 ```
 
 Then run:
@@ -37,12 +37,12 @@ After installation, use:
 /agent-memory-galaxy:agent-memory-galaxy
 ```
 
-Before publishing, replace `your-org` with the GitHub organization or account that will host the public repo.
+This points at the public framework repository. Keep real memory fragments in a private fork or private deployment.
 
 ## Quick Start Without the Skill
 
 ```bash
-git clone https://github.com/your-org/agent-memory-galaxy.git
+git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git
 cd agent-memory-galaxy
 python3 collect.py --local-only --machine my-laptop --tool codex --roots "$HOME" --out fragments/my-laptop.json
 python3 collect.py --merge

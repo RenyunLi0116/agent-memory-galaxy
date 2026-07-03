@@ -96,7 +96,7 @@ For Claude Code-style plugin distribution, the repo should include:
 Install commands:
 
 ```text
-/plugin marketplace add https://github.com/your-org/agent-memory-galaxy
+/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy
 ```
 
 ```text

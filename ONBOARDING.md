@@ -10,9 +10,9 @@ Use a private repository or private fork for real memory data. Use this public r
 ## 1. Create a Private Hub
 
 ```bash
-git clone https://github.com/your-org/agent-memory-galaxy.git my-memory-hub
+git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git my-memory-hub
 cd my-memory-hub
-git remote set-url origin git@github.com:your-org/<private-hub>.git
+git remote set-url origin git@github.com:RenyunLi0116/<private-hub>.git
 ```
 
 Keep the private hub private if it will store real fragments.

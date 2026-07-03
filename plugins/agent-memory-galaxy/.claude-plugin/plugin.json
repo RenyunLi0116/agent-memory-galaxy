@@ -4,11 +4,11 @@
   "description": "Privacy-first multi-machine memory graph for AI agents.",
   "skills": "./skills/",
   "author": {
-    "name": "YourOrg",
-    "url": "https://github.com/your-org"
+    "name": "RenyunLi0116",
+    "url": "https://github.com/RenyunLi0116"
   },
-  "homepage": "https://github.com/your-org/agent-memory-galaxy",
-  "repository": "https://github.com/your-org/agent-memory-galaxy",
+  "homepage": "https://github.com/RenyunLi0116/agent-memory-galaxy",
+  "repository": "https://github.com/RenyunLi0116/agent-memory-galaxy",
   "license": "MIT",
   "keywords": ["agents", "memory", "knowledge-graph", "privacy", "galaxy", "codex", "claude", "cursor"]
 }

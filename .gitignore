@@ -1,0 +1,22 @@
+# 完整明文数据——只留本地，绝不入库（如启用公开 Pages，只放 docs/graph.enc.json 密文）
+/graph.json
+/standalone.html
+/docs/graph.json
+# 加密密码——绝不入库（请 chmod 600）；双密码方案两文件都不入库
+.amg_password
+.amg_password2
+# 远程拉取的缓存（每台机器本地重建，不入库）
+sources_cache/
+# update.sh 的内容哈希状态（避免无变化时噪声提交）
+.last_graph_hash
+# Python
+__pycache__/
+*.pyc
+# 运行日志
+*.err
+*.log
+collect.err
+cron.log
+contribute.log
+# 系统
+.DS_Store

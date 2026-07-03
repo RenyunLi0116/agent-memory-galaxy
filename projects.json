@@ -1,0 +1,18 @@
+{
+  "_comment": "可选配置。跨机把『同一个项目』的不同目录名归并成一个图节点，并可扩展实体识别规则。aliases: 各机目录名→canonical id；labels: canonical id→友好显示名。也可在项目目录放 .amg_project 文件(一行 canonical id)代替 aliases。presence/heartbeat 里的 project_canonical 也用这些 canonical id。",
+  "_example": {
+    "aliases": { "proj-name-on-machine-a": "myproj", "proj_name_on_machine_b": "myproj" },
+    "labels": { "myproj": "My Project (友好显示名)" },
+    "entity_patterns": [
+      { "type": "dataset", "regex": "(?i)\\bmydataset[\\w]*", "edge": "uses" },
+      { "type": "model",   "regex": "(?i)\\bmymodel_[\\w]+",  "edge": "trains" }
+    ],
+    "notion_pages": ["My Team Progress"],
+    "stop_keys": ["scratch", "sandbox"]
+  },
+  "aliases": {},
+  "labels": {},
+  "entity_patterns": [],
+  "notion_pages": [],
+  "stop_keys": []
+}

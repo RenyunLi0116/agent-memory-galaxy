@@ -1,0 +1,86 @@
+{
+  "_comment": "数据来源配置。本地贡献端通常直接用 contribute.sh（内部用 --roots 覆盖，无需改这里）。汇总端在 sources 里配各机来源；新增一台 server 只需加一条 ssh 源。示例见下方 _examples（collect.py 只读取 sources / exclude_substrings / prune_dir_names 三个键）。",
+  "sources": [
+    {
+      "machine": "local",
+      "type": "local",
+      "roots": ["~"],
+      "enabled": true,
+      "note": "本机：扫描家目录下所有 agent_memory.md + Claude .claude/projects/*/memory/。家目录太大/太慢时改成具体项目目录（可写绝对路径或 ~/... ）。"
+    }
+  ],
+  "_examples": {
+    "_note": "把需要的示例拷进上面的 sources 数组并按需改值；这里的 _examples 会被 collect.py 忽略。",
+    "ssh_pull": {
+      "machine": "server-1",
+      "type": "ssh",
+      "host": "10.0.0.2",
+      "user": "youruser",
+      "port": 22,
+      "roots": ["~/Project"],
+      "enabled": false,
+      "note": "汇总端 ssh 拉取该 server 上的 agent_memory.md（需汇总端对该机免密 ssh）。启用改 enabled:true。"
+    },
+    "remote_collect": {
+      "machine": "server-2",
+      "type": "ssh",
+      "host": "10.0.0.3",
+      "user": "youruser",
+      "port": 22,
+      "roots": ["~"],
+      "enabled": false,
+      "remote_collect": true,
+      "repo": "/home/youruser/CyberMemory",
+      "tool": "claude",
+      "note": "基站模式：汇总端 update.sh --pull 主动 ssh 到该机远程跑 collect+distill 并取回 fragment。server 只需一份本仓库副本，无需 push 权限/无需自己的 cron。enabled 保持 false（那是旧 md-拉取路径）。"
+    }
+  },
+  "exclude_substrings": [
+    "/.local/share/Trash/",
+    "/node_modules/",
+    "/.git/",
+    "/site-packages/",
+    "/.cache/",
+    "/.venv/",
+    "/venv/",
+    "/miniconda3/",
+    "/.npm/",
+    "/.conda/",
+    "/.config/Code/",
+    "/.cursor/",
+    "/.copilot/",
+    "/snap/",
+    "/Downloads/",
+    "/sources_cache/"
+  ],
+  "prune_dir_names": [
+    "node_modules",
+    ".git",
+    "site-packages",
+    "__pycache__",
+    ".cache",
+    ".venv",
+    "venv",
+    "miniconda3",
+    ".conda",
+    ".npm",
+    "snap",
+    "Downloads",
+    ".vscode",
+    ".vscode-shared",
+    ".cursor",
+    ".copilot",
+    ".dotnet",
+    ".nv",
+    ".pki",
+    ".gnupg",
+    "Music",
+    "Videos",
+    "Pictures",
+    ".local",
+    ".anaconda",
+    "Templates",
+    "Public",
+    "Desktop"
+  ]
+}

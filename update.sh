@@ -67,6 +67,10 @@ python3 build_artifact.py --out standalone.html --standalone
 echo "[4/5] 提交（只提交代码/碎片/可选密文；明文 graph.json/standalone.html 已 gitignore）"
 if [ "${AMG_TRACK_PRIVATE:-0}" = "1" ]; then
   git add -A 2>/dev/null
+  # Private hubs may intentionally track ignored plaintext fragments/presence and encrypted Pages blobs.
+  find fragments -maxdepth 1 -type f -name '*.json' -exec git add -f {} + 2>/dev/null || true
+  find presence -maxdepth 1 -type f -name '*.json' -exec git add -f {} + 2>/dev/null || true
+  [ -f docs/galaxy/graph.enc.json ] && git add -f docs/galaxy/graph.enc.json
 else
   git add -A -- ':!fragments/*.json' ':!presence/*.json' ':!docs/galaxy/graph.enc.json' 2>/dev/null
 fi

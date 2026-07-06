@@ -1,4 +1,4 @@
-# 完整明文数据——只留本地，绝不入库（如启用公开 Pages，只放 docs/graph.enc.json 密文）
+# 完整明文数据——只留本地，绝不入库（如启用公开 Pages，只放 docs/galaxy/graph.enc.json 密文）
 /graph.json
 /standalone.html
 /docs/graph.json

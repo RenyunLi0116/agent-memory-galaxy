@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Agent Memory Galaxy marketing concept gallery.">
-<title>Concept Gallery | Agent Memory Galaxy</title>
+<meta name="description" content="Agent Memory Galaxy turns scattered AI-agent work traces into a private, inspectable memory graph.">
+<title>Agent Memory Galaxy</title>
 <link rel="stylesheet" href="assets/landing.css">
 </head>
 <body class="theme-bento">
@@ -13,7 +13,7 @@
   <div class="nav-inner">
     <a class="brand" href="index.html">Agent Memory Galaxy</a>
     <div class="nav-links">
-      <a href="concepts/index.html">Concepts</a>
+      <a href="concepts/index.html">Design archive</a>
       <a href="#preview">Demo</a>
       <a href="#privacy">Privacy</a>
       <a href="#install">Install</a>
@@ -23,43 +23,118 @@
 </nav>
 
 <main class="page">
-  <section class="compare-hero">
-    <div class="kicker">STYLE EXPLORATION</div>
-    <h1>Five launch-page directions for Agent Memory Galaxy.</h1>
-    <p class="lead">Each concept keeps the same public-safe product story: installable skill, synthetic live demo, private memory boundary, and an expandable interactive galaxy preview.</p>
-    <div class="actions">
-      <a class="btn primary" href="concepts/bento-proof.html">Open recommended concept</a>
-      <button class="btn" type="button" data-expand-galaxy data-demo-src="demo/?style=galaxy">Expand synthetic galaxy</button>
-      <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
+  <section class="hero landing-hero">
+    <div class="hero-copy">
+      <div class="kicker">PUBLIC FRAMEWORK / PRIVATE MEMORY</div>
+      <h1>Your agents remember together. Privately.</h1>
+      <p class="lead">Turn scattered agent traces across machines into one private, inspectable memory graph. Collect reviewed notes, safe session metadata, machine fragments, and live presence, then explore the result in a static Galaxy Viewer.</p>
+      <div class="actions">
+        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=galaxy">Open synthetic demo</button>
+        <a class="btn" href="#install">Install as skill</a>
+        <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
+      </div>
+      <div class="hero-stat-grid">
+        <div class="hero-stat"><b>137</b><span>synthetic nodes</span></div>
+        <div class="hero-stat"><b>466</b><span>synthetic links</span></div>
+        <div class="hero-stat"><b>6</b><span>fictional projects</span></div>
+        <div class="hero-stat"><b>5</b><span>fictional machines</span></div>
+      </div>
     </div>
-    <div class="proof-row">
-      <span class="pill">125 synthetic nodes</span>
-      <span class="pill">446 synthetic links</span>
-      <span class="pill">6 fictional projects</span>
-      <span class="pill">5 fictional machines</span>
-    </div>
-  </section>
 
-<div class="galaxy-card compact" id="preview" data-demo-src="demo/?style=galaxy" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
+<div class="galaxy-card" id="hero-demo" data-demo-src="demo/?style=galaxy" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
   <div class="framebar">
     <span class="lights"><i></i><i></i><i></i></span>
     <span class="mono">synthetic graph preview</span>
-    <span class="status mono">125 nodes / 446 links / 5 machines</span>
+    <span class="status mono">137 nodes / 466 links / 5 machines</span>
   </div>
   <iframe title="Agent Memory Galaxy synthetic demo" src="demo/?style=galaxy" loading="lazy"></iframe>
   <p class="preview-note">This is live synthetic data, not a screenshot and not real memory.</p>
   <button class="expand-galaxy" type="button" data-expand-galaxy>Expand galaxy</button>
 </div>
 
+  </section>
+
+  <section class="section" id="preview">
+    <div class="section-head">
+      <h2>Live synthetic demo. No real memory.</h2>
+      <p>The public graph demonstrates multi-server collaboration, currently-working agents, project inheritance, shared assets, and private/public/encrypted boundaries using fictional labels only.</p>
+    </div>
+    <div class="grid">
+      <article class="tile"><div class="mini-label">Search</div><h3>Find a project or artifact</h3><p>Search across projects, agents, files, models, servers, and derived facts.</p></article>
+      <article class="tile"><div class="mini-label">Filter</div><h3>Focus by machine or activity</h3><p>Switch from the full graph to one machine, one project, recent work, or live doing state.</p></article>
+      <article class="tile"><div class="mini-label">Inspect</div><h3>Click through evidence</h3><p>Open a node readout, inspect neighbors, and follow inheritance or publishing edges.</p></article>
+    </div>
+  </section>
+
+  <section class="section" id="install">
+    <div class="section-head">
+      <h2>Install in two Claude Code messages.</h2>
+      <p>The public repository carries a Claude Code plugin/skill package. Use it to set up private hubs, connect contributors, aggregate fragments, publish encrypted viewers, or review privacy before release.</p>
+    </div>
+    <div class="install-grid">
+      <article class="tile command-stack">
+        <h3>Plugin/skill install</h3>
+        <pre class="code"><code>/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy</code></pre>
+        <button class="copy-btn" type="button" data-copy="/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy">Copy marketplace command</button>
+        <pre class="code"><code>/plugin install agent-memory-galaxy@agent-memory-galaxy</code></pre>
+        <button class="copy-btn" type="button" data-copy="/plugin install agent-memory-galaxy@agent-memory-galaxy">Copy install command</button>
+      </article>
+      <article class="tile command-stack">
+        <h3>Local demo fallback</h3>
+        <pre class="code"><code>git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git
+cd agent-memory-galaxy
+python3 scripts/build-public-demo.py
+python3 -m http.server 8765 --directory docs</code></pre>
+        <button class="copy-btn" type="button" data-copy="git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git&#10;cd agent-memory-galaxy&#10;python3 scripts/build-public-demo.py&#10;python3 -m http.server 8765 --directory docs">Copy demo commands</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="workflow">
+    <div class="section-head">
+      <h2>Collect, distill, merge, encrypt, view.</h2>
+      <p>Contributor machines write private fragments. An aggregator merges shared entities, injects live presence, and optionally publishes an encrypted viewer shell.</p>
+    </div>
+    <div class="pipeline">
+      <div class="step"><b>01</b><span>Collect</span><p>Scan reviewed `agent_memory.md` notes from explicit project roots.</p></div>
+      <div class="step"><b>02</b><span>Distill</span><p>Extract safe structured metadata from agent sessions without copying raw text.</p></div>
+      <div class="step"><b>03</b><span>Merge</span><p>Connect projects through shared files, datasets, models, tools, and servers.</p></div>
+      <div class="step"><b>04</b><span>Encrypt</span><p>Publish ciphertext only when deploying an encrypted viewer shell to Pages.</p></div>
+      <div class="step"><b>05</b><span>View</span><p>Search, filter, zoom, and inspect the resulting memory galaxy.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="privacy">
+    <div class="section-head">
+      <h2>Public framework. Private memory.</h2>
+      <p>GitHub Pages is not private access control. Public pages carry the framework and fake demo data. Real fragments and plaintext graphs belong in a private hub or local machine.</p>
+    </div>
+    <div class="callout-band">
+      <article class="tile"><h3>Contributor</h3><p>Writes `fragments/&lt;machine&gt;.json` in a private hub. Does not need encryption passwords and should not touch `docs/galaxy/`.</p></article>
+      <article class="tile"><h3>Aggregator</h3><p>Merges all fragments, builds local `standalone.html`, and optionally creates `docs/galaxy/graph.enc.json` with strong passwords.</p></article>
+    </div>
+  </section>
+
   <section class="section">
     <div class="section-head">
-      <h2>Pick visually, then refine.</h2>
-      <p>This mirrors the frontend-slides workflow: show concrete alternatives first, then converge after you react to what you see.</p>
+      <h2>Know which URL you are sharing.</h2>
+      <p>The marketing site, synthetic demo, and optional encrypted runtime viewer are separate paths.</p>
     </div>
-    <div class="concept-list"><a class="concept-card" href="concepts/product-launch.html"><div><h2>Product Launch</h2><p>Best for a clear public README-to-install conversion path.</p></div><div class="swatch"><i style="background:#f7f9fc"></i><i style="background:#2f6fed"></i><i style="background:#00a6b2"></i></div></a><a class="concept-card" href="concepts/graphite-console.html"><div><h2>Graphite Console</h2><p>Best for developer-tool launch energy without looking like a generic cyber poster.</p></div><div class="swatch"><i style="background:#050506"></i><i style="background:#8fa6ff"></i><i style="background:#48b98c"></i></div></a><a class="concept-card" href="concepts/research-memo.html"><div><h2>Research Memo</h2><p>Best for researchers and open-source builders who want technical credibility.</p></div><div class="swatch"><i style="background:#f5efe5"></i><i style="background:#245e8f"></i><i style="background:#b34b3e"></i></div></a><a class="concept-card" href="concepts/bento-proof.html"><div><h2>Bento Proof</h2><p>Best default direction for open-source devtool promotion.</p></div><div class="swatch"><i style="background:#090a0c"></i><i style="background:#f2b84b"></i><i style="background:#5ed6b3"></i></div></a><a class="concept-card" href="concepts/spatial-orbit.html"><div><h2>Spatial Orbit</h2><p>Best for a polished AI-infrastructure brand impression.</p></div><div class="swatch"><i style="background:#050608"></i><i style="background:#f4b860"></i><i style="background:#7aa2ff"></i></div></a></div>
+    <div class="domain-scroll">
+      <table class="domain-table">
+        <thead><tr><th>Path</th><th>Purpose</th><th>Data policy</th></tr></thead>
+        <tbody>
+          <tr><td><code>/agent-memory-galaxy/</code></td><td>Public promo landing</td><td>No real data</td></tr>
+          <tr><td><code>/agent-memory-galaxy/demo/</code></td><td>Synthetic interactive demo</td><td>Fake graph only</td></tr>
+          <tr><td><code>/agent-memory-galaxy/concepts/</code></td><td>Design exploration archive</td><td>Public, secondary</td></tr>
+          <tr><td><code>/agent-memory-galaxy/galaxy/</code></td><td>Optional encrypted viewer shell</td><td>Public shell, ciphertext only</td></tr>
+          <tr><td><code>standalone.html</code></td><td>Local plaintext viewer</td><td>Local only, gitignored</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 </main>
-<footer class="footer"><div class="page"><span>Agent Memory Galaxy concepts</span><span>Generated static pages. No frontend build step.</span></div></footer>
+<footer class="footer"><div class="page"><span>Agent Memory Galaxy</span><span>Synthetic demo public. Real memory private.</span></div></footer>
 
 <div class="modal" data-galaxy-modal hidden>
   <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Expanded synthetic galaxy demo">

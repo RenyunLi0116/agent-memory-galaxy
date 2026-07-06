@@ -2,22 +2,11 @@
 
 Your agents remember together. Privately.
 
-Agent Memory Galaxy is a privacy-first hub for multi-machine AI-agent work memory. It collects hand-written `agent_memory.md` logs, optional Claude memory files, and structured metadata distilled from Claude/Codex/Cursor sessions into one normalized `graph.json`, then renders the result as an interactive knowledge-galaxy viewer.
+Agent Memory Galaxy turns scattered AI-agent work traces across machines into one private, inspectable memory graph. It collects reviewed `agent_memory.md` notes, optional safe session metadata, machine fragments, and live presence into `graph.json`, then renders the result in a static Galaxy Viewer.
 
-Use the public repo as the reusable framework. Keep your real memory fragments and full graph in a private fork or private deployment.
+Use this public repo as the reusable framework and marketing/demo package. Keep real memory fragments and full graphs in a private fork, private hub, or local checkout.
 
-## Why It Exists
-
-AI agents are useful, but their memory is usually scattered:
-
-- one machine has the training run notes;
-- another machine has the debugging session;
-- Claude, Codex, Cursor, and humans each leave different traces;
-- project relationships live in filenames, W&B runs, datasets, Notion pages, and half-remembered context.
-
-Agent Memory Galaxy turns those traces into a durable graph so a future agent can ask, "what happened here before I arrived?"
-
-## Quick Install as a Skill
+## Quick Install as a Claude Code Plugin/Skill
 
 Run these as two separate Claude Code messages:
 
@@ -31,38 +20,78 @@ Then run:
 /plugin install agent-memory-galaxy@agent-memory-galaxy
 ```
 
-After installation, use:
+After installation, invoke the skill with natural language. Examples: "Use Agent Memory Galaxy to create a private hub" or "Use Agent Memory Galaxy to review this repo before public release." The plugin installs guidance; you still need a repo checkout for the scripts.
 
-```text
-/agent-memory-galaxy:agent-memory-galaxy
-```
+## Choose One Path
 
-This points at the public framework repository. Keep real memory fragments in a private fork or private deployment.
+### A. Public Promo And Synthetic Demo
 
-## Quick Start Without the Skill
+This path does not scan your machine. It rebuilds only fictional demo data under `docs/demo/`.
 
 ```bash
 git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git
 cd agent-memory-galaxy
-python3 collect.py --local-only --machine my-laptop --tool codex --roots "$HOME" --out fragments/my-laptop.json
-python3 collect.py --merge
-python3 build_artifact.py --out standalone.html --standalone
+python3 scripts/build-public-demo.py
+python3 scripts/build-landing-concepts.py
+python3 -m http.server 8765 --directory docs
 ```
 
-Open `standalone.html` locally. It contains plaintext memory data, so it is gitignored by default.
+Open `http://127.0.0.1:8765/` for the promo page and `http://127.0.0.1:8765/demo/` for the synthetic interactive demo. The demo graph is fictional, sanitized, and safe to publish.
+
+### B. Single-Machine Private Preview
+
+This path scans one explicit project directory and builds a local plaintext viewer. Do not start with `$HOME`, `/`, or a whole workspace.
+
+```bash
+git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git
+cd agent-memory-galaxy
+./scripts/build-private-preview.py --machine laptop-a --tool codex --roots ~/projects/my-app
+```
+
+Open `standalone.html` locally. It contains plaintext memory data and is gitignored.
+
+### C. Multi-Machine Private Hub
+
+This path is for real collaboration. Use a private repository or private fork before collecting real fragments.
+
+```bash
+git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git my-memory-hub
+cd my-memory-hub
+git remote set-url origin git@github.com:<your-user-or-org>/<private-hub>.git
+```
+
+On each contributor machine, run from the private hub checkout with a narrow project root:
+
+```bash
+AMG_PRIVATE_HUB=1 ./contribute.sh workstation-a codex ~/projects/my-app
+```
+
+On the aggregator machine:
+
+```bash
+./update.sh
+```
+
+Use `./update.sh` for a local refresh. In a private hub where you intentionally want Git to track private fragments, presence, or encrypted Pages blobs, use:
+
+```bash
+AMG_TRACK_PRIVATE=1 ./update.sh
+```
+
+Contributors write `fragments/<machine>.json`. The aggregator merges fragments, injects presence, optionally encrypts for Pages, and rebuilds the local `standalone.html`.
 
 ## What This Does
 
 ```text
-local logs        native sessions       remote machines
-agent_memory.md   Claude/Codex/Cursor   fragments/*.json
-      \                 |                    /
-       \                |                   /
-        collect.py + distill.py + merge fragments
-                         |
-                    graph.json
-                         |
-       local standalone viewer or encrypted Pages viewer
+reviewed notes      safe session metadata      contributor fragments      live presence
+agent_memory.md     Claude/Codex/Cursor        fragments/*.json           presence/*.json
+        \                    |                         |                         /
+         \                   |                         |                        /
+          collect.py + distill.py + merge fragments + presence injection
+                                      |
+                                  graph.json
+                                      |
+             local standalone viewer or optional encrypted Pages viewer
 ```
 
 Core pieces:
@@ -72,74 +101,84 @@ Core pieces:
 - `fragments/*.json` lets many machines contribute to one private hub.
 - `presence/*.json` lights up currently active agents in the viewer.
 - `viewer/index.html` is the runtime galaxy viewer.
-- `docs/index.html` is the public marketing page.
-- `docs/demo/` contains a fully synthetic public demo.
-- `docs/galaxy/` is reserved for your optional encrypted private viewer.
+- `docs/index.html` is the public promo landing page.
+- `docs/demo/` contains the fully synthetic public demo.
+- `docs/galaxy/` is reserved for your optional encrypted viewer shell for private data.
+
+## GitHub Pages URL Policy
+
+If Pages is enabled with `main` + `/docs`, the expected public URL is:
+
+```text
+https://renyunli0116.github.io/agent-memory-galaxy/
+```
+
+| URL/path | Purpose | Data policy |
+|---|---|---|
+| `/agent-memory-galaxy/` | Public promo landing | No real data |
+| `/agent-memory-galaxy/demo/` | Synthetic interactive demo | Fake graph only |
+| `/agent-memory-galaxy/concepts/` | Design exploration archive | Public, secondary |
+| `/agent-memory-galaxy/galaxy/` | Optional encrypted viewer shell | Publicly reachable shell, no plaintext graph |
+| `/agent-memory-galaxy/galaxy/graph.enc.json` | Optional encrypted graph blob | Ciphertext only |
+| `standalone.html` | Local plaintext viewer | Local only, gitignored |
+| private hub/fork | Real fragments, presence, graph | Private repo/local machine |
+
+Enable Pages in GitHub with `Settings -> Pages -> Deploy from a branch -> main -> /docs`. No GitHub Action is required for the static public site.
+
+GitHub Pages is not an access-control layer. Treat `/galaxy/` as a public shell and rely on strong client-side encryption plus private handling of plaintext artifacts.
 
 ## Privacy Model
 
 Agent Memory Galaxy is privacy-first, not privacy-magic.
 
-By default, full plaintext artifacts such as `graph.json` and `standalone.html` stay local and are gitignored. Multi-machine fragments should live only in a private repository. If you publish a web viewer, publish ciphertext only and decrypt in the browser with strong passwords.
-
-Do not store secrets, credentials, private keys, raw confidential conversations, or unrevised sensitive code in memory files. Session distillation is intended to extract structured metadata only, but you should review configuration and generated artifacts before sharing. Client-side encryption reduces exposure, but public ciphertext can still be downloaded and attacked offline.
-
 Public distribution rule of thumb:
 
 - Public repo: framework code, docs, skill package, synthetic demo data.
 - Private repo/fork: real `fragments/*.json`, `presence/*.json`, `graph.json`, `standalone.html`.
-- Optional Pages viewer: `docs/galaxy/index.html` plus encrypted `docs/galaxy/graph.enc.json`.
+- Optional encrypted Pages viewer: `docs/galaxy/index.html` plus `docs/galaxy/graph.enc.json`, never plaintext `graph.json`.
 
-This public template ignores real fragments, live presence, and encrypted graph snapshots by default. In a private hub where you intentionally want Git to sync those files, use:
+Do not store secrets, credentials, private keys, raw confidential conversations, or unrevised sensitive code in memory files. Session distillation is intended to extract structured metadata only, but you should review configuration and generated artifacts before sharing. Client-side encryption reduces exposure, but public ciphertext can still be downloaded and attacked offline.
+
+This public template ignores real fragments, live presence, and encrypted graph snapshots by default. In a private hub where you intentionally want Git to sync private memory artifacts, use:
 
 ```bash
 AMG_TRACK_PRIVATE=1 ./update.sh
 ```
 
-## Public Pages vs Private Galaxy
+## Optional Encrypted Pages Viewer
 
-This repo intentionally separates the promotional page from the runtime memory viewer:
+Create two strong local password files in the private hub:
 
-| Path | Purpose | Data policy |
-|---|---|---|
-| `docs/index.html` | Public GitHub Pages landing page | No real data, no password prompt |
-| `docs/demo/index.html` | Synthetic demo viewer | Fake graph only |
-| `viewer/index.html` | Source runtime viewer | Reads local `graph.json` or `graph.enc.json` |
-| `docs/galaxy/index.html` | Optional encrypted deployed viewer | Should serve ciphertext only |
-| `standalone.html` | Local plaintext single-file viewer | Gitignored |
+```bash
+printf '%s' 'first-strong-passphrase' > .amg_password
+printf '%s' 'second-strong-passphrase' > .amg_password2
+chmod 600 .amg_password .amg_password2
+AMG_TRACK_PRIVATE=1 ./update.sh
+```
 
-## Contributor vs Aggregator
+The publishable output is:
 
-Two roles keep multi-machine sync simple:
+```text
+docs/galaxy/index.html
+docs/galaxy/graph.enc.json
+```
 
-- Contributor machine: runs `./contribute.sh <machine> <claude|codex|cursor|human> [roots]`, writes `fragments/<machine>.json`, and pushes to the private hub.
-- Aggregator machine: runs `./update.sh [--pull]`, merges all fragments, injects live presence, optionally encrypts for Pages, and rebuilds the local standalone viewer.
+Do not publish plaintext `graph.json`.
+
+## Contributor Vs Aggregator
+
+- Contributor machine: runs `AMG_PRIVATE_HUB=1 ./contribute.sh <machine> <claude|codex|cursor|human> <project-root>`, writes a private fragment, and pushes it to the private hub.
+- Aggregator machine: runs `./update.sh` or `./update.sh --pull`, merges all fragments, injects live presence, optionally encrypts for Pages, and rebuilds the local standalone viewer.
 
 Contributors do not need encryption passwords and should not touch `docs/galaxy/`.
 
 ## Data Model
 
-Nodes include `project`, `entry`, `fact`, `agent`, `liveagent`, `machine`, `dataset`, `server`, `model`, `method`, `file`, `wandb`, `tech`, and `notion`.
+Nodes include `project`, `entry`, `fact`, `agent`, `liveagent`, `machine`, `dataset`, `server`, `model`, `method`, `file`, `wandb`, `tech`, `notion`, `boundary`, and `artifact`.
 
-Edges include `in`, `did`, `located`, `uses`, `touches`, `trains`, `tracks`, `syncs`, `explores`, `references`, `working_on`, `link`, and `on`.
+Edges include `in`, `did`, `located`, `uses`, `touches`, `trains`, `tracks`, `syncs`, `explores`, `references`, `depends_on`, `inherits_from`, `exports_to`, `working_on`, `handoff_to`, `shared_on`, `cached_on`, `redacts`, `encrypts`, `publishes`, `keeps_private`, `validates`, `serves`, `replicates_to`, `link`, and `on`.
 
 Shared entities automatically connect projects across machines. For example, two different agents touching the same dataset, file, model, or Notion page will become connected in the graph.
-
-## Public Demo
-
-Build the synthetic demo with:
-
-```bash
-python3 scripts/build-public-demo.py
-```
-
-Then open:
-
-```text
-docs/demo/index.html
-```
-
-The demo graph is fully fictional. It should be safe to publish and is separate from `fragments/` so it cannot mix with real memory data.
 
 ## Requirements
 

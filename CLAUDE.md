@@ -1,18 +1,27 @@
-# CLAUDE.md - Agent Memory Galaxy guide
+# CLAUDE.md - Agent Memory Galaxy Guide
 
 Claude agents should follow the same operating rules as `AGENTS.md`.
 
-Default to contributor mode:
+First choose one top-level path:
+
+- Public demo: `python3 scripts/build-public-demo.py` and synthetic data only.
+- Single-machine preview: `./scripts/build-private-preview.py --roots <project-root>` and local plaintext only.
+- Multi-machine private hub: contributor or aggregator role inside a private repo/fork.
+
+Inside a private hub, use the contributor role unless the user explicitly asks this machine to maintain the full hub. Use a narrow project root; do not scan `$HOME`, `/`, or a whole workspace on the first run.
+
+Contributor example:
 
 ```bash
-./contribute.sh <unique-machine-name> claude [scan-root]
+AMG_PRIVATE_HUB=1 ./contribute.sh workstation-a claude ~/projects/my-app
 ```
 
-Run aggregator commands only when the user explicitly asks this machine to maintain the full hub:
+Aggregator examples:
 
 ```bash
 ./update.sh
 ./update.sh --pull
+AMG_TRACK_PRIVATE=1 ./update.sh
 ```
 
 Privacy reminders:
@@ -20,5 +29,6 @@ Privacy reminders:
 - Do not commit real `fragments/*.json`, `presence/*.json`, `graph.json`, `standalone.html`, passwords, logs, raw session files, hostnames, IPs, or private project names to a public repo.
 - Keep public demo data synthetic.
 - If publishing online, publish `docs/galaxy/index.html` plus encrypted `docs/galaxy/graph.enc.json`, not plaintext graph data.
+- GitHub Pages is publicly reachable; privacy comes from encryption and private handling of plaintext artifacts.
 
 Read `ONBOARDING.md` for the complete workflow and `PORTABILITY.md` for migration/publishing notes.

@@ -544,3 +544,55 @@ h1 {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .btn:hover, .concept-card:hover { transform: none; }
 }
+
+.hero.landing-hero {
+  grid-template-columns: minmax(0, .92fr) minmax(440px, 1.08fr);
+}
+.hero-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 24px;
+  max-width: 760px;
+}
+.hero-stat {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  padding: 12px;
+}
+.hero-stat b { display: block; font-size: 24px; color: var(--accent); }
+.hero-stat span { color: var(--muted); font-size: 12px; }
+.domain-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+}
+.domain-table th,
+.domain-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 13px 14px;
+  text-align: left;
+  vertical-align: top;
+}
+.domain-table th { color: var(--accent); font-size: 12px; text-transform: uppercase; }
+.domain-table tr:last-child td { border-bottom: 0; }
+.callout-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.command-stack .code { margin-top: 10px; }
+.mini-label { color: var(--accent); font: 800 11px/1.2 "JetBrains Mono", monospace; text-transform: uppercase; }
+@media (max-width: 1080px) {
+  .hero.landing-hero { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .hero-stat-grid, .callout-band { grid-template-columns: 1fr; }
+  .domain-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .domain-table { min-width: 620px; }
+  .modal-head .muted { display: none; }
+}

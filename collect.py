@@ -684,6 +684,19 @@ def main():
                     "roots": [r for r in args.roots.split(",") if r], "enabled": True}]
     else:
         sources = cfg["sources"]
+
+    if os.environ.get("AMG_ALLOW_WIDE_SCAN") != "1":
+        home = os.path.abspath(os.path.expanduser("~"))
+        for src in sources:
+            if not src.get("enabled") or src.get("type") != "local":
+                continue
+            for root in src.get("roots", []):
+                root_abs = os.path.abspath(os.path.expanduser(root))
+                if root_abs in ("/", home):
+                    raise SystemExit(
+                        f"Refusing wide scan root {root_abs}. Use --roots <narrow-project-root>, "
+                        "edit sources.json to a specific project directory, or set AMG_ALLOW_WIDE_SCAN=1."
+                    )
     for src in sources:
         if args.local_only and src["type"] == "ssh":
             continue

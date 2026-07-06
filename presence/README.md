@@ -1,12 +1,22 @@
-# presence/ — agent 实时报到状态
+# presence/ - Agent Live Status
 
-每个正在工作的 agent 一个文件 `<machine>__<agent>.json`，由 `heartbeat.sh` 维护：
+Each currently working agent can maintain one `<machine>__<agent>.json` heartbeat file through `heartbeat.sh`:
+
 ```json
-{ "agent":"codex-1", "machine":"work-pc",
-  "project_canonical":"myproj", "project":"myproj",
-  "status":"working", "current":"训练 myproj 阶段2",
-  "heartbeat":"2026-07-01T10:32:00Z", "tool":"codex" }
+{
+  "agent": "codex-1",
+  "machine": "workstation-a",
+  "project_canonical": "myproj",
+  "project": "myproj",
+  "status": "working",
+  "current": "reviewing graph merge output",
+  "heartbeat": "2026-07-06T10:32:00Z",
+  "tool": "codex"
+}
 ```
-汇总端 `collect.py`（`update.sh`）读取这些，把「心跳新鲜且 status=working」的 agent 在星空图里标成**红光**，并按 `project_canonical` 连到同一个项目节点——于是同一 project 上的多个 agent 会在图里聚到一起。
 
-一个 agent 一个文件 → 多机并发 push 不冲突。详见根目录 `ONBOARDING.md`「多 agent 实时协作」。
+The aggregator reads these files through `collect.py` / `update.sh`. Fresh `status=working` heartbeats become `liveagent` nodes in the Galaxy Viewer and connect to `project_canonical` with `working_on` edges.
+
+One agent owns one file, so multi-machine pushes usually do not conflict. Real `presence/*.json` files are plaintext private artifacts and are ignored by the public template. Track them only inside a private hub, intentionally, with `AMG_TRACK_PRIVATE=1 ./update.sh` or explicit `git add -f`.
+
+See `ONBOARDING.md` sections "Connect Contributor Machines", "Refresh The Aggregated Graph", and "Optional Encrypted Pages Viewer" for the private hub workflow.

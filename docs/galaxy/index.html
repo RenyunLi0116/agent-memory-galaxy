@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agent Memory Galaxy Viewer</title>
+<title>Encrypted Viewer Shell | Agent Memory Galaxy</title>
 </head>
 <body>
 <style>
@@ -185,25 +185,25 @@
   </div>
   <div id="detail"><div class="dh"><span id="dtag" class="tag"></span><span style="font-size:10px;color:var(--mut);letter-spacing:1px">READOUT</span><button class="close" id="dClose">✕</button></div><div class="db" id="dBody"></div></div>
   <div id="hint">拖拽旋转 · 滚轮缩放 · 点击读出 · 🟢近3天有记录 · 🔴正在工作</div>
-  <div id="empty">NO MATCH</div>
+  <div id="empty">ENCRYPTED GRAPH REQUIRED</div>
 </div>
 
 <script>
 "use strict";
 const PALETTE={project:"#ff5d73",entry:"#4ea8ff",fact:"#2ee6c5",agent:"#ffb24d",dataset:"#b07bff",
   server:"#ff5fa2",model:"#2bf0a0",method:"#ff7bdf",file:"#8aa0c8",wandb:"#ffd84d",tech:"#33c6ff",notion:"#d9c2ff",machine:"#ffe14d",
-  liveagent:"#ff3b4e"};
+  liveagent:"#ff3b4e",boundary:"#f5b642",artifact:"#7df3c4"};
 const TLAB={project:"项目",entry:"工作记录",fact:"自动记忆",agent:"Agent",dataset:"数据集",server:"服务器",
-  model:"模型/Run",method:"方法/思路",file:"文件",wandb:"W&B",tech:"框架/技术",notion:"Notion",liveagent:"正在工作"};
+  model:"模型/Run",method:"方法/思路",file:"文件",wandb:"W&B",tech:"框架/技术",notion:"Notion",liveagent:"正在工作",boundary:"边界",artifact:"产物"};
 const DESC={project:"研究项目 — 工作归属的顶层单位",entry:"一条工作记录(某次 session/某天)",
-  fact:"Claude 自动记忆事实卡",agent:"标注的执行者(人/AI)",dataset:"数据集/训练数据(h5·mp4·内参…)",
-  server:"服务器 (真实 IP/主机名)",model:"训练出的模型 / wandb run",method:"项目内技术思路(如 思路3)",
-  file:"代码/配置/产物文件",wandb:"实验追踪 run id",tech:"外部框架/技术(如 Depth-Anything 3)",
-  notion:"Notion 页面/同步目标",machine:"记录所在机器",liveagent:"正在工作(红光·6小时内)"};
+  fact:"自动提炼的结构化记忆事实卡",agent:"标注的执行者(人/AI)",dataset:"数据集/训练数据/共享资产",
+  server:"服务器或运行节点",model:"训练出的模型 / run",method:"项目内技术思路或流程",
+  file:"代码/配置/产物文件",wandb:"实验追踪 run id",tech:"外部框架/技术",notion:"Notion 页面/同步目标",
+  machine:"记录所在机器",liveagent:"正在工作(红光)",boundary:"公开、私有或加密边界",artifact:"构建、加密或发布产物"};
 const LIVE_TTL=6*60*60*1000;   // 心跳新鲜期：6 小时
 const TASKC={"训练":"#ff8a3d","数据":"#3da5ff","评测":"#2be0a6","部署":"#9aa6c0","调研":"#c06bff","同步":"#ff6fae","规划":"#ffd24b","其他":"#6b7690"};
-const TOOLC={claude:"#c39bff",codex:"#10b981",human:"#ffd24b",agent:"#8aa0c8"};   // 产出工具配色
-const BASE={project:13,machine:15,agent:10,fact:7,entry:6,notion:9,dataset:9,server:9,model:8,method:8,tech:8,file:5};
+const TOOLC={claude:"#c39bff",codex:"#10b981",cursor:"#38bdf8",human:"#ffd24b",agent:"#8aa0c8"};   // 产出工具配色
+const BASE={project:13,machine:15,agent:10,fact:7,entry:6,notion:9,dataset:9,server:9,model:8,method:8,tech:8,file:5,boundary:10,artifact:8};
 const DEFAULT_OFF=new Set(["file"]);
 const FOV=820,DIST=920;
 
@@ -222,7 +222,7 @@ async function load(){
   if(r){RAW=r;return go();}
   let blob=null;try{const x=await fetch('graph.enc.json',{cache:'no-store'});if(x.ok)blob=await x.json();}catch(e){}
   if(blob)return showUnlock(blob);
-  document.getElementById('stat').textContent='NO DATA';
+  document.getElementById('stat').textContent='NO ENCRYPTED GRAPH';
 }
 const SEP='\u0000';   // 合并两密码的分隔符（NUL U+0000；与 encrypt.py SEP="\x00" 逐字节一致）
 function showUnlock(blob){
@@ -283,7 +283,7 @@ function go(){
 }
 function col(n){ if(n.type==='entry'){ if(colorMode==='task')return TASKC[n.task]||'#6b7690'; if(colorMode==='tool')return TOOLC[n.tool]||'#8aa0c8'; } return PALETTE[n.type]||'#9fb0d0'; }
 // —— 正在工作(红光) 判定：liveagent 心跳 15min 内且 working（用 Date.now 现算，快照过期会自动降级）——
-function isLiveAgent(n){return n.type==='liveagent'&&n.status==='working'&&n.heartbeat&&(Date.now()-Date.parse(n.heartbeat)<LIVE_TTL);}
+function isLiveAgent(n){return n.type==='liveagent'&&(n.status==='working'||n.status==='doing')&&(n.demo_live||(n.heartbeat&&(Date.now()-Date.parse(n.heartbeat)<LIVE_TTL)));}
 function computeLive(){
   liveCount=0; N.forEach(n=>{n._live=false;});
   N.forEach(n=>{if(isLiveAgent(n)){n._live=true;liveCount++;}});
@@ -413,7 +413,7 @@ function setStyle(k){if(!THEMES[k])return;styleKey=k;try{localStorage.setItem('a
   if(typeof _styleSync==='function')_styleSync(k);}
 // 按类型的全息异形（比小圆球酷）
 const SHAPE={project:'reactor',machine:'reactor',agent:'ring',file:'dot',entry:'diamond',method:'diamond',
-  dataset:'hex',tech:'hex',model:'tri',wandb:'tri',server:'square',fact:'square',notion:'square'};
+  dataset:'hex',tech:'hex',model:'tri',wandb:'tri',server:'square',fact:'square',notion:'square',boundary:'hex',artifact:'diamond'};
 const POLY={diamond:[4,0],square:[4,Math.PI/4],hex:[6,0],tri:[3,-Math.PI/2]};
 function poly(x,y,r,s,rot){ctx.beginPath();for(let i=0;i<s;i++){const a=rot+i/s*6.2832,px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;i?ctx.lineTo(px,py):ctx.moveTo(px,py);}ctx.closePath();}
 function drawGlyph(n,dep){(TH().glyph||glyphShapes)(n,dep);}
@@ -514,7 +514,7 @@ function render(){
     if(hot){
       ctx.strokeStyle=hx('#ffc24b',.55*dd);ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(a._sx,a._sy);ctx.lineTo(b._sx,b._sy);ctx.stroke();
       const ph=(tick*0.02)%1;ctx.fillStyle=hx('#ffe9b0',.95);ctx.beginPath();ctx.arc(a._sx+(b._sx-a._sx)*ph,a._sy+(b._sy-a._sy)*ph,1.9,0,6.2832);ctx.fill();
-    }else if(e.type==='references'){     // 项目↔项目 引用/派生：醒目金橙连线(辉光底+亮线+流动光点)=项目骨架
+    }else if(['references','depends_on','inherits_from','exports_to'].includes(e.type)){     // 项目骨架：引用/依赖/继承/导出
       const br=0.5+0.5*Math.sin(tick*0.03+a._sx*0.01);
       ctx.lineCap='round';
       ctx.strokeStyle=`rgba(255,150,70,${(dim?0.06:0.18)*dd})`;ctx.lineWidth=(dim?2:6)+br;   // 辉光底
@@ -522,6 +522,12 @@ function render(){
       ctx.strokeStyle=`rgba(255,190,120,${(dim?0.2:0.85)*dd})`;ctx.lineWidth=(dim?1:2.2);      // 亮线
       ctx.beginPath();ctx.moveTo(a._sx,a._sy);ctx.lineTo(b._sx,b._sy);ctx.stroke();ctx.lineCap='butt';
       if(!dim){const ph=(tick*0.01+a._sx*0.003)%1;ctx.fillStyle='rgba(255,225,180,.95)';ctx.beginPath();ctx.arc(a._sx+(b._sx-a._sx)*ph,a._sy+(b._sy-a._sy)*ph,2.4,0,6.2832);ctx.fill();}
+    }else if(['encrypts','redacts','publishes','publishes_to','keeps_private','validates','serves','replicates_to','shared_on','cached_on','exposes','handoff_to'].includes(e.type)){
+      const br=0.5+0.5*Math.sin(tick*0.04+a._sx*0.009);
+      const tone=(e.type==='keeps_private')?'245,182,66':(e.type==='encrypts'||e.type==='redacts')?'94,214,179':'122,162,255';
+      ctx.strokeStyle=`rgba(${tone},${(dim?0.08:0.48)*(0.55+0.45*br)*dd})`;ctx.lineWidth=dim?0.8:1.8;
+      ctx.beginPath();ctx.moveTo(a._sx,a._sy);ctx.lineTo(b._sx,b._sy);ctx.stroke();
+      if(!dim){const ph=(tick*0.012+a._sy*0.004)%1;ctx.fillStyle=`rgba(${tone},.92)`;ctx.beginPath();ctx.arc(a._sx+(b._sx-a._sx)*ph,a._sy+(b._sy-a._sy)*ph,2,0,6.2832);ctx.fill();}
     }else if(liveEdge&&!dim){           // 红色协作链路 + 快速流动脉冲
       const br=0.5+0.5*Math.sin(tick*0.045);
       ctx.strokeStyle=`rgba(255,66,80,${(0.35+0.4*br)*dd})`;ctx.lineWidth=1.1+br*0.9;

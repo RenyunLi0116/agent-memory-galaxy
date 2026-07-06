@@ -1,67 +1,117 @@
 {
   "meta": {
-    "generated": "2026-07-03T11:20:10Z",
+    "generated": "2026-07-06T00:00:00Z",
     "sanitized": true,
     "demo": true,
     "synthetic": true,
-    "node_count": 125,
-    "edge_count": 446,
+    "story": "Public Memory Graph Release Pipeline",
+    "node_count": 137,
+    "edge_count": 466,
     "type_counts": {
       "machine": 5,
       "agent": 5,
       "project": 6,
+      "server": 5,
       "dataset": 6,
       "model": 5,
       "file": 12,
+      "artifact": 6,
+      "boundary": 4,
       "wandb": 5,
       "method": 7,
       "tech": 8,
       "notion": 4,
-      "server": 4,
       "entry": 36,
       "fact": 18,
-      "liveagent": 4
+      "liveagent": 5
+    },
+    "edge_counts": {
+      "on": 24,
+      "inherits_from": 2,
+      "depends_on": 3,
+      "exports_to": 5,
+      "references": 2,
+      "replicates_to": 1,
+      "validates": 3,
+      "keeps_private": 3,
+      "publishes_to": 1,
+      "serves": 2,
+      "redacts": 1,
+      "encrypts": 3,
+      "publishes": 2,
+      "exposes": 1,
+      "shared_on": 2,
+      "cached_on": 2,
+      "in": 54,
+      "located": 59,
+      "did": 41,
+      "uses": 126,
+      "touches": 54,
+      "trains": 18,
+      "tracks": 18,
+      "syncs": 12,
+      "explores": 18,
+      "working_on": 5,
+      "handoff_to": 4
     },
     "machines": [
       "demo-workstation-a",
       "demo-laptop-b",
       "demo-gpu-node-c",
       "demo-ci-runner-d",
-      "demo-mac-studio-e"
+      "demo-pages-host-e"
     ],
     "projects": [
       "Project Aurora Loom",
-      "Project Harbor Lens",
       "Project Meridian Sync",
-      "Project Atlas Relay",
+      "Project Harbor Lens",
       "Project Solstice Bench",
-      "Project Prism Cache"
+      "Project Prism Cache",
+      "Project Atlas Relay"
     ],
-    "privacy_note": "All labels, sessions, machines, projects, files, datasets, models, and servers are fictional."
+    "servers": [
+      "demo-capture-server",
+      "demo-merge-runner",
+      "demo-ci-validator",
+      "demo-vault",
+      "demo-pages-edge"
+    ],
+    "privacy_note": "All labels, sessions, machines, projects, files, datasets, models, servers, and live work states are fictional.",
+    "demo_features": [
+      "multi-server collaboration",
+      "currently working agents",
+      "project inheritance and dependencies",
+      "shared datasets, models, and files",
+      "private/public/encrypted boundaries",
+      "skill and GitHub Pages publication path"
+    ]
   },
   "nodes": [
     {
       "id": "machine:demo-workstation-a",
       "type": "machine",
       "label": "demo-workstation-a",
-      "primary": "primary capture + local viewer",
-      "weight": 22,
-      "degree": 17
+      "primary": "capture + local viewer",
+      "role": "Contributor",
+      "weight": 24,
+      "degree": 12
     },
     {
       "id": "machine:demo-laptop-b",
       "type": "machine",
       "label": "demo-laptop-b",
-      "primary": "writing + evaluation notes",
-      "weight": 22,
-      "degree": 11
+      "primary": "writing + release review",
+      "role": "Contributor",
+      "weight": 24,
+      "degree": 12
     },
     {
       "id": "machine:demo-gpu-node-c",
       "type": "machine",
       "label": "demo-gpu-node-c",
-      "primary": "training + scheduled runs",
-      "weight": 22,
+      "primary": "training + merge rehearsals",
+      "role": "Contributor",
+      "weight": 24,
       "degree": 17
     },
     {
@@ -69,16 +119,18 @@
       "type": "machine",
       "label": "demo-ci-runner-d",
       "primary": "nightly validation",
-      "weight": 22,
+      "role": "Aggregator",
+      "weight": 24,
       "degree": 13
     },
     {
-      "id": "machine:demo-mac-studio-e",
+      "id": "machine:demo-pages-host-e",
       "type": "machine",
-      "label": "demo-mac-studio-e",
-      "primary": "design review + docs",
-      "weight": 22,
-      "degree": 12
+      "label": "demo-pages-host-e",
+      "primary": "public Pages dry run",
+      "role": "Publisher",
+      "weight": 24,
+      "degree": 18
     },
     {
       "id": "agent:codex",
@@ -112,9 +164,9 @@
       "type": "agent",
       "label": "human",
       "tool": "human",
-      "role": "manual notes",
+      "role": "release review",
       "weight": 20,
-      "degree": 7
+      "degree": 8
     },
     {
       "id": "agent:automator",
@@ -133,20 +185,10 @@
         "demo-workstation-a",
         "demo-gpu-node-c"
       ],
-      "description": "memory graph viewer and demo data",
-      "weight": 90,
-      "degree": 15
-    },
-    {
-      "id": "project:project-harbor-lens",
-      "type": "project",
-      "label": "Project Harbor Lens",
-      "machines": [
-        "demo-laptop-b",
-        "demo-mac-studio-e"
-      ],
-      "description": "evaluation notes and visual inspection",
-      "weight": 90,
+      "phase": "01 schema/viewer",
+      "description": "Memory graph schema and Galaxy Viewer",
+      "visibility": "public-safe",
+      "weight": 92,
       "degree": 14
     },
     {
@@ -157,20 +199,24 @@
         "demo-gpu-node-c",
         "demo-ci-runner-d"
       ],
-      "description": "multi-machine fragment merge",
-      "weight": 90,
-      "degree": 15
+      "phase": "02 merge",
+      "description": "Multi-machine fragment merge and shared entity linking",
+      "visibility": "private-hub",
+      "weight": 92,
+      "degree": 16
     },
     {
-      "id": "project:project-atlas-relay",
+      "id": "project:project-harbor-lens",
       "type": "project",
-      "label": "Project Atlas Relay",
+      "label": "Project Harbor Lens",
       "machines": [
-        "demo-workstation-a",
-        "demo-ci-runner-d"
+        "demo-laptop-b",
+        "demo-pages-host-e"
       ],
-      "description": "encrypted publishing pipeline",
-      "weight": 90,
+      "phase": "03 review",
+      "description": "Human and agent review of graph clarity",
+      "visibility": "public-safe",
+      "weight": 92,
       "degree": 15
     },
     {
@@ -181,8 +227,10 @@
         "demo-gpu-node-c",
         "demo-laptop-b"
       ],
-      "description": "toy benchmark tracking",
-      "weight": 90,
+      "phase": "04 benchmark",
+      "description": "Toy benchmark using shared datasets and models",
+      "visibility": "public-safe",
+      "weight": 92,
       "degree": 14
     },
     {
@@ -190,12 +238,73 @@
       "type": "project",
       "label": "Project Prism Cache",
       "machines": [
-        "demo-mac-studio-e",
+        "demo-pages-host-e",
         "demo-workstation-a"
       ],
-      "description": "session metadata distillation",
-      "weight": 90,
-      "degree": 15
+      "phase": "05 distill",
+      "description": "Safe session metadata distillation",
+      "visibility": "private-hub",
+      "weight": 92,
+      "degree": 13
+    },
+    {
+      "id": "project:project-atlas-relay",
+      "type": "project",
+      "label": "Project Atlas Relay",
+      "machines": [
+        "demo-ci-runner-d",
+        "demo-pages-host-e"
+      ],
+      "phase": "06 publish",
+      "description": "Encrypted Pages publishing and public demo split",
+      "visibility": "public-boundary",
+      "weight": 92,
+      "degree": 16
+    },
+    {
+      "id": "server:demo-capture-server",
+      "type": "server",
+      "label": "demo-capture-server",
+      "role": "capture",
+      "primary": "collects workstation and laptop fragments",
+      "weight": 34,
+      "degree": 5
+    },
+    {
+      "id": "server:demo-merge-runner",
+      "type": "server",
+      "label": "demo-merge-runner",
+      "role": "merge",
+      "primary": "normalizes fragments into graph.json",
+      "weight": 34,
+      "degree": 6
+    },
+    {
+      "id": "server:demo-ci-validator",
+      "type": "server",
+      "label": "demo-ci-validator",
+      "role": "ci",
+      "primary": "runs privacy and demo integrity checks",
+      "weight": 34,
+      "degree": 6
+    },
+    {
+      "id": "server:demo-vault",
+      "type": "server",
+      "label": "demo-vault",
+      "role": "vault",
+      "primary": "keeps plaintext graph and passwords private",
+      "weight": 34,
+      "degree": 5
+    },
+    {
+      "id": "server:demo-pages-edge",
+      "type": "server",
+      "label": "demo-pages-edge",
+      "role": "public-host",
+      "primary": "serves the public landing and synthetic demo",
+      "weight": 34,
+      "degree": 5
     },
     {
       "id": "dataset:syntheticcity-rgbd-1k",
@@ -215,141 +324,141 @@
       "id": "dataset:openkitchen-sim-240",
       "type": "dataset",
       "label": "OpenKitchen-Sim-240",
-      "weight": 48,
+      "weight": 36,
       "degree": 6
     },
     {
       "id": "dataset:riverwalk-mocklogs",
       "type": "dataset",
       "label": "RiverWalk-MockLogs",
-      "weight": 35,
+      "weight": 48,
       "degree": 6
     },
     {
       "id": "dataset:labbench-events-128",
       "type": "dataset",
       "label": "LabBench-Events-128",
-      "weight": 47,
+      "weight": 48,
       "degree": 6
     },
     {
       "id": "dataset:minidepot-trajectories",
       "type": "dataset",
       "label": "MiniDepot-Trajectories",
-      "weight": 34,
+      "weight": 45,
       "degree": 6
     },
     {
       "id": "model:demo-vlm-small-v0",
       "type": "model",
       "label": "demo-vlm-small-v0",
-      "weight": 36,
-      "degree": 7
+      "weight": 41,
+      "degree": 5
     },
     {
       "id": "model:aurora-checkpoint-042",
       "type": "model",
       "label": "aurora-checkpoint-042",
-      "weight": 42,
+      "weight": 38,
       "degree": 3
     },
     {
       "id": "model:harbor-reranker-v2",
       "type": "model",
       "label": "harbor-reranker-v2",
-      "weight": 42,
-      "degree": 3
+      "weight": 38,
+      "degree": 4
     },
     {
       "id": "model:meridian-merge-probe",
       "type": "model",
       "label": "meridian-merge-probe",
-      "weight": 32,
+      "weight": 44,
       "degree": 4
     },
     {
       "id": "model:solstice-eval-head",
       "type": "model",
       "label": "solstice-eval-head",
-      "weight": 38,
-      "degree": 3
+      "weight": 43,
+      "degree": 4
     },
     {
-      "id": "file:train-pipeline-py",
+      "id": "file:collector-config-example-json",
       "type": "file",
-      "label": "train_pipeline.py",
-      "weight": 30,
-      "degree": 6
+      "label": "collector_config_example.json",
+      "weight": 33,
+      "degree": 4
     },
     {
       "id": "file:dataset-manifest-json",
       "type": "file",
       "label": "dataset_manifest.json",
-      "weight": 33,
-      "degree": 3
+      "weight": 32,
+      "degree": 5
     },
     {
       "id": "file:eval-report-ipynb",
       "type": "file",
       "label": "eval_report.ipynb",
-      "weight": 25,
+      "weight": 30,
       "degree": 6
     },
     {
       "id": "file:viewer-embed-html",
       "type": "file",
       "label": "viewer_embed.html",
-      "weight": 38,
-      "degree": 3
+      "weight": 26,
+      "degree": 6
     },
     {
       "id": "file:graph-loader-py",
       "type": "file",
       "label": "graph_loader.py",
-      "weight": 36,
-      "degree": 7
+      "weight": 25,
+      "degree": 6
     },
     {
       "id": "file:privacy-checklist-md",
       "type": "file",
       "label": "privacy_checklist.md",
-      "weight": 29,
-      "degree": 3
+      "weight": 24,
+      "degree": 6
     },
     {
       "id": "file:fragment-merge-tests-py",
       "type": "file",
       "label": "fragment_merge_tests.py",
-      "weight": 37,
+      "weight": 24,
       "degree": 6
     },
     {
       "id": "file:presence-heartbeat-py",
       "type": "file",
       "label": "presence_heartbeat.py",
-      "weight": 28,
-      "degree": 3
+      "weight": 24,
+      "degree": 4
     },
     {
       "id": "file:demo-storyboard-md",
       "type": "file",
       "label": "demo_storyboard.md",
-      "weight": 31,
-      "degree": 6
+      "weight": 29,
+      "degree": 3
     },
     {
       "id": "file:notion-export-py",
       "type": "file",
       "label": "notion_export.py",
-      "weight": 26,
+      "weight": 24,
       "degree": 3
     },
     {
       "id": "file:encrypt-publish-py",
       "type": "file",
       "label": "encrypt_publish.py",
-      "weight": 36,
-      "degree": 7
+      "weight": 30,
+      "degree": 3
     },
     {
       "id": "file:session-distiller-py",
@@ -359,200 +468,252 @@
       "degree": 3
     },
     {
+      "id": "artifact:local-plaintext-graph",
+      "type": "artifact",
+      "label": "local plaintext graph",
+      "primary": "private artifact, gitignored",
+      "weight": 34,
+      "degree": 2
+    },
+    {
+      "id": "artifact:standalone-local-viewer",
+      "type": "artifact",
+      "label": "standalone local viewer",
+      "primary": "private single-file viewer, gitignored",
+      "weight": 34,
+      "degree": 1
+    },
+    {
+      "id": "artifact:encrypted-pages-graph",
+      "type": "artifact",
+      "label": "encrypted pages graph",
+      "primary": "ciphertext artifact for optional private Pages viewer",
+      "weight": 34,
+      "degree": 4
+    },
+    {
+      "id": "artifact:public-synthetic-demo-graph",
+      "type": "artifact",
+      "label": "public synthetic demo graph",
+      "primary": "publishable fictional graph",
+      "weight": 34,
+      "degree": 2
+    },
+    {
+      "id": "artifact:privacy-redaction-report",
+      "type": "artifact",
+      "label": "privacy redaction report",
+      "primary": "CI evidence for public boundary",
+      "weight": 34,
+      "degree": 2
+    },
+    {
+      "id": "artifact:plugin-marketplace-package",
+      "type": "artifact",
+      "label": "plugin marketplace package",
+      "primary": "installable skill wrapper",
+      "weight": 34,
+      "degree": 3
+    },
+    {
+      "id": "boundary:public-framework",
+      "type": "boundary",
+      "label": "Public Framework",
+      "primary": "code, docs, skill package, synthetic demo",
+      "weight": 40,
+      "degree": 2
+    },
+    {
+      "id": "boundary:private-memory-hub",
+      "type": "boundary",
+      "label": "Private Memory Hub",
+      "primary": "real fragments, presence, plaintext graph",
+      "weight": 40,
+      "degree": 2
+    },
+    {
+      "id": "boundary:encrypted-viewer-zone",
+      "type": "boundary",
+      "label": "Encrypted Viewer Zone",
+      "primary": "viewer shell plus ciphertext only",
+      "weight": 40,
+      "degree": 1
+    },
+    {
+      "id": "boundary:synthetic-demo-zone",
+      "type": "boundary",
+      "label": "Synthetic Demo Zone",
+      "primary": "fictional graph for marketing and testing",
+      "weight": 40,
+      "degree": 1
+    },
+    {
       "id": "wandb:demo-run-aurora-001",
       "type": "wandb",
       "label": "demo-run-aurora-001",
-      "weight": 22,
-      "degree": 6
+      "weight": 27,
+      "degree": 4
     },
     {
       "id": "wandb:demo-run-harbor-014",
       "type": "wandb",
       "label": "demo-run-harbor-014",
-      "weight": 30,
+      "weight": 25,
       "degree": 3
     },
     {
       "id": "wandb:demo-run-meridian-009",
       "type": "wandb",
       "label": "demo-run-meridian-009",
-      "weight": 20,
-      "degree": 3
+      "weight": 27,
+      "degree": 4
     },
     {
       "id": "wandb:demo-run-atlas-022",
       "type": "wandb",
       "label": "demo-run-atlas-022",
-      "weight": 30,
+      "weight": 23,
       "degree": 3
     },
     {
       "id": "wandb:demo-run-solstice-031",
       "type": "wandb",
       "label": "demo-run-solstice-031",
-      "weight": 30,
-      "degree": 3
+      "weight": 25,
+      "degree": 4
     },
     {
       "id": "method:shared-entity-linking",
       "type": "method",
       "label": "shared-entity linking",
-      "weight": 29,
-      "degree": 5
+      "weight": 30,
+      "degree": 7
     },
     {
       "id": "method:derived-gap-filling",
       "type": "method",
       "label": "derived gap filling",
-      "weight": 32,
-      "degree": 9
+      "weight": 31,
+      "degree": 7
     },
     {
       "id": "method:client-side-decrypt",
       "type": "method",
       "label": "client-side decrypt",
-      "weight": 26,
-      "degree": 11
+      "weight": 30,
+      "degree": 9
     },
     {
       "id": "method:live-presence-pulse",
       "type": "method",
       "label": "live presence pulse",
-      "weight": 25,
-      "degree": 9
+      "weight": 33,
+      "degree": 8
     },
     {
       "id": "method:timeline-filtering",
       "type": "method",
       "label": "timeline filtering",
-      "weight": 32,
-      "degree": 9
+      "weight": 24,
+      "degree": 8
     },
     {
       "id": "method:synthetic-graph-rehearsal",
       "type": "method",
       "label": "synthetic graph rehearsal",
-      "weight": 28,
+      "weight": 26,
       "degree": 9
     },
     {
       "id": "method:privacy-redaction-pass",
       "type": "method",
       "label": "privacy redaction pass",
-      "weight": 26,
-      "degree": 4
+      "weight": 30,
+      "degree": 9
     },
     {
       "id": "tech:canvas-3d",
       "type": "tech",
       "label": "Canvas 3D",
-      "weight": 33,
+      "weight": 35,
       "degree": 5
     },
     {
       "id": "tech:aes-gcm",
       "type": "tech",
       "label": "AES-GCM",
-      "weight": 29,
-      "degree": 10
+      "weight": 30,
+      "degree": 7
     },
     {
       "id": "tech:pbkdf2",
       "type": "tech",
       "label": "PBKDF2",
-      "weight": 29,
-      "degree": 10
+      "weight": 36,
+      "degree": 8
     },
     {
-      "id": "tech:sqlite",
+      "id": "tech:git",
       "type": "tech",
-      "label": "SQLite",
-      "weight": 34,
-      "degree": 9
+      "label": "Git",
+      "weight": 24,
+      "degree": 7
     },
     {
       "id": "tech:github-pages",
       "type": "tech",
       "label": "GitHub Pages",
       "weight": 28,
-      "degree": 10
+      "degree": 9
     },
     {
       "id": "tech:claude-code-plugin",
       "type": "tech",
       "label": "Claude Code Plugin",
-      "weight": 30,
+      "weight": 35,
       "degree": 10
     },
     {
       "id": "tech:codex-skill",
       "type": "tech",
       "label": "Codex Skill",
-      "weight": 36,
-      "degree": 5
+      "weight": 25,
+      "degree": 8
     },
     {
       "id": "tech:graph-json",
       "type": "tech",
       "label": "Graph JSON",
-      "weight": 35,
-      "degree": 1
+      "weight": 34,
+      "degree": 5
     },
     {
       "id": "notion:weekly-progress",
       "type": "notion",
       "label": "Weekly Progress",
-      "weight": 31,
-      "degree": 5
+      "weight": 23,
+      "degree": 4
     },
     {
       "id": "notion:release-notes",
       "type": "notion",
       "label": "Release Notes",
-      "weight": 23,
-      "degree": 5
+      "weight": 27,
+      "degree": 3
     },
     {
       "id": "notion:experiment-ledger",
       "type": "notion",
       "label": "Experiment Ledger",
-      "weight": 22,
+      "weight": 30,
       "degree": 2
     },
     {
       "id": "notion:deployment-runbook",
       "type": "notion",
       "label": "Deployment Runbook",
-      "weight": 22,
-      "degree": 2
-    },
-    {
-      "id": "server:demo-server-a",
-      "type": "server",
-      "label": "demo-server-a",
-      "weight": 32,
-      "degree": 4
-    },
-    {
-      "id": "server:demo-server-b",
-      "type": "server",
-      "label": "demo-server-b",
-      "weight": 32,
-      "degree": 4
-    },
-    {
-      "id": "server:demo-runner-c",
-      "type": "server",
-      "label": "demo-runner-c",
-      "weight": 35,
-      "degree": 2
-    },
-    {
-      "id": "server:demo-vault-d",
-      "type": "server",
-      "label": "demo-vault-d",
-      "weight": 22,
-      "degree": 2
+      "weight": 25,
+      "degree": 3
     },
     {
       "id": "entry:project-aurora-loom:01",
@@ -560,13 +721,15 @@
       "label": "Linked synthetic fragments for Aurora Loom",
       "date": "2026-06-10",
       "status": "done",
-      "task": "鏁版嵁",
+      "task": "数据",
       "tool": "codex",
       "machine": "demo-workstation-a",
       "project": "Project Aurora Loom",
+      "phase": "01 schema/viewer",
+      "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-001",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 92,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 76,
       "degree": 11
     },
     {
@@ -575,28 +738,32 @@
       "label": "Reviewed viewer controls for Aurora Loom",
       "date": "2026-06-11",
       "status": "logged",
-      "task": "璁粌",
+      "task": "训练",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
+      "phase": "01 schema/viewer",
+      "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-002",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 81,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 83,
       "degree": 7
     },
     {
       "id": "entry:project-aurora-loom:03",
       "type": "entry",
-      "label": "Distilled agent session metadata for Aurora Loom",
+      "label": "Distilled safe session metadata for Aurora Loom",
       "date": "2026-06-12",
       "status": "doing",
-      "task": "璇勬祴",
+      "task": "评测",
       "tool": "cursor",
       "machine": "demo-workstation-a",
       "project": "Project Aurora Loom",
+      "phase": "01 schema/viewer",
+      "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-003",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 96,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 84,
       "degree": 9
     },
     {
@@ -605,28 +772,32 @@
       "label": "Validated encrypted publish path for Aurora Loom",
       "date": "2026-06-13",
       "status": "planned",
-      "task": "閮ㄧ讲",
+      "task": "部署",
       "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
+      "phase": "01 schema/viewer",
+      "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-004",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 76,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 67,
       "degree": 9
     },
     {
       "id": "entry:project-aurora-loom:05",
       "type": "entry",
-      "label": "Merged multi-machine handoff for Aurora Loom",
+      "label": "Merged multi-server handoff for Aurora Loom",
       "date": "2026-06-14",
       "status": "done",
-      "task": "璋冪爺",
+      "task": "调研",
       "tool": "automator",
       "machine": "demo-workstation-a",
       "project": "Project Aurora Loom",
+      "phase": "01 schema/viewer",
+      "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-005",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 89,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 81,
       "degree": 9
     },
     {
@@ -635,769 +806,831 @@
       "label": "Benchmarked demo graph labels for Aurora Loom",
       "date": "2026-06-15",
       "status": "logged",
-      "task": "鍚屾",
+      "task": "同步",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
+      "phase": "01 schema/viewer",
+      "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-006",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 65,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 83,
       "degree": 7
     },
     {
       "id": "fact:project-aurora-loom:01",
       "type": "fact",
-      "label": "Derived memory fact 1 for Aurora Loom",
+      "label": "Derived synthetic fact 1 for Aurora Loom",
       "date": "2026-06-18",
       "status": "logged",
-      "task": "璋冪爺",
+      "task": "调研",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-aurora-loom/derived-001",
-      "weight": 45,
+      "weight": 68,
       "degree": 5
     },
     {
       "id": "fact:project-aurora-loom:02",
       "type": "fact",
-      "label": "Derived memory fact 2 for Aurora Loom",
+      "label": "Derived synthetic fact 2 for Aurora Loom",
       "date": "2026-06-19",
       "status": "logged",
-      "task": "璋冪爺",
+      "task": "调研",
       "tool": "cursor",
       "machine": "demo-workstation-a",
       "project": "Project Aurora Loom",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-aurora-loom/derived-002",
-      "weight": 55,
+      "weight": 49,
       "degree": 5
     },
     {
       "id": "fact:project-aurora-loom:03",
       "type": "fact",
-      "label": "Derived memory fact 3 for Aurora Loom",
+      "label": "Derived synthetic fact 3 for Aurora Loom",
       "date": "2026-06-20",
       "status": "logged",
-      "task": "璋冪爺",
+      "task": "调研",
       "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-aurora-loom/derived-003",
-      "weight": 55,
-      "degree": 5
-    },
-    {
-      "id": "entry:project-harbor-lens:01",
-      "type": "entry",
-      "label": "Reviewed agent session metadata for Harbor Lens",
-      "date": "2026-06-12",
-      "status": "doing",
-      "task": "璁粌",
-      "tool": "claude",
-      "machine": "demo-laptop-b",
-      "project": "Project Harbor Lens",
-      "session": "demo://project-harbor-lens/session-001",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 73,
-      "degree": 11
-    },
-    {
-      "id": "entry:project-harbor-lens:02",
-      "type": "entry",
-      "label": "Distilled encrypted publish path for Harbor Lens",
-      "date": "2026-06-13",
-      "status": "planned",
-      "task": "璇勬祴",
-      "tool": "cursor",
-      "machine": "demo-mac-studio-e",
-      "project": "Project Harbor Lens",
-      "session": "demo://project-harbor-lens/session-002",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 74,
-      "degree": 7
-    },
-    {
-      "id": "entry:project-harbor-lens:03",
-      "type": "entry",
-      "label": "Validated multi-machine handoff for Harbor Lens",
-      "date": "2026-06-14",
-      "status": "done",
-      "task": "閮ㄧ讲",
-      "tool": "human",
-      "machine": "demo-laptop-b",
-      "project": "Project Harbor Lens",
-      "session": "demo://project-harbor-lens/session-003",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 67,
-      "degree": 9
-    },
-    {
-      "id": "entry:project-harbor-lens:04",
-      "type": "entry",
-      "label": "Merged demo graph labels for Harbor Lens",
-      "date": "2026-06-15",
-      "status": "logged",
-      "task": "璋冪爺",
-      "tool": "automator",
-      "machine": "demo-mac-studio-e",
-      "project": "Project Harbor Lens",
-      "session": "demo://project-harbor-lens/session-004",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 65,
-      "degree": 9
-    },
-    {
-      "id": "entry:project-harbor-lens:05",
-      "type": "entry",
-      "label": "Benchmarked privacy scan output for Harbor Lens",
-      "date": "2026-06-16",
-      "status": "doing",
-      "task": "鍚屾",
-      "tool": "codex",
-      "machine": "demo-laptop-b",
-      "project": "Project Harbor Lens",
-      "session": "demo://project-harbor-lens/session-005",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 87,
-      "degree": 9
-    },
-    {
-      "id": "entry:project-harbor-lens:06",
-      "type": "entry",
-      "label": "Published timeline filters for Harbor Lens",
-      "date": "2026-06-17",
-      "status": "planned",
-      "task": "瑙勫垝",
-      "tool": "claude",
-      "machine": "demo-mac-studio-e",
-      "project": "Project Harbor Lens",
-      "session": "demo://project-harbor-lens/session-006",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 72,
-      "degree": 7
-    },
-    {
-      "id": "fact:project-harbor-lens:01",
-      "type": "fact",
-      "label": "Derived memory fact 1 for Harbor Lens",
-      "date": "2026-06-19",
-      "status": "logged",
-      "task": "璋冪爺",
-      "tool": "cursor",
-      "machine": "demo-mac-studio-e",
-      "project": "Project Harbor Lens",
-      "derived": true,
-      "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
-      "source": "demo://project-harbor-lens/derived-001",
-      "weight": 56,
-      "degree": 5
-    },
-    {
-      "id": "fact:project-harbor-lens:02",
-      "type": "fact",
-      "label": "Derived memory fact 2 for Harbor Lens",
-      "date": "2026-06-20",
-      "status": "logged",
-      "task": "璋冪爺",
-      "tool": "human",
-      "machine": "demo-laptop-b",
-      "project": "Project Harbor Lens",
-      "derived": true,
-      "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
-      "source": "demo://project-harbor-lens/derived-002",
-      "weight": 69,
-      "degree": 5
-    },
-    {
-      "id": "fact:project-harbor-lens:03",
-      "type": "fact",
-      "label": "Derived memory fact 3 for Harbor Lens",
-      "date": "2026-06-21",
-      "status": "logged",
-      "task": "璋冪爺",
-      "tool": "automator",
-      "machine": "demo-mac-studio-e",
-      "project": "Project Harbor Lens",
-      "derived": true,
-      "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
-      "source": "demo://project-harbor-lens/derived-003",
-      "weight": 55,
+      "weight": 44,
       "degree": 5
     },
     {
       "id": "entry:project-meridian-sync:01",
       "type": "entry",
-      "label": "Distilled multi-machine handoff for Meridian Sync",
-      "date": "2026-06-14",
-      "status": "done",
-      "task": "璇勬祴",
-      "tool": "cursor",
+      "label": "Reviewed safe session metadata for Meridian Sync",
+      "date": "2026-06-12",
+      "status": "doing",
+      "task": "训练",
+      "tool": "claude",
       "machine": "demo-gpu-node-c",
       "project": "Project Meridian Sync",
+      "phase": "02 merge",
+      "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-001",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 93,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 69,
       "degree": 11
     },
     {
       "id": "entry:project-meridian-sync:02",
       "type": "entry",
-      "label": "Validated demo graph labels for Meridian Sync",
-      "date": "2026-06-15",
-      "status": "logged",
-      "task": "閮ㄧ讲",
-      "tool": "human",
+      "label": "Distilled encrypted publish path for Meridian Sync",
+      "date": "2026-06-13",
+      "status": "planned",
+      "task": "评测",
+      "tool": "cursor",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
+      "phase": "02 merge",
+      "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-002",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 68,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 67,
       "degree": 7
     },
     {
       "id": "entry:project-meridian-sync:03",
       "type": "entry",
-      "label": "Merged privacy scan output for Meridian Sync",
-      "date": "2026-06-16",
-      "status": "doing",
-      "task": "璋冪爺",
-      "tool": "automator",
+      "label": "Validated multi-server handoff for Meridian Sync",
+      "date": "2026-06-14",
+      "status": "done",
+      "task": "部署",
+      "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Meridian Sync",
+      "phase": "02 merge",
+      "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-003",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 68,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 59,
       "degree": 9
     },
     {
       "id": "entry:project-meridian-sync:04",
       "type": "entry",
-      "label": "Benchmarked timeline filters for Meridian Sync",
-      "date": "2026-06-17",
-      "status": "planned",
-      "task": "鍚屾",
-      "tool": "codex",
+      "label": "Merged demo graph labels for Meridian Sync",
+      "date": "2026-06-15",
+      "status": "logged",
+      "task": "调研",
+      "tool": "automator",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
+      "phase": "02 merge",
+      "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-004",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 59,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 71,
       "degree": 9
     },
     {
       "id": "entry:project-meridian-sync:05",
       "type": "entry",
-      "label": "Published synthetic fragments for Meridian Sync",
-      "date": "2026-06-18",
-      "status": "done",
-      "task": "瑙勫垝",
-      "tool": "claude",
+      "label": "Benchmarked privacy scan output for Meridian Sync",
+      "date": "2026-06-16",
+      "status": "doing",
+      "task": "同步",
+      "tool": "codex",
       "machine": "demo-gpu-node-c",
       "project": "Project Meridian Sync",
+      "phase": "02 merge",
+      "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-005",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 83,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 64,
       "degree": 9
     },
     {
       "id": "entry:project-meridian-sync:06",
       "type": "entry",
-      "label": "Mapped viewer controls for Meridian Sync",
-      "date": "2026-06-19",
-      "status": "logged",
-      "task": "鍏朵粬",
-      "tool": "cursor",
+      "label": "Published timeline filters for Meridian Sync",
+      "date": "2026-06-17",
+      "status": "planned",
+      "task": "规划",
+      "tool": "claude",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
+      "phase": "02 merge",
+      "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-006",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 73,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 78,
       "degree": 7
     },
     {
       "id": "fact:project-meridian-sync:01",
       "type": "fact",
-      "label": "Derived memory fact 1 for Meridian Sync",
-      "date": "2026-06-20",
+      "label": "Derived synthetic fact 1 for Meridian Sync",
+      "date": "2026-06-19",
       "status": "logged",
-      "task": "璋冪爺",
-      "tool": "human",
+      "task": "调研",
+      "tool": "cursor",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-meridian-sync/derived-001",
-      "weight": 48,
+      "weight": 60,
       "degree": 5
     },
     {
       "id": "fact:project-meridian-sync:02",
       "type": "fact",
-      "label": "Derived memory fact 2 for Meridian Sync",
-      "date": "2026-06-21",
+      "label": "Derived synthetic fact 2 for Meridian Sync",
+      "date": "2026-06-20",
       "status": "logged",
-      "task": "璋冪爺",
-      "tool": "automator",
+      "task": "调研",
+      "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Meridian Sync",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-meridian-sync/derived-002",
-      "weight": 69,
+      "weight": 45,
       "degree": 5
     },
     {
       "id": "fact:project-meridian-sync:03",
       "type": "fact",
-      "label": "Derived memory fact 3 for Meridian Sync",
-      "date": "2026-06-22",
+      "label": "Derived synthetic fact 3 for Meridian Sync",
+      "date": "2026-06-21",
       "status": "logged",
-      "task": "璋冪爺",
-      "tool": "codex",
+      "task": "调研",
+      "tool": "automator",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-meridian-sync/derived-003",
-      "weight": 47,
+      "weight": 56,
       "degree": 5
     },
     {
-      "id": "entry:project-atlas-relay:01",
+      "id": "entry:project-harbor-lens:01",
       "type": "entry",
-      "label": "Validated privacy scan output for Atlas Relay",
-      "date": "2026-06-16",
-      "status": "doing",
-      "task": "閮ㄧ讲",
-      "tool": "human",
-      "machine": "demo-workstation-a",
-      "project": "Project Atlas Relay",
-      "session": "demo://project-atlas-relay/session-001",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 79,
+      "label": "Distilled multi-server handoff for Harbor Lens",
+      "date": "2026-06-14",
+      "status": "done",
+      "task": "评测",
+      "tool": "cursor",
+      "machine": "demo-laptop-b",
+      "project": "Project Harbor Lens",
+      "phase": "03 review",
+      "visibility": "public-safe",
+      "session": "demo://project-harbor-lens/session-001",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 84,
       "degree": 11
     },
     {
-      "id": "entry:project-atlas-relay:02",
+      "id": "entry:project-harbor-lens:02",
       "type": "entry",
-      "label": "Merged timeline filters for Atlas Relay",
+      "label": "Validated demo graph labels for Harbor Lens",
+      "date": "2026-06-15",
+      "status": "logged",
+      "task": "部署",
+      "tool": "human",
+      "machine": "demo-pages-host-e",
+      "project": "Project Harbor Lens",
+      "phase": "03 review",
+      "visibility": "public-safe",
+      "session": "demo://project-harbor-lens/session-002",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 86,
+      "degree": 7
+    },
+    {
+      "id": "entry:project-harbor-lens:03",
+      "type": "entry",
+      "label": "Merged privacy scan output for Harbor Lens",
+      "date": "2026-06-16",
+      "status": "doing",
+      "task": "调研",
+      "tool": "automator",
+      "machine": "demo-laptop-b",
+      "project": "Project Harbor Lens",
+      "phase": "03 review",
+      "visibility": "public-safe",
+      "session": "demo://project-harbor-lens/session-003",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 59,
+      "degree": 9
+    },
+    {
+      "id": "entry:project-harbor-lens:04",
+      "type": "entry",
+      "label": "Benchmarked timeline filters for Harbor Lens",
       "date": "2026-06-17",
       "status": "planned",
-      "task": "璋冪爺",
-      "tool": "automator",
-      "machine": "demo-ci-runner-d",
-      "project": "Project Atlas Relay",
-      "session": "demo://project-atlas-relay/session-002",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 67,
-      "degree": 7
+      "task": "同步",
+      "tool": "codex",
+      "machine": "demo-pages-host-e",
+      "project": "Project Harbor Lens",
+      "phase": "03 review",
+      "visibility": "public-safe",
+      "session": "demo://project-harbor-lens/session-004",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 68,
+      "degree": 9
     },
     {
-      "id": "entry:project-atlas-relay:03",
+      "id": "entry:project-harbor-lens:05",
       "type": "entry",
-      "label": "Benchmarked synthetic fragments for Atlas Relay",
+      "label": "Published synthetic fragments for Harbor Lens",
       "date": "2026-06-18",
       "status": "done",
-      "task": "鍚屾",
-      "tool": "codex",
-      "machine": "demo-workstation-a",
-      "project": "Project Atlas Relay",
-      "session": "demo://project-atlas-relay/session-003",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 70,
+      "task": "规划",
+      "tool": "claude",
+      "machine": "demo-laptop-b",
+      "project": "Project Harbor Lens",
+      "phase": "03 review",
+      "visibility": "public-safe",
+      "session": "demo://project-harbor-lens/session-005",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 64,
       "degree": 9
     },
     {
-      "id": "entry:project-atlas-relay:04",
+      "id": "entry:project-harbor-lens:06",
       "type": "entry",
-      "label": "Published viewer controls for Atlas Relay",
+      "label": "Mapped viewer controls for Harbor Lens",
       "date": "2026-06-19",
       "status": "logged",
-      "task": "瑙勫垝",
-      "tool": "claude",
-      "machine": "demo-ci-runner-d",
-      "project": "Project Atlas Relay",
-      "session": "demo://project-atlas-relay/session-004",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 75,
-      "degree": 9
-    },
-    {
-      "id": "entry:project-atlas-relay:05",
-      "type": "entry",
-      "label": "Mapped agent session metadata for Atlas Relay",
-      "date": "2026-06-20",
-      "status": "doing",
-      "task": "鍏朵粬",
+      "task": "其他",
       "tool": "cursor",
-      "machine": "demo-workstation-a",
-      "project": "Project Atlas Relay",
-      "session": "demo://project-atlas-relay/session-005",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 63,
-      "degree": 9
-    },
-    {
-      "id": "entry:project-atlas-relay:06",
-      "type": "entry",
-      "label": "Linked encrypted publish path for Atlas Relay",
-      "date": "2026-06-21",
-      "status": "planned",
-      "task": "鏁版嵁",
-      "tool": "human",
-      "machine": "demo-ci-runner-d",
-      "project": "Project Atlas Relay",
-      "session": "demo://project-atlas-relay/session-006",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 93,
+      "machine": "demo-pages-host-e",
+      "project": "Project Harbor Lens",
+      "phase": "03 review",
+      "visibility": "public-safe",
+      "session": "demo://project-harbor-lens/session-006",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 95,
       "degree": 7
     },
     {
-      "id": "fact:project-atlas-relay:01",
+      "id": "fact:project-harbor-lens:01",
       "type": "fact",
-      "label": "Derived memory fact 1 for Atlas Relay",
+      "label": "Derived synthetic fact 1 for Harbor Lens",
+      "date": "2026-06-20",
+      "status": "logged",
+      "task": "调研",
+      "tool": "human",
+      "machine": "demo-pages-host-e",
+      "project": "Project Harbor Lens",
+      "derived": true,
+      "memtype": "session-summary",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "source": "demo://project-harbor-lens/derived-001",
+      "weight": 46,
+      "degree": 5
+    },
+    {
+      "id": "fact:project-harbor-lens:02",
+      "type": "fact",
+      "label": "Derived synthetic fact 2 for Harbor Lens",
       "date": "2026-06-21",
       "status": "logged",
-      "task": "璋冪爺",
+      "task": "调研",
       "tool": "automator",
-      "machine": "demo-ci-runner-d",
-      "project": "Project Atlas Relay",
+      "machine": "demo-laptop-b",
+      "project": "Project Harbor Lens",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
-      "source": "demo://project-atlas-relay/derived-001",
-      "weight": 70,
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "source": "demo://project-harbor-lens/derived-002",
+      "weight": 55,
       "degree": 5
     },
     {
-      "id": "fact:project-atlas-relay:02",
+      "id": "fact:project-harbor-lens:03",
       "type": "fact",
-      "label": "Derived memory fact 2 for Atlas Relay",
+      "label": "Derived synthetic fact 3 for Harbor Lens",
       "date": "2026-06-22",
       "status": "logged",
-      "task": "璋冪爺",
+      "task": "调研",
       "tool": "codex",
-      "machine": "demo-workstation-a",
-      "project": "Project Atlas Relay",
+      "machine": "demo-pages-host-e",
+      "project": "Project Harbor Lens",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
-      "source": "demo://project-atlas-relay/derived-002",
-      "weight": 55,
-      "degree": 5
-    },
-    {
-      "id": "fact:project-atlas-relay:03",
-      "type": "fact",
-      "label": "Derived memory fact 3 for Atlas Relay",
-      "date": "2026-06-23",
-      "status": "logged",
-      "task": "璋冪爺",
-      "tool": "claude",
-      "machine": "demo-ci-runner-d",
-      "project": "Project Atlas Relay",
-      "derived": true,
-      "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
-      "source": "demo://project-atlas-relay/derived-003",
-      "weight": 55,
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "source": "demo://project-harbor-lens/derived-003",
+      "weight": 68,
       "degree": 5
     },
     {
       "id": "entry:project-solstice-bench:01",
       "type": "entry",
-      "label": "Merged synthetic fragments for Solstice Bench",
-      "date": "2026-06-18",
-      "status": "done",
-      "task": "璋冪爺",
-      "tool": "automator",
+      "label": "Validated privacy scan output for Solstice Bench",
+      "date": "2026-06-16",
+      "status": "doing",
+      "task": "部署",
+      "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Solstice Bench",
+      "phase": "04 benchmark",
+      "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-001",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 81,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 96,
       "degree": 11
     },
     {
       "id": "entry:project-solstice-bench:02",
       "type": "entry",
-      "label": "Benchmarked viewer controls for Solstice Bench",
-      "date": "2026-06-19",
-      "status": "logged",
-      "task": "鍚屾",
-      "tool": "codex",
+      "label": "Merged timeline filters for Solstice Bench",
+      "date": "2026-06-17",
+      "status": "planned",
+      "task": "调研",
+      "tool": "automator",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
+      "phase": "04 benchmark",
+      "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-002",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 81,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 58,
       "degree": 7
     },
     {
       "id": "entry:project-solstice-bench:03",
       "type": "entry",
-      "label": "Published agent session metadata for Solstice Bench",
-      "date": "2026-06-20",
-      "status": "doing",
-      "task": "瑙勫垝",
-      "tool": "claude",
+      "label": "Benchmarked synthetic fragments for Solstice Bench",
+      "date": "2026-06-18",
+      "status": "done",
+      "task": "同步",
+      "tool": "codex",
       "machine": "demo-gpu-node-c",
       "project": "Project Solstice Bench",
+      "phase": "04 benchmark",
+      "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-003",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 83,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 67,
       "degree": 9
     },
     {
       "id": "entry:project-solstice-bench:04",
       "type": "entry",
-      "label": "Mapped encrypted publish path for Solstice Bench",
-      "date": "2026-06-21",
-      "status": "planned",
-      "task": "鍏朵粬",
-      "tool": "cursor",
+      "label": "Published viewer controls for Solstice Bench",
+      "date": "2026-06-19",
+      "status": "logged",
+      "task": "规划",
+      "tool": "claude",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
+      "phase": "04 benchmark",
+      "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-004",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 98,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 73,
       "degree": 9
     },
     {
       "id": "entry:project-solstice-bench:05",
       "type": "entry",
-      "label": "Linked multi-machine handoff for Solstice Bench",
-      "date": "2026-06-22",
-      "status": "done",
-      "task": "鏁版嵁",
-      "tool": "human",
+      "label": "Mapped safe session metadata for Solstice Bench",
+      "date": "2026-06-20",
+      "status": "doing",
+      "task": "其他",
+      "tool": "cursor",
       "machine": "demo-gpu-node-c",
       "project": "Project Solstice Bench",
+      "phase": "04 benchmark",
+      "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-005",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 79,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 60,
       "degree": 9
     },
     {
       "id": "entry:project-solstice-bench:06",
       "type": "entry",
-      "label": "Reviewed demo graph labels for Solstice Bench",
-      "date": "2026-06-23",
-      "status": "logged",
-      "task": "璁粌",
-      "tool": "automator",
+      "label": "Linked encrypted publish path for Solstice Bench",
+      "date": "2026-06-21",
+      "status": "planned",
+      "task": "数据",
+      "tool": "human",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
+      "phase": "04 benchmark",
+      "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-006",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 83,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 63,
       "degree": 7
     },
     {
       "id": "fact:project-solstice-bench:01",
       "type": "fact",
-      "label": "Derived memory fact 1 for Solstice Bench",
-      "date": "2026-06-22",
+      "label": "Derived synthetic fact 1 for Solstice Bench",
+      "date": "2026-06-21",
       "status": "logged",
-      "task": "璋冪爺",
-      "tool": "codex",
+      "task": "调研",
+      "tool": "automator",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-solstice-bench/derived-001",
-      "weight": 52,
+      "weight": 57,
       "degree": 5
     },
     {
       "id": "fact:project-solstice-bench:02",
       "type": "fact",
-      "label": "Derived memory fact 2 for Solstice Bench",
-      "date": "2026-06-23",
+      "label": "Derived synthetic fact 2 for Solstice Bench",
+      "date": "2026-06-22",
       "status": "logged",
-      "task": "璋冪爺",
-      "tool": "claude",
+      "task": "调研",
+      "tool": "codex",
       "machine": "demo-gpu-node-c",
       "project": "Project Solstice Bench",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-solstice-bench/derived-002",
-      "weight": 54,
+      "weight": 47,
       "degree": 5
     },
     {
       "id": "fact:project-solstice-bench:03",
       "type": "fact",
-      "label": "Derived memory fact 3 for Solstice Bench",
-      "date": "2026-06-24",
+      "label": "Derived synthetic fact 3 for Solstice Bench",
+      "date": "2026-06-23",
       "status": "logged",
-      "task": "璋冪爺",
-      "tool": "cursor",
+      "task": "调研",
+      "tool": "claude",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-solstice-bench/derived-003",
-      "weight": 46,
+      "weight": 54,
       "degree": 5
     },
     {
       "id": "entry:project-prism-cache:01",
       "type": "entry",
-      "label": "Benchmarked agent session metadata for Prism Cache",
-      "date": "2026-06-20",
-      "status": "doing",
-      "task": "鍚屾",
-      "tool": "codex",
-      "machine": "demo-mac-studio-e",
+      "label": "Merged synthetic fragments for Prism Cache",
+      "date": "2026-06-18",
+      "status": "done",
+      "task": "调研",
+      "tool": "automator",
+      "machine": "demo-pages-host-e",
       "project": "Project Prism Cache",
+      "phase": "05 distill",
+      "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-001",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 99,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 73,
       "degree": 11
     },
     {
       "id": "entry:project-prism-cache:02",
       "type": "entry",
-      "label": "Published encrypted publish path for Prism Cache",
-      "date": "2026-06-21",
-      "status": "planned",
-      "task": "瑙勫垝",
-      "tool": "claude",
+      "label": "Benchmarked viewer controls for Prism Cache",
+      "date": "2026-06-19",
+      "status": "logged",
+      "task": "同步",
+      "tool": "codex",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
+      "phase": "05 distill",
+      "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-002",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 74,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 100,
       "degree": 7
     },
     {
       "id": "entry:project-prism-cache:03",
       "type": "entry",
-      "label": "Mapped multi-machine handoff for Prism Cache",
-      "date": "2026-06-22",
-      "status": "done",
-      "task": "鍏朵粬",
-      "tool": "cursor",
-      "machine": "demo-mac-studio-e",
+      "label": "Published safe session metadata for Prism Cache",
+      "date": "2026-06-20",
+      "status": "doing",
+      "task": "规划",
+      "tool": "claude",
+      "machine": "demo-pages-host-e",
       "project": "Project Prism Cache",
+      "phase": "05 distill",
+      "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-003",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 60,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 83,
       "degree": 9
     },
     {
       "id": "entry:project-prism-cache:04",
       "type": "entry",
-      "label": "Linked demo graph labels for Prism Cache",
-      "date": "2026-06-23",
-      "status": "logged",
-      "task": "鏁版嵁",
-      "tool": "human",
+      "label": "Mapped encrypted publish path for Prism Cache",
+      "date": "2026-06-21",
+      "status": "planned",
+      "task": "其他",
+      "tool": "cursor",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
+      "phase": "05 distill",
+      "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-004",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 89,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 71,
       "degree": 9
     },
     {
       "id": "entry:project-prism-cache:05",
       "type": "entry",
-      "label": "Reviewed privacy scan output for Prism Cache",
-      "date": "2026-06-24",
-      "status": "doing",
-      "task": "璁粌",
-      "tool": "automator",
-      "machine": "demo-mac-studio-e",
+      "label": "Linked multi-server handoff for Prism Cache",
+      "date": "2026-06-22",
+      "status": "done",
+      "task": "数据",
+      "tool": "human",
+      "machine": "demo-pages-host-e",
       "project": "Project Prism Cache",
+      "phase": "05 distill",
+      "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-005",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 77,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 81,
       "degree": 9
     },
     {
       "id": "entry:project-prism-cache:06",
       "type": "entry",
-      "label": "Distilled timeline filters for Prism Cache",
-      "date": "2026-06-25",
-      "status": "planned",
-      "task": "璇勬祴",
-      "tool": "codex",
+      "label": "Reviewed demo graph labels for Prism Cache",
+      "date": "2026-06-23",
+      "status": "logged",
+      "task": "训练",
+      "tool": "automator",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
+      "phase": "05 distill",
+      "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-006",
-      "excerpt": "Synthetic entry: captures a safe work-memory summary with fictional machines, artifacts, and project names only.",
-      "weight": 64,
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 95,
       "degree": 7
     },
     {
       "id": "fact:project-prism-cache:01",
       "type": "fact",
-      "label": "Derived memory fact 1 for Prism Cache",
-      "date": "2026-06-23",
+      "label": "Derived synthetic fact 1 for Prism Cache",
+      "date": "2026-06-22",
       "status": "logged",
-      "task": "璋冪爺",
-      "tool": "claude",
+      "task": "调研",
+      "tool": "codex",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-prism-cache/derived-001",
-      "weight": 50,
+      "weight": 71,
       "degree": 5
     },
     {
       "id": "fact:project-prism-cache:02",
       "type": "fact",
-      "label": "Derived memory fact 2 for Prism Cache",
-      "date": "2026-06-24",
+      "label": "Derived synthetic fact 2 for Prism Cache",
+      "date": "2026-06-23",
       "status": "logged",
-      "task": "璋冪爺",
-      "tool": "cursor",
-      "machine": "demo-mac-studio-e",
+      "task": "调研",
+      "tool": "claude",
+      "machine": "demo-pages-host-e",
       "project": "Project Prism Cache",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-prism-cache/derived-002",
-      "weight": 46,
+      "weight": 48,
       "degree": 5
     },
     {
       "id": "fact:project-prism-cache:03",
       "type": "fact",
-      "label": "Derived memory fact 3 for Prism Cache",
-      "date": "2026-06-25",
+      "label": "Derived synthetic fact 3 for Prism Cache",
+      "date": "2026-06-24",
       "status": "logged",
-      "task": "璋冪爺",
-      "tool": "human",
+      "task": "调研",
+      "tool": "cursor",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
       "derived": true,
       "memtype": "session-summary",
-      "excerpt": "Derived from synthetic session metadata. No raw conversation, personal path, hostname, server address, or private project appears here.",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
       "source": "demo://project-prism-cache/derived-003",
+      "weight": 53,
+      "degree": 5
+    },
+    {
+      "id": "entry:project-atlas-relay:01",
+      "type": "entry",
+      "label": "Benchmarked safe session metadata for Atlas Relay",
+      "date": "2026-06-20",
+      "status": "doing",
+      "task": "同步",
+      "tool": "codex",
+      "machine": "demo-ci-runner-d",
+      "project": "Project Atlas Relay",
+      "phase": "06 publish",
+      "visibility": "public-boundary",
+      "session": "demo://project-atlas-relay/session-001",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 68,
+      "degree": 11
+    },
+    {
+      "id": "entry:project-atlas-relay:02",
+      "type": "entry",
+      "label": "Published encrypted publish path for Atlas Relay",
+      "date": "2026-06-21",
+      "status": "planned",
+      "task": "规划",
+      "tool": "claude",
+      "machine": "demo-pages-host-e",
+      "project": "Project Atlas Relay",
+      "phase": "06 publish",
+      "visibility": "public-boundary",
+      "session": "demo://project-atlas-relay/session-002",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
       "weight": 70,
+      "degree": 7
+    },
+    {
+      "id": "entry:project-atlas-relay:03",
+      "type": "entry",
+      "label": "Mapped multi-server handoff for Atlas Relay",
+      "date": "2026-06-22",
+      "status": "done",
+      "task": "其他",
+      "tool": "cursor",
+      "machine": "demo-ci-runner-d",
+      "project": "Project Atlas Relay",
+      "phase": "06 publish",
+      "visibility": "public-boundary",
+      "session": "demo://project-atlas-relay/session-003",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 64,
+      "degree": 9
+    },
+    {
+      "id": "entry:project-atlas-relay:04",
+      "type": "entry",
+      "label": "Linked demo graph labels for Atlas Relay",
+      "date": "2026-06-23",
+      "status": "logged",
+      "task": "数据",
+      "tool": "human",
+      "machine": "demo-pages-host-e",
+      "project": "Project Atlas Relay",
+      "phase": "06 publish",
+      "visibility": "public-boundary",
+      "session": "demo://project-atlas-relay/session-004",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 73,
+      "degree": 9
+    },
+    {
+      "id": "entry:project-atlas-relay:05",
+      "type": "entry",
+      "label": "Reviewed privacy scan output for Atlas Relay",
+      "date": "2026-06-24",
+      "status": "doing",
+      "task": "训练",
+      "tool": "automator",
+      "machine": "demo-ci-runner-d",
+      "project": "Project Atlas Relay",
+      "phase": "06 publish",
+      "visibility": "public-boundary",
+      "session": "demo://project-atlas-relay/session-005",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 61,
+      "degree": 9
+    },
+    {
+      "id": "entry:project-atlas-relay:06",
+      "type": "entry",
+      "label": "Distilled timeline filters for Atlas Relay",
+      "date": "2026-06-25",
+      "status": "planned",
+      "task": "评测",
+      "tool": "codex",
+      "machine": "demo-pages-host-e",
+      "project": "Project Atlas Relay",
+      "phase": "06 publish",
+      "visibility": "public-boundary",
+      "session": "demo://project-atlas-relay/session-006",
+      "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "weight": 61,
+      "degree": 7
+    },
+    {
+      "id": "fact:project-atlas-relay:01",
+      "type": "fact",
+      "label": "Derived synthetic fact 1 for Atlas Relay",
+      "date": "2026-06-23",
+      "status": "logged",
+      "task": "调研",
+      "tool": "claude",
+      "machine": "demo-pages-host-e",
+      "project": "Project Atlas Relay",
+      "derived": true,
+      "memtype": "session-summary",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "source": "demo://project-atlas-relay/derived-001",
+      "weight": 71,
+      "degree": 5
+    },
+    {
+      "id": "fact:project-atlas-relay:02",
+      "type": "fact",
+      "label": "Derived synthetic fact 2 for Atlas Relay",
+      "date": "2026-06-24",
+      "status": "logged",
+      "task": "调研",
+      "tool": "cursor",
+      "machine": "demo-ci-runner-d",
+      "project": "Project Atlas Relay",
+      "derived": true,
+      "memtype": "session-summary",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "source": "demo://project-atlas-relay/derived-002",
+      "weight": 47,
+      "degree": 5
+    },
+    {
+      "id": "fact:project-atlas-relay:03",
+      "type": "fact",
+      "label": "Derived synthetic fact 3 for Atlas Relay",
+      "date": "2026-06-25",
+      "status": "logged",
+      "task": "调研",
+      "tool": "human",
+      "machine": "demo-pages-host-e",
+      "project": "Project Atlas Relay",
+      "derived": true,
+      "memtype": "session-summary",
+      "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "source": "demo://project-atlas-relay/derived-003",
+      "weight": 64,
       "degree": 5
     },
     {
@@ -1409,38 +1642,41 @@
       "project": "Project Aurora Loom",
       "project_canonical": "project-aurora-loom",
       "status": "working",
-      "current": "reviewing the synthetic demo graph wiring",
-      "heartbeat": "2026-07-03T11:20:10Z",
+      "current": "wiring project inheritance edges into the demo graph",
+      "heartbeat": "2026-07-06T00:00:00Z",
+      "demo_live": true,
       "tool": "codex",
       "weight": 96,
       "degree": 4
     },
     {
-      "id": "liveagent:demo-gpu-node-c:claude",
+      "id": "liveagent:demo-ci-runner-d:claude",
       "type": "liveagent",
-      "label": "claude@demo-gpu-node-c",
+      "label": "claude@demo-ci-runner-d",
       "agent": "claude",
-      "machine": "demo-gpu-node-c",
-      "project": "Project Meridian Sync",
-      "project_canonical": "project-meridian-sync",
+      "machine": "demo-ci-runner-d",
+      "project": "Project Atlas Relay",
+      "project_canonical": "project-atlas-relay",
       "status": "working",
-      "current": "drafting a privacy checklist for encrypted publishing",
-      "heartbeat": "2026-07-03T11:20:10Z",
+      "current": "checking encrypted Pages boundary language",
+      "heartbeat": "2026-07-06T00:00:00Z",
+      "demo_live": true,
       "tool": "claude",
       "weight": 96,
       "degree": 5
     },
     {
-      "id": "liveagent:demo-mac-studio-e:cursor",
+      "id": "liveagent:demo-pages-host-e:cursor",
       "type": "liveagent",
-      "label": "cursor@demo-mac-studio-e",
+      "label": "cursor@demo-pages-host-e",
       "agent": "cursor",
-      "machine": "demo-mac-studio-e",
-      "project": "Project Prism Cache",
-      "project_canonical": "project-prism-cache",
+      "machine": "demo-pages-host-e",
+      "project": "Project Harbor Lens",
+      "project_canonical": "project-harbor-lens",
       "status": "working",
-      "current": "inspecting the landing-page preview modal",
-      "heartbeat": "2026-07-03T11:20:10Z",
+      "current": "reviewing the public landing preview",
+      "heartbeat": "2026-07-06T00:00:00Z",
+      "demo_live": true,
       "tool": "cursor",
       "weight": 96,
       "degree": 5
@@ -1451,12 +1687,29 @@
       "label": "automator@demo-ci-runner-d",
       "agent": "automator",
       "machine": "demo-ci-runner-d",
-      "project": "Project Atlas Relay",
-      "project_canonical": "project-atlas-relay",
+      "project": "Project Meridian Sync",
+      "project_canonical": "project-meridian-sync",
       "status": "working",
-      "current": "checking public artifact boundaries",
-      "heartbeat": "2026-07-03T11:20:10Z",
+      "current": "running synthetic graph integrity checks",
+      "heartbeat": "2026-07-06T00:00:00Z",
+      "demo_live": true,
       "tool": "automator",
+      "weight": 96,
+      "degree": 5
+    },
+    {
+      "id": "liveagent:demo-laptop-b:human",
+      "type": "liveagent",
+      "label": "human@demo-laptop-b",
+      "agent": "human",
+      "machine": "demo-laptop-b",
+      "project": "Project Solstice Bench",
+      "project_canonical": "project-solstice-bench",
+      "status": "working",
+      "current": "approving the release story",
+      "heartbeat": "2026-07-06T00:00:00Z",
+      "demo_live": true,
+      "tool": "human",
       "weight": 96,
       "degree": 4
     }
@@ -1473,16 +1726,6 @@
       "type": "on"
     },
     {
-      "source": "project:project-harbor-lens",
-      "target": "machine:demo-laptop-b",
-      "type": "on"
-    },
-    {
-      "source": "project:project-harbor-lens",
-      "target": "machine:demo-mac-studio-e",
-      "type": "on"
-    },
-    {
       "source": "project:project-meridian-sync",
       "target": "machine:demo-gpu-node-c",
       "type": "on"
@@ -1493,13 +1736,13 @@
       "type": "on"
     },
     {
-      "source": "project:project-atlas-relay",
-      "target": "machine:demo-workstation-a",
+      "source": "project:project-harbor-lens",
+      "target": "machine:demo-laptop-b",
       "type": "on"
     },
     {
-      "source": "project:project-atlas-relay",
-      "target": "machine:demo-ci-runner-d",
+      "source": "project:project-harbor-lens",
+      "target": "machine:demo-pages-host-e",
       "type": "on"
     },
     {
@@ -1514,13 +1757,188 @@
     },
     {
       "source": "project:project-prism-cache",
-      "target": "machine:demo-mac-studio-e",
+      "target": "machine:demo-pages-host-e",
       "type": "on"
     },
     {
       "source": "project:project-prism-cache",
       "target": "machine:demo-workstation-a",
       "type": "on"
+    },
+    {
+      "source": "project:project-atlas-relay",
+      "target": "machine:demo-ci-runner-d",
+      "type": "on"
+    },
+    {
+      "source": "project:project-atlas-relay",
+      "target": "machine:demo-pages-host-e",
+      "type": "on"
+    },
+    {
+      "source": "project:project-meridian-sync",
+      "target": "project:project-aurora-loom",
+      "type": "inherits_from"
+    },
+    {
+      "source": "project:project-harbor-lens",
+      "target": "project:project-meridian-sync",
+      "type": "depends_on"
+    },
+    {
+      "source": "project:project-solstice-bench",
+      "target": "project:project-harbor-lens",
+      "type": "inherits_from"
+    },
+    {
+      "source": "project:project-prism-cache",
+      "target": "project:project-meridian-sync",
+      "type": "depends_on"
+    },
+    {
+      "source": "project:project-atlas-relay",
+      "target": "project:project-prism-cache",
+      "type": "depends_on"
+    },
+    {
+      "source": "project:project-atlas-relay",
+      "target": "project:project-aurora-loom",
+      "type": "exports_to"
+    },
+    {
+      "source": "project:project-harbor-lens",
+      "target": "project:project-atlas-relay",
+      "type": "references"
+    },
+    {
+      "source": "project:project-solstice-bench",
+      "target": "project:project-meridian-sync",
+      "type": "references"
+    },
+    {
+      "source": "server:demo-capture-server",
+      "target": "server:demo-merge-runner",
+      "type": "replicates_to"
+    },
+    {
+      "source": "server:demo-merge-runner",
+      "target": "server:demo-ci-validator",
+      "type": "validates"
+    },
+    {
+      "source": "server:demo-ci-validator",
+      "target": "server:demo-vault",
+      "type": "keeps_private"
+    },
+    {
+      "source": "server:demo-vault",
+      "target": "server:demo-pages-edge",
+      "type": "publishes_to"
+    },
+    {
+      "source": "server:demo-pages-edge",
+      "target": "project:project-atlas-relay",
+      "type": "serves"
+    },
+    {
+      "source": "boundary:private-memory-hub",
+      "target": "artifact:local-plaintext-graph",
+      "type": "keeps_private"
+    },
+    {
+      "source": "boundary:private-memory-hub",
+      "target": "artifact:standalone-local-viewer",
+      "type": "keeps_private"
+    },
+    {
+      "source": "artifact:local-plaintext-graph",
+      "target": "method:privacy-redaction-pass",
+      "type": "redacts"
+    },
+    {
+      "source": "method:privacy-redaction-pass",
+      "target": "artifact:privacy-redaction-report",
+      "type": "exports_to"
+    },
+    {
+      "source": "artifact:privacy-redaction-report",
+      "target": "server:demo-ci-validator",
+      "type": "validates"
+    },
+    {
+      "source": "method:client-side-decrypt",
+      "target": "artifact:encrypted-pages-graph",
+      "type": "encrypts"
+    },
+    {
+      "source": "artifact:encrypted-pages-graph",
+      "target": "boundary:encrypted-viewer-zone",
+      "type": "publishes"
+    },
+    {
+      "source": "artifact:public-synthetic-demo-graph",
+      "target": "boundary:synthetic-demo-zone",
+      "type": "publishes"
+    },
+    {
+      "source": "boundary:public-framework",
+      "target": "artifact:plugin-marketplace-package",
+      "type": "exports_to"
+    },
+    {
+      "source": "boundary:public-framework",
+      "target": "artifact:public-synthetic-demo-graph",
+      "type": "exposes"
+    },
+    {
+      "source": "dataset:syntheticcity-rgbd-1k",
+      "target": "server:demo-capture-server",
+      "type": "shared_on"
+    },
+    {
+      "source": "dataset:toyfleet-mcap-v0",
+      "target": "server:demo-merge-runner",
+      "type": "shared_on"
+    },
+    {
+      "source": "model:demo-vlm-small-v0",
+      "target": "machine:demo-gpu-node-c",
+      "type": "cached_on"
+    },
+    {
+      "source": "model:meridian-merge-probe",
+      "target": "server:demo-merge-runner",
+      "type": "cached_on"
+    },
+    {
+      "source": "file:fragment-merge-tests-py",
+      "target": "server:demo-ci-validator",
+      "type": "validates"
+    },
+    {
+      "source": "tech:github-pages",
+      "target": "server:demo-pages-edge",
+      "type": "serves"
+    },
+    {
+      "source": "tech:aes-gcm",
+      "target": "artifact:encrypted-pages-graph",
+      "type": "encrypts"
+    },
+    {
+      "source": "tech:pbkdf2",
+      "target": "artifact:encrypted-pages-graph",
+      "type": "encrypts"
+    },
+    {
+      "source": "tech:claude-code-plugin",
+      "target": "artifact:plugin-marketplace-package",
+      "type": "exports_to"
+    },
+    {
+      "source": "tech:codex-skill",
+      "target": "artifact:plugin-marketplace-package",
+      "type": "exports_to"
     },
     {
       "source": "entry:project-aurora-loom:01",
@@ -1544,7 +1962,7 @@
     },
     {
       "source": "entry:project-aurora-loom:01",
-      "target": "file:train-pipeline-py",
+      "target": "file:collector-config-example-json",
       "type": "touches"
     },
     {
@@ -1574,7 +1992,7 @@
     },
     {
       "source": "entry:project-aurora-loom:01",
-      "target": "server:demo-server-a",
+      "target": "server:demo-capture-server",
       "type": "on"
     },
     {
@@ -1629,7 +2047,7 @@
     },
     {
       "source": "entry:project-aurora-loom:03",
-      "target": "dataset:syntheticcity-rgbd-1k",
+      "target": "dataset:openkitchen-sim-240",
       "type": "uses"
     },
     {
@@ -1639,22 +2057,22 @@
     },
     {
       "source": "entry:project-aurora-loom:03",
-      "target": "tech:canvas-3d",
+      "target": "tech:pbkdf2",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:03",
-      "target": "method:shared-entity-linking",
+      "target": "method:client-side-decrypt",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:03",
-      "target": "model:demo-vlm-small-v0",
+      "target": "model:harbor-reranker-v2",
       "type": "trains"
     },
     {
       "source": "entry:project-aurora-loom:03",
-      "target": "wandb:demo-run-aurora-001",
+      "target": "wandb:demo-run-meridian-009",
       "type": "tracks"
     },
     {
@@ -1674,32 +2092,32 @@
     },
     {
       "source": "entry:project-aurora-loom:04",
-      "target": "dataset:toyfleet-mcap-v0",
+      "target": "dataset:riverwalk-mocklogs",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:04",
-      "target": "file:train-pipeline-py",
+      "target": "file:viewer-embed-html",
       "type": "touches"
     },
     {
       "source": "entry:project-aurora-loom:04",
-      "target": "tech:aes-gcm",
+      "target": "tech:git",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:04",
-      "target": "method:derived-gap-filling",
+      "target": "method:live-presence-pulse",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:04",
-      "target": "notion:weekly-progress",
+      "target": "notion:deployment-runbook",
       "type": "syncs"
     },
     {
       "source": "entry:project-aurora-loom:04",
-      "target": "server:demo-server-a",
+      "target": "server:demo-vault",
       "type": "on"
     },
     {
@@ -1719,32 +2137,32 @@
     },
     {
       "source": "entry:project-aurora-loom:05",
-      "target": "dataset:syntheticcity-rgbd-1k",
+      "target": "dataset:labbench-events-128",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:05",
-      "target": "file:dataset-manifest-json",
+      "target": "file:graph-loader-py",
       "type": "touches"
     },
     {
       "source": "entry:project-aurora-loom:05",
-      "target": "tech:canvas-3d",
+      "target": "tech:github-pages",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:05",
-      "target": "method:shared-entity-linking",
+      "target": "method:timeline-filtering",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:05",
-      "target": "model:demo-vlm-small-v0",
+      "target": "model:solstice-eval-head",
       "type": "trains"
     },
     {
       "source": "entry:project-aurora-loom:05",
-      "target": "wandb:demo-run-aurora-001",
+      "target": "wandb:demo-run-solstice-031",
       "type": "tracks"
     },
     {
@@ -1764,22 +2182,22 @@
     },
     {
       "source": "entry:project-aurora-loom:06",
-      "target": "dataset:toyfleet-mcap-v0",
+      "target": "dataset:minidepot-trajectories",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:06",
-      "target": "file:eval-report-ipynb",
+      "target": "file:privacy-checklist-md",
       "type": "touches"
     },
     {
       "source": "entry:project-aurora-loom:06",
-      "target": "tech:aes-gcm",
+      "target": "tech:claude-code-plugin",
       "type": "uses"
     },
     {
       "source": "entry:project-aurora-loom:06",
-      "target": "method:derived-gap-filling",
+      "target": "method:synthetic-graph-rehearsal",
       "type": "uses"
     },
     {
@@ -1794,7 +2212,7 @@
     },
     {
       "source": "fact:project-aurora-loom:01",
-      "target": "file:train-pipeline-py",
+      "target": "file:collector-config-example-json",
       "type": "touches"
     },
     {
@@ -1849,347 +2267,12 @@
     },
     {
       "source": "fact:project-aurora-loom:03",
-      "target": "tech:canvas-3d",
+      "target": "tech:pbkdf2",
       "type": "uses"
     },
     {
       "source": "fact:project-aurora-loom:03",
-      "target": "method:shared-entity-linking",
-      "type": "explores"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "project:project-harbor-lens",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "machine:demo-laptop-b",
-      "type": "located"
-    },
-    {
-      "source": "agent:claude",
-      "target": "entry:project-harbor-lens:01",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "dataset:toyfleet-mcap-v0",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "file:eval-report-ipynb",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "tech:aes-gcm",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "method:derived-gap-filling",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "model:aurora-checkpoint-042",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "wandb:demo-run-harbor-014",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "notion:release-notes",
-      "type": "syncs"
-    },
-    {
-      "source": "entry:project-harbor-lens:01",
-      "target": "server:demo-server-b",
-      "type": "on"
-    },
-    {
-      "source": "entry:project-harbor-lens:02",
-      "target": "project:project-harbor-lens",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-harbor-lens:02",
-      "target": "machine:demo-mac-studio-e",
-      "type": "located"
-    },
-    {
-      "source": "agent:cursor",
-      "target": "entry:project-harbor-lens:02",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-harbor-lens:02",
-      "target": "dataset:openkitchen-sim-240",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:02",
-      "target": "file:viewer-embed-html",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-harbor-lens:02",
-      "target": "tech:pbkdf2",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:02",
       "target": "method:client-side-decrypt",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:03",
-      "target": "project:project-harbor-lens",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-harbor-lens:03",
-      "target": "machine:demo-laptop-b",
-      "type": "located"
-    },
-    {
-      "source": "agent:human",
-      "target": "entry:project-harbor-lens:03",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-harbor-lens:03",
-      "target": "dataset:toyfleet-mcap-v0",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:03",
-      "target": "file:graph-loader-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-harbor-lens:03",
-      "target": "tech:aes-gcm",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:03",
-      "target": "method:derived-gap-filling",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:03",
-      "target": "model:aurora-checkpoint-042",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-harbor-lens:03",
-      "target": "wandb:demo-run-harbor-014",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-harbor-lens:04",
-      "target": "project:project-harbor-lens",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-harbor-lens:04",
-      "target": "machine:demo-mac-studio-e",
-      "type": "located"
-    },
-    {
-      "source": "agent:automator",
-      "target": "entry:project-harbor-lens:04",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-harbor-lens:04",
-      "target": "dataset:openkitchen-sim-240",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:04",
-      "target": "file:eval-report-ipynb",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-harbor-lens:04",
-      "target": "tech:pbkdf2",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:04",
-      "target": "method:client-side-decrypt",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:04",
-      "target": "notion:release-notes",
-      "type": "syncs"
-    },
-    {
-      "source": "entry:project-harbor-lens:04",
-      "target": "server:demo-server-b",
-      "type": "on"
-    },
-    {
-      "source": "entry:project-harbor-lens:05",
-      "target": "project:project-harbor-lens",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-harbor-lens:05",
-      "target": "machine:demo-laptop-b",
-      "type": "located"
-    },
-    {
-      "source": "agent:codex",
-      "target": "entry:project-harbor-lens:05",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-harbor-lens:05",
-      "target": "dataset:toyfleet-mcap-v0",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:05",
-      "target": "file:viewer-embed-html",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-harbor-lens:05",
-      "target": "tech:aes-gcm",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:05",
-      "target": "method:derived-gap-filling",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:05",
-      "target": "model:aurora-checkpoint-042",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-harbor-lens:05",
-      "target": "wandb:demo-run-harbor-014",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-harbor-lens:06",
-      "target": "project:project-harbor-lens",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-harbor-lens:06",
-      "target": "machine:demo-mac-studio-e",
-      "type": "located"
-    },
-    {
-      "source": "agent:claude",
-      "target": "entry:project-harbor-lens:06",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-harbor-lens:06",
-      "target": "dataset:openkitchen-sim-240",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:06",
-      "target": "file:graph-loader-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-harbor-lens:06",
-      "target": "tech:pbkdf2",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-harbor-lens:06",
-      "target": "method:client-side-decrypt",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-harbor-lens:01",
-      "target": "project:project-harbor-lens",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-harbor-lens:01",
-      "target": "machine:demo-mac-studio-e",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-harbor-lens:01",
-      "target": "file:eval-report-ipynb",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-harbor-lens:01",
-      "target": "tech:aes-gcm",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-harbor-lens:01",
-      "target": "method:derived-gap-filling",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-harbor-lens:02",
-      "target": "project:project-harbor-lens",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-harbor-lens:02",
-      "target": "machine:demo-laptop-b",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-harbor-lens:02",
-      "target": "file:viewer-embed-html",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-harbor-lens:02",
-      "target": "tech:pbkdf2",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-harbor-lens:02",
-      "target": "method:client-side-decrypt",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-harbor-lens:03",
-      "target": "project:project-harbor-lens",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-harbor-lens:03",
-      "target": "machine:demo-mac-studio-e",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-harbor-lens:03",
-      "target": "file:graph-loader-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-harbor-lens:03",
-      "target": "tech:aes-gcm",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-harbor-lens:03",
-      "target": "method:derived-gap-filling",
       "type": "explores"
     },
     {
@@ -2203,48 +2286,48 @@
       "type": "located"
     },
     {
-      "source": "agent:cursor",
+      "source": "agent:claude",
       "target": "entry:project-meridian-sync:01",
       "type": "did"
     },
     {
       "source": "entry:project-meridian-sync:01",
-      "target": "dataset:openkitchen-sim-240",
+      "target": "dataset:toyfleet-mcap-v0",
       "type": "uses"
     },
     {
       "source": "entry:project-meridian-sync:01",
-      "target": "file:graph-loader-py",
+      "target": "file:eval-report-ipynb",
       "type": "touches"
     },
     {
       "source": "entry:project-meridian-sync:01",
-      "target": "tech:pbkdf2",
+      "target": "tech:aes-gcm",
       "type": "uses"
     },
     {
       "source": "entry:project-meridian-sync:01",
-      "target": "method:client-side-decrypt",
+      "target": "method:derived-gap-filling",
       "type": "uses"
     },
     {
       "source": "entry:project-meridian-sync:01",
-      "target": "model:harbor-reranker-v2",
+      "target": "model:aurora-checkpoint-042",
       "type": "trains"
     },
     {
       "source": "entry:project-meridian-sync:01",
-      "target": "wandb:demo-run-meridian-009",
+      "target": "wandb:demo-run-harbor-014",
       "type": "tracks"
     },
     {
       "source": "entry:project-meridian-sync:01",
-      "target": "notion:experiment-ledger",
+      "target": "notion:release-notes",
       "type": "syncs"
     },
     {
       "source": "entry:project-meridian-sync:01",
-      "target": "server:demo-runner-c",
+      "target": "server:demo-merge-runner",
       "type": "on"
     },
     {
@@ -2258,28 +2341,28 @@
       "type": "located"
     },
     {
-      "source": "agent:human",
+      "source": "agent:cursor",
       "target": "entry:project-meridian-sync:02",
       "type": "did"
     },
     {
       "source": "entry:project-meridian-sync:02",
-      "target": "dataset:riverwalk-mocklogs",
+      "target": "dataset:openkitchen-sim-240",
       "type": "uses"
     },
     {
       "source": "entry:project-meridian-sync:02",
-      "target": "file:privacy-checklist-md",
+      "target": "file:viewer-embed-html",
       "type": "touches"
     },
     {
       "source": "entry:project-meridian-sync:02",
-      "target": "tech:sqlite",
+      "target": "tech:pbkdf2",
       "type": "uses"
     },
     {
       "source": "entry:project-meridian-sync:02",
-      "target": "method:live-presence-pulse",
+      "target": "method:client-side-decrypt",
       "type": "uses"
     },
     {
@@ -2293,328 +2376,1333 @@
       "type": "located"
     },
     {
-      "source": "agent:automator",
+      "source": "agent:human",
       "target": "entry:project-meridian-sync:03",
       "type": "did"
     },
     {
       "source": "entry:project-meridian-sync:03",
-      "target": "dataset:openkitchen-sim-240",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-meridian-sync:03",
-      "target": "file:fragment-merge-tests-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-meridian-sync:03",
-      "target": "tech:pbkdf2",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-meridian-sync:03",
-      "target": "method:client-side-decrypt",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-meridian-sync:03",
-      "target": "model:harbor-reranker-v2",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-meridian-sync:03",
-      "target": "wandb:demo-run-meridian-009",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-meridian-sync:04",
-      "target": "project:project-meridian-sync",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-meridian-sync:04",
-      "target": "machine:demo-ci-runner-d",
-      "type": "located"
-    },
-    {
-      "source": "agent:codex",
-      "target": "entry:project-meridian-sync:04",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-meridian-sync:04",
       "target": "dataset:riverwalk-mocklogs",
       "type": "uses"
     },
     {
-      "source": "entry:project-meridian-sync:04",
+      "source": "entry:project-meridian-sync:03",
       "target": "file:graph-loader-py",
       "type": "touches"
     },
     {
-      "source": "entry:project-meridian-sync:04",
-      "target": "tech:sqlite",
+      "source": "entry:project-meridian-sync:03",
+      "target": "tech:git",
       "type": "uses"
     },
     {
-      "source": "entry:project-meridian-sync:04",
+      "source": "entry:project-meridian-sync:03",
       "target": "method:live-presence-pulse",
       "type": "uses"
     },
     {
-      "source": "entry:project-meridian-sync:04",
-      "target": "notion:experiment-ledger",
-      "type": "syncs"
-    },
-    {
-      "source": "entry:project-meridian-sync:04",
-      "target": "server:demo-runner-c",
-      "type": "on"
-    },
-    {
-      "source": "entry:project-meridian-sync:05",
-      "target": "project:project-meridian-sync",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-meridian-sync:05",
-      "target": "machine:demo-gpu-node-c",
-      "type": "located"
-    },
-    {
-      "source": "agent:claude",
-      "target": "entry:project-meridian-sync:05",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-meridian-sync:05",
-      "target": "dataset:openkitchen-sim-240",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-meridian-sync:05",
-      "target": "file:privacy-checklist-md",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-meridian-sync:05",
-      "target": "tech:pbkdf2",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-meridian-sync:05",
-      "target": "method:client-side-decrypt",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-meridian-sync:05",
-      "target": "model:harbor-reranker-v2",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-meridian-sync:05",
-      "target": "wandb:demo-run-meridian-009",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-meridian-sync:06",
-      "target": "project:project-meridian-sync",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-meridian-sync:06",
-      "target": "machine:demo-ci-runner-d",
-      "type": "located"
-    },
-    {
-      "source": "agent:cursor",
-      "target": "entry:project-meridian-sync:06",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-meridian-sync:06",
-      "target": "dataset:riverwalk-mocklogs",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-meridian-sync:06",
-      "target": "file:fragment-merge-tests-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-meridian-sync:06",
-      "target": "tech:sqlite",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-meridian-sync:06",
-      "target": "method:live-presence-pulse",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-meridian-sync:01",
-      "target": "project:project-meridian-sync",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-meridian-sync:01",
-      "target": "machine:demo-ci-runner-d",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-meridian-sync:01",
-      "target": "file:graph-loader-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-meridian-sync:01",
-      "target": "tech:pbkdf2",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-meridian-sync:01",
-      "target": "method:client-side-decrypt",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-meridian-sync:02",
-      "target": "project:project-meridian-sync",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-meridian-sync:02",
-      "target": "machine:demo-gpu-node-c",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-meridian-sync:02",
-      "target": "file:privacy-checklist-md",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-meridian-sync:02",
-      "target": "tech:sqlite",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-meridian-sync:02",
-      "target": "method:live-presence-pulse",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-meridian-sync:03",
-      "target": "project:project-meridian-sync",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-meridian-sync:03",
-      "target": "machine:demo-ci-runner-d",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-meridian-sync:03",
-      "target": "file:fragment-merge-tests-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-meridian-sync:03",
-      "target": "tech:pbkdf2",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-meridian-sync:03",
-      "target": "method:client-side-decrypt",
-      "type": "explores"
-    },
-    {
-      "source": "entry:project-atlas-relay:01",
-      "target": "project:project-atlas-relay",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-atlas-relay:01",
-      "target": "machine:demo-workstation-a",
-      "type": "located"
-    },
-    {
-      "source": "agent:human",
-      "target": "entry:project-atlas-relay:01",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-atlas-relay:01",
-      "target": "dataset:riverwalk-mocklogs",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-atlas-relay:01",
-      "target": "file:fragment-merge-tests-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-atlas-relay:01",
-      "target": "tech:sqlite",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-atlas-relay:01",
-      "target": "method:live-presence-pulse",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-atlas-relay:01",
+      "source": "entry:project-meridian-sync:03",
       "target": "model:meridian-merge-probe",
       "type": "trains"
     },
     {
-      "source": "entry:project-atlas-relay:01",
+      "source": "entry:project-meridian-sync:03",
       "target": "wandb:demo-run-atlas-022",
       "type": "tracks"
     },
     {
-      "source": "entry:project-atlas-relay:01",
-      "target": "notion:deployment-runbook",
-      "type": "syncs"
-    },
-    {
-      "source": "entry:project-atlas-relay:01",
-      "target": "server:demo-vault-d",
-      "type": "on"
-    },
-    {
-      "source": "entry:project-atlas-relay:02",
-      "target": "project:project-atlas-relay",
+      "source": "entry:project-meridian-sync:04",
+      "target": "project:project-meridian-sync",
       "type": "in"
     },
     {
-      "source": "entry:project-atlas-relay:02",
+      "source": "entry:project-meridian-sync:04",
       "target": "machine:demo-ci-runner-d",
       "type": "located"
     },
     {
       "source": "agent:automator",
+      "target": "entry:project-meridian-sync:04",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-meridian-sync:04",
+      "target": "dataset:labbench-events-128",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-meridian-sync:04",
+      "target": "file:privacy-checklist-md",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-meridian-sync:04",
+      "target": "tech:github-pages",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-meridian-sync:04",
+      "target": "method:timeline-filtering",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-meridian-sync:04",
+      "target": "notion:weekly-progress",
+      "type": "syncs"
+    },
+    {
+      "source": "entry:project-meridian-sync:04",
+      "target": "server:demo-pages-edge",
+      "type": "on"
+    },
+    {
+      "source": "entry:project-meridian-sync:05",
+      "target": "project:project-meridian-sync",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-meridian-sync:05",
+      "target": "machine:demo-gpu-node-c",
+      "type": "located"
+    },
+    {
+      "source": "agent:codex",
+      "target": "entry:project-meridian-sync:05",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-meridian-sync:05",
+      "target": "dataset:minidepot-trajectories",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-meridian-sync:05",
+      "target": "file:fragment-merge-tests-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-meridian-sync:05",
+      "target": "tech:claude-code-plugin",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-meridian-sync:05",
+      "target": "method:synthetic-graph-rehearsal",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-meridian-sync:05",
+      "target": "model:demo-vlm-small-v0",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-meridian-sync:05",
+      "target": "wandb:demo-run-aurora-001",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-meridian-sync:06",
+      "target": "project:project-meridian-sync",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-meridian-sync:06",
+      "target": "machine:demo-ci-runner-d",
+      "type": "located"
+    },
+    {
+      "source": "agent:claude",
+      "target": "entry:project-meridian-sync:06",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-meridian-sync:06",
+      "target": "dataset:syntheticcity-rgbd-1k",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-meridian-sync:06",
+      "target": "file:presence-heartbeat-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-meridian-sync:06",
+      "target": "tech:codex-skill",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-meridian-sync:06",
+      "target": "method:privacy-redaction-pass",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-meridian-sync:01",
+      "target": "project:project-meridian-sync",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-meridian-sync:01",
+      "target": "machine:demo-ci-runner-d",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-meridian-sync:01",
+      "target": "file:dataset-manifest-json",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-meridian-sync:01",
+      "target": "tech:aes-gcm",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-meridian-sync:01",
+      "target": "method:derived-gap-filling",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-meridian-sync:02",
+      "target": "project:project-meridian-sync",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-meridian-sync:02",
+      "target": "machine:demo-gpu-node-c",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-meridian-sync:02",
+      "target": "file:eval-report-ipynb",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-meridian-sync:02",
+      "target": "tech:pbkdf2",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-meridian-sync:02",
+      "target": "method:client-side-decrypt",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-meridian-sync:03",
+      "target": "project:project-meridian-sync",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-meridian-sync:03",
+      "target": "machine:demo-ci-runner-d",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-meridian-sync:03",
+      "target": "file:viewer-embed-html",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-meridian-sync:03",
+      "target": "tech:git",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-meridian-sync:03",
+      "target": "method:live-presence-pulse",
+      "type": "explores"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "project:project-harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "agent:cursor",
+      "target": "entry:project-harbor-lens:01",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "dataset:openkitchen-sim-240",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "file:graph-loader-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "tech:pbkdf2",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "method:client-side-decrypt",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "model:harbor-reranker-v2",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "wandb:demo-run-meridian-009",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "notion:experiment-ledger",
+      "type": "syncs"
+    },
+    {
+      "source": "entry:project-harbor-lens:01",
+      "target": "server:demo-ci-validator",
+      "type": "on"
+    },
+    {
+      "source": "entry:project-harbor-lens:02",
+      "target": "project:project-harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-harbor-lens:02",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "agent:human",
+      "target": "entry:project-harbor-lens:02",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-harbor-lens:02",
+      "target": "dataset:riverwalk-mocklogs",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:02",
+      "target": "file:privacy-checklist-md",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-harbor-lens:02",
+      "target": "tech:git",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:02",
+      "target": "method:live-presence-pulse",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:03",
+      "target": "project:project-harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-harbor-lens:03",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "agent:automator",
+      "target": "entry:project-harbor-lens:03",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-harbor-lens:03",
+      "target": "dataset:labbench-events-128",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:03",
+      "target": "file:fragment-merge-tests-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-harbor-lens:03",
+      "target": "tech:github-pages",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:03",
+      "target": "method:timeline-filtering",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:03",
+      "target": "model:solstice-eval-head",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-harbor-lens:03",
+      "target": "wandb:demo-run-solstice-031",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-harbor-lens:04",
+      "target": "project:project-harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-harbor-lens:04",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "agent:codex",
+      "target": "entry:project-harbor-lens:04",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-harbor-lens:04",
+      "target": "dataset:minidepot-trajectories",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:04",
+      "target": "file:presence-heartbeat-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-harbor-lens:04",
+      "target": "tech:claude-code-plugin",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:04",
+      "target": "method:synthetic-graph-rehearsal",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:04",
+      "target": "notion:release-notes",
+      "type": "syncs"
+    },
+    {
+      "source": "entry:project-harbor-lens:04",
+      "target": "server:demo-capture-server",
+      "type": "on"
+    },
+    {
+      "source": "entry:project-harbor-lens:05",
+      "target": "project:project-harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-harbor-lens:05",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "agent:claude",
+      "target": "entry:project-harbor-lens:05",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-harbor-lens:05",
+      "target": "dataset:syntheticcity-rgbd-1k",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:05",
+      "target": "file:demo-storyboard-md",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-harbor-lens:05",
+      "target": "tech:codex-skill",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:05",
+      "target": "method:privacy-redaction-pass",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:05",
+      "target": "model:aurora-checkpoint-042",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-harbor-lens:05",
+      "target": "wandb:demo-run-harbor-014",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-harbor-lens:06",
+      "target": "project:project-harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-harbor-lens:06",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "agent:cursor",
+      "target": "entry:project-harbor-lens:06",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-harbor-lens:06",
+      "target": "dataset:toyfleet-mcap-v0",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:06",
+      "target": "file:notion-export-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-harbor-lens:06",
+      "target": "tech:graph-json",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-harbor-lens:06",
+      "target": "method:shared-entity-linking",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-harbor-lens:01",
+      "target": "project:project-harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-harbor-lens:01",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-harbor-lens:01",
+      "target": "file:eval-report-ipynb",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-harbor-lens:01",
+      "target": "tech:pbkdf2",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-harbor-lens:01",
+      "target": "method:client-side-decrypt",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-harbor-lens:02",
+      "target": "project:project-harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-harbor-lens:02",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-harbor-lens:02",
+      "target": "file:viewer-embed-html",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-harbor-lens:02",
+      "target": "tech:git",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-harbor-lens:02",
+      "target": "method:live-presence-pulse",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-harbor-lens:03",
+      "target": "project:project-harbor-lens",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-harbor-lens:03",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-harbor-lens:03",
+      "target": "file:graph-loader-py",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-harbor-lens:03",
+      "target": "tech:github-pages",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-harbor-lens:03",
+      "target": "method:timeline-filtering",
+      "type": "explores"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "project:project-solstice-bench",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "machine:demo-gpu-node-c",
+      "type": "located"
+    },
+    {
+      "source": "agent:human",
+      "target": "entry:project-solstice-bench:01",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "dataset:riverwalk-mocklogs",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "file:fragment-merge-tests-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "tech:git",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "method:live-presence-pulse",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "model:meridian-merge-probe",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "wandb:demo-run-atlas-022",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "notion:deployment-runbook",
+      "type": "syncs"
+    },
+    {
+      "source": "entry:project-solstice-bench:01",
+      "target": "server:demo-vault",
+      "type": "on"
+    },
+    {
+      "source": "entry:project-solstice-bench:02",
+      "target": "project:project-solstice-bench",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-solstice-bench:02",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "agent:automator",
+      "target": "entry:project-solstice-bench:02",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-solstice-bench:02",
+      "target": "dataset:labbench-events-128",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:02",
+      "target": "file:presence-heartbeat-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-solstice-bench:02",
+      "target": "tech:github-pages",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:02",
+      "target": "method:timeline-filtering",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:03",
+      "target": "project:project-solstice-bench",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-solstice-bench:03",
+      "target": "machine:demo-gpu-node-c",
+      "type": "located"
+    },
+    {
+      "source": "agent:codex",
+      "target": "entry:project-solstice-bench:03",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-solstice-bench:03",
+      "target": "dataset:minidepot-trajectories",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:03",
+      "target": "file:demo-storyboard-md",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-solstice-bench:03",
+      "target": "tech:claude-code-plugin",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:03",
+      "target": "method:synthetic-graph-rehearsal",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:03",
+      "target": "model:demo-vlm-small-v0",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-solstice-bench:03",
+      "target": "wandb:demo-run-aurora-001",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-solstice-bench:04",
+      "target": "project:project-solstice-bench",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-solstice-bench:04",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "agent:claude",
+      "target": "entry:project-solstice-bench:04",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-solstice-bench:04",
+      "target": "dataset:syntheticcity-rgbd-1k",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:04",
+      "target": "file:notion-export-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-solstice-bench:04",
+      "target": "tech:codex-skill",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:04",
+      "target": "method:privacy-redaction-pass",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:04",
+      "target": "notion:experiment-ledger",
+      "type": "syncs"
+    },
+    {
+      "source": "entry:project-solstice-bench:04",
+      "target": "server:demo-merge-runner",
+      "type": "on"
+    },
+    {
+      "source": "entry:project-solstice-bench:05",
+      "target": "project:project-solstice-bench",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-solstice-bench:05",
+      "target": "machine:demo-gpu-node-c",
+      "type": "located"
+    },
+    {
+      "source": "agent:cursor",
+      "target": "entry:project-solstice-bench:05",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-solstice-bench:05",
+      "target": "dataset:toyfleet-mcap-v0",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:05",
+      "target": "file:encrypt-publish-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-solstice-bench:05",
+      "target": "tech:graph-json",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:05",
+      "target": "method:shared-entity-linking",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:05",
+      "target": "model:harbor-reranker-v2",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-solstice-bench:05",
+      "target": "wandb:demo-run-meridian-009",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-solstice-bench:06",
+      "target": "project:project-solstice-bench",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-solstice-bench:06",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "agent:human",
+      "target": "entry:project-solstice-bench:06",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-solstice-bench:06",
+      "target": "dataset:openkitchen-sim-240",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:06",
+      "target": "file:session-distiller-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-solstice-bench:06",
+      "target": "tech:canvas-3d",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-solstice-bench:06",
+      "target": "method:derived-gap-filling",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-solstice-bench:01",
+      "target": "project:project-solstice-bench",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-solstice-bench:01",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-solstice-bench:01",
+      "target": "file:viewer-embed-html",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-solstice-bench:01",
+      "target": "tech:git",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-solstice-bench:01",
+      "target": "method:live-presence-pulse",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-solstice-bench:02",
+      "target": "project:project-solstice-bench",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-solstice-bench:02",
+      "target": "machine:demo-gpu-node-c",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-solstice-bench:02",
+      "target": "file:graph-loader-py",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-solstice-bench:02",
+      "target": "tech:github-pages",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-solstice-bench:02",
+      "target": "method:timeline-filtering",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-solstice-bench:03",
+      "target": "project:project-solstice-bench",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-solstice-bench:03",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-solstice-bench:03",
+      "target": "file:privacy-checklist-md",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-solstice-bench:03",
+      "target": "tech:claude-code-plugin",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-solstice-bench:03",
+      "target": "method:synthetic-graph-rehearsal",
+      "type": "explores"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "project:project-prism-cache",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "agent:automator",
+      "target": "entry:project-prism-cache:01",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "dataset:labbench-events-128",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "file:demo-storyboard-md",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "tech:github-pages",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "method:timeline-filtering",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "model:solstice-eval-head",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "wandb:demo-run-solstice-031",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "notion:weekly-progress",
+      "type": "syncs"
+    },
+    {
+      "source": "entry:project-prism-cache:01",
+      "target": "server:demo-pages-edge",
+      "type": "on"
+    },
+    {
+      "source": "entry:project-prism-cache:02",
+      "target": "project:project-prism-cache",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-prism-cache:02",
+      "target": "machine:demo-workstation-a",
+      "type": "located"
+    },
+    {
+      "source": "agent:codex",
+      "target": "entry:project-prism-cache:02",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-prism-cache:02",
+      "target": "dataset:minidepot-trajectories",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:02",
+      "target": "file:notion-export-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-prism-cache:02",
+      "target": "tech:claude-code-plugin",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:02",
+      "target": "method:synthetic-graph-rehearsal",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:03",
+      "target": "project:project-prism-cache",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-prism-cache:03",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "agent:claude",
+      "target": "entry:project-prism-cache:03",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-prism-cache:03",
+      "target": "dataset:syntheticcity-rgbd-1k",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:03",
+      "target": "file:encrypt-publish-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-prism-cache:03",
+      "target": "tech:codex-skill",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:03",
+      "target": "method:privacy-redaction-pass",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:03",
+      "target": "model:aurora-checkpoint-042",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-prism-cache:03",
+      "target": "wandb:demo-run-harbor-014",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-prism-cache:04",
+      "target": "project:project-prism-cache",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-prism-cache:04",
+      "target": "machine:demo-workstation-a",
+      "type": "located"
+    },
+    {
+      "source": "agent:cursor",
+      "target": "entry:project-prism-cache:04",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-prism-cache:04",
+      "target": "dataset:toyfleet-mcap-v0",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:04",
+      "target": "file:session-distiller-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-prism-cache:04",
+      "target": "tech:graph-json",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:04",
+      "target": "method:shared-entity-linking",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:04",
+      "target": "notion:deployment-runbook",
+      "type": "syncs"
+    },
+    {
+      "source": "entry:project-prism-cache:04",
+      "target": "server:demo-ci-validator",
+      "type": "on"
+    },
+    {
+      "source": "entry:project-prism-cache:05",
+      "target": "project:project-prism-cache",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-prism-cache:05",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "agent:human",
+      "target": "entry:project-prism-cache:05",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-prism-cache:05",
+      "target": "dataset:openkitchen-sim-240",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:05",
+      "target": "file:collector-config-example-json",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-prism-cache:05",
+      "target": "tech:canvas-3d",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:05",
+      "target": "method:derived-gap-filling",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:05",
+      "target": "model:meridian-merge-probe",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-prism-cache:05",
+      "target": "wandb:demo-run-atlas-022",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-prism-cache:06",
+      "target": "project:project-prism-cache",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-prism-cache:06",
+      "target": "machine:demo-workstation-a",
+      "type": "located"
+    },
+    {
+      "source": "agent:automator",
+      "target": "entry:project-prism-cache:06",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-prism-cache:06",
+      "target": "dataset:riverwalk-mocklogs",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:06",
+      "target": "file:dataset-manifest-json",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-prism-cache:06",
+      "target": "tech:aes-gcm",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-prism-cache:06",
+      "target": "method:client-side-decrypt",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-prism-cache:01",
+      "target": "project:project-prism-cache",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-prism-cache:01",
+      "target": "machine:demo-workstation-a",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-prism-cache:01",
+      "target": "file:graph-loader-py",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-prism-cache:01",
+      "target": "tech:github-pages",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-prism-cache:01",
+      "target": "method:timeline-filtering",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-prism-cache:02",
+      "target": "project:project-prism-cache",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-prism-cache:02",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-prism-cache:02",
+      "target": "file:privacy-checklist-md",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-prism-cache:02",
+      "target": "tech:claude-code-plugin",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-prism-cache:02",
+      "target": "method:synthetic-graph-rehearsal",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-prism-cache:03",
+      "target": "project:project-prism-cache",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-prism-cache:03",
+      "target": "machine:demo-workstation-a",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-prism-cache:03",
+      "target": "file:fragment-merge-tests-py",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-prism-cache:03",
+      "target": "tech:codex-skill",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-prism-cache:03",
+      "target": "method:privacy-redaction-pass",
+      "type": "explores"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "project:project-atlas-relay",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "machine:demo-ci-runner-d",
+      "type": "located"
+    },
+    {
+      "source": "agent:codex",
+      "target": "entry:project-atlas-relay:01",
+      "type": "did"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "dataset:minidepot-trajectories",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "file:encrypt-publish-py",
+      "type": "touches"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "tech:claude-code-plugin",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "method:synthetic-graph-rehearsal",
+      "type": "uses"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "model:demo-vlm-small-v0",
+      "type": "trains"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "wandb:demo-run-aurora-001",
+      "type": "tracks"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "notion:release-notes",
+      "type": "syncs"
+    },
+    {
+      "source": "entry:project-atlas-relay:01",
+      "target": "server:demo-capture-server",
+      "type": "on"
+    },
+    {
+      "source": "entry:project-atlas-relay:02",
+      "target": "project:project-atlas-relay",
+      "type": "in"
+    },
+    {
+      "source": "entry:project-atlas-relay:02",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "agent:claude",
       "target": "entry:project-atlas-relay:02",
       "type": "did"
     },
     {
       "source": "entry:project-atlas-relay:02",
-      "target": "dataset:labbench-events-128",
+      "target": "dataset:syntheticcity-rgbd-1k",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:02",
-      "target": "file:presence-heartbeat-py",
+      "target": "file:session-distiller-py",
       "type": "touches"
     },
     {
       "source": "entry:project-atlas-relay:02",
-      "target": "tech:github-pages",
+      "target": "tech:codex-skill",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:02",
-      "target": "method:timeline-filtering",
+      "target": "method:privacy-redaction-pass",
       "type": "uses"
     },
     {
@@ -2624,42 +3712,42 @@
     },
     {
       "source": "entry:project-atlas-relay:03",
-      "target": "machine:demo-workstation-a",
+      "target": "machine:demo-ci-runner-d",
       "type": "located"
     },
     {
-      "source": "agent:codex",
+      "source": "agent:cursor",
       "target": "entry:project-atlas-relay:03",
       "type": "did"
     },
     {
       "source": "entry:project-atlas-relay:03",
-      "target": "dataset:riverwalk-mocklogs",
+      "target": "dataset:toyfleet-mcap-v0",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:03",
-      "target": "file:demo-storyboard-md",
+      "target": "file:collector-config-example-json",
       "type": "touches"
     },
     {
       "source": "entry:project-atlas-relay:03",
-      "target": "tech:sqlite",
+      "target": "tech:graph-json",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:03",
-      "target": "method:live-presence-pulse",
+      "target": "method:shared-entity-linking",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:03",
-      "target": "model:meridian-merge-probe",
+      "target": "model:harbor-reranker-v2",
       "type": "trains"
     },
     {
       "source": "entry:project-atlas-relay:03",
-      "target": "wandb:demo-run-atlas-022",
+      "target": "wandb:demo-run-meridian-009",
       "type": "tracks"
     },
     {
@@ -2669,42 +3757,42 @@
     },
     {
       "source": "entry:project-atlas-relay:04",
-      "target": "machine:demo-ci-runner-d",
+      "target": "machine:demo-pages-host-e",
       "type": "located"
     },
     {
-      "source": "agent:claude",
+      "source": "agent:human",
       "target": "entry:project-atlas-relay:04",
       "type": "did"
     },
     {
       "source": "entry:project-atlas-relay:04",
-      "target": "dataset:labbench-events-128",
+      "target": "dataset:openkitchen-sim-240",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:04",
-      "target": "file:fragment-merge-tests-py",
+      "target": "file:dataset-manifest-json",
       "type": "touches"
     },
     {
       "source": "entry:project-atlas-relay:04",
-      "target": "tech:github-pages",
+      "target": "tech:canvas-3d",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:04",
-      "target": "method:timeline-filtering",
+      "target": "method:derived-gap-filling",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:04",
-      "target": "notion:deployment-runbook",
+      "target": "notion:weekly-progress",
       "type": "syncs"
     },
     {
       "source": "entry:project-atlas-relay:04",
-      "target": "server:demo-vault-d",
+      "target": "server:demo-vault",
       "type": "on"
     },
     {
@@ -2714,11 +3802,11 @@
     },
     {
       "source": "entry:project-atlas-relay:05",
-      "target": "machine:demo-workstation-a",
+      "target": "machine:demo-ci-runner-d",
       "type": "located"
     },
     {
-      "source": "agent:cursor",
+      "source": "agent:automator",
       "target": "entry:project-atlas-relay:05",
       "type": "did"
     },
@@ -2729,27 +3817,27 @@
     },
     {
       "source": "entry:project-atlas-relay:05",
-      "target": "file:presence-heartbeat-py",
+      "target": "file:eval-report-ipynb",
       "type": "touches"
     },
     {
       "source": "entry:project-atlas-relay:05",
-      "target": "tech:sqlite",
+      "target": "tech:aes-gcm",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:05",
-      "target": "method:live-presence-pulse",
+      "target": "method:client-side-decrypt",
       "type": "uses"
     },
     {
       "source": "entry:project-atlas-relay:05",
-      "target": "model:meridian-merge-probe",
+      "target": "model:solstice-eval-head",
       "type": "trains"
     },
     {
       "source": "entry:project-atlas-relay:05",
-      "target": "wandb:demo-run-atlas-022",
+      "target": "wandb:demo-run-solstice-031",
       "type": "tracks"
     },
     {
@@ -2759,11 +3847,11 @@
     },
     {
       "source": "entry:project-atlas-relay:06",
-      "target": "machine:demo-ci-runner-d",
+      "target": "machine:demo-pages-host-e",
       "type": "located"
     },
     {
-      "source": "agent:human",
+      "source": "agent:codex",
       "target": "entry:project-atlas-relay:06",
       "type": "did"
     },
@@ -2774,848 +3862,93 @@
     },
     {
       "source": "entry:project-atlas-relay:06",
-      "target": "file:demo-storyboard-md",
+      "target": "file:viewer-embed-html",
       "type": "touches"
     },
     {
       "source": "entry:project-atlas-relay:06",
-      "target": "tech:github-pages",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-atlas-relay:06",
-      "target": "method:timeline-filtering",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-atlas-relay:01",
-      "target": "project:project-atlas-relay",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-atlas-relay:01",
-      "target": "machine:demo-ci-runner-d",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-atlas-relay:01",
-      "target": "file:fragment-merge-tests-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-atlas-relay:01",
-      "target": "tech:sqlite",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-atlas-relay:01",
-      "target": "method:live-presence-pulse",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-atlas-relay:02",
-      "target": "project:project-atlas-relay",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-atlas-relay:02",
-      "target": "machine:demo-workstation-a",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-atlas-relay:02",
-      "target": "file:presence-heartbeat-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-atlas-relay:02",
-      "target": "tech:github-pages",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-atlas-relay:02",
-      "target": "method:timeline-filtering",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-atlas-relay:03",
-      "target": "project:project-atlas-relay",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-atlas-relay:03",
-      "target": "machine:demo-ci-runner-d",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-atlas-relay:03",
-      "target": "file:demo-storyboard-md",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-atlas-relay:03",
-      "target": "tech:sqlite",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-atlas-relay:03",
-      "target": "method:live-presence-pulse",
-      "type": "explores"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "project:project-solstice-bench",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "machine:demo-gpu-node-c",
-      "type": "located"
-    },
-    {
-      "source": "agent:automator",
-      "target": "entry:project-solstice-bench:01",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "dataset:labbench-events-128",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "file:demo-storyboard-md",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "tech:github-pages",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "method:timeline-filtering",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "model:solstice-eval-head",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "wandb:demo-run-solstice-031",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "notion:weekly-progress",
-      "type": "syncs"
-    },
-    {
-      "source": "entry:project-solstice-bench:01",
-      "target": "server:demo-server-a",
-      "type": "on"
-    },
-    {
-      "source": "entry:project-solstice-bench:02",
-      "target": "project:project-solstice-bench",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-solstice-bench:02",
-      "target": "machine:demo-laptop-b",
-      "type": "located"
-    },
-    {
-      "source": "agent:codex",
-      "target": "entry:project-solstice-bench:02",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-solstice-bench:02",
-      "target": "dataset:minidepot-trajectories",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:02",
-      "target": "file:notion-export-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-solstice-bench:02",
-      "target": "tech:claude-code-plugin",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:02",
-      "target": "method:synthetic-graph-rehearsal",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:03",
-      "target": "project:project-solstice-bench",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-solstice-bench:03",
-      "target": "machine:demo-gpu-node-c",
-      "type": "located"
-    },
-    {
-      "source": "agent:claude",
-      "target": "entry:project-solstice-bench:03",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-solstice-bench:03",
-      "target": "dataset:labbench-events-128",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:03",
-      "target": "file:encrypt-publish-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-solstice-bench:03",
-      "target": "tech:github-pages",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:03",
-      "target": "method:timeline-filtering",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:03",
-      "target": "model:solstice-eval-head",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-solstice-bench:03",
-      "target": "wandb:demo-run-solstice-031",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-solstice-bench:04",
-      "target": "project:project-solstice-bench",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-solstice-bench:04",
-      "target": "machine:demo-laptop-b",
-      "type": "located"
-    },
-    {
-      "source": "agent:cursor",
-      "target": "entry:project-solstice-bench:04",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-solstice-bench:04",
-      "target": "dataset:minidepot-trajectories",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:04",
-      "target": "file:demo-storyboard-md",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-solstice-bench:04",
-      "target": "tech:claude-code-plugin",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:04",
-      "target": "method:synthetic-graph-rehearsal",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:04",
-      "target": "notion:weekly-progress",
-      "type": "syncs"
-    },
-    {
-      "source": "entry:project-solstice-bench:04",
-      "target": "server:demo-server-a",
-      "type": "on"
-    },
-    {
-      "source": "entry:project-solstice-bench:05",
-      "target": "project:project-solstice-bench",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-solstice-bench:05",
-      "target": "machine:demo-gpu-node-c",
-      "type": "located"
-    },
-    {
-      "source": "agent:human",
-      "target": "entry:project-solstice-bench:05",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-solstice-bench:05",
-      "target": "dataset:labbench-events-128",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:05",
-      "target": "file:notion-export-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-solstice-bench:05",
-      "target": "tech:github-pages",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:05",
-      "target": "method:timeline-filtering",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:05",
-      "target": "model:solstice-eval-head",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-solstice-bench:05",
-      "target": "wandb:demo-run-solstice-031",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-solstice-bench:06",
-      "target": "project:project-solstice-bench",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-solstice-bench:06",
-      "target": "machine:demo-laptop-b",
-      "type": "located"
-    },
-    {
-      "source": "agent:automator",
-      "target": "entry:project-solstice-bench:06",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-solstice-bench:06",
-      "target": "dataset:minidepot-trajectories",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:06",
-      "target": "file:encrypt-publish-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-solstice-bench:06",
-      "target": "tech:claude-code-plugin",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-solstice-bench:06",
-      "target": "method:synthetic-graph-rehearsal",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-solstice-bench:01",
-      "target": "project:project-solstice-bench",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-solstice-bench:01",
-      "target": "machine:demo-laptop-b",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-solstice-bench:01",
-      "target": "file:demo-storyboard-md",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-solstice-bench:01",
-      "target": "tech:github-pages",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-solstice-bench:01",
-      "target": "method:timeline-filtering",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-solstice-bench:02",
-      "target": "project:project-solstice-bench",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-solstice-bench:02",
-      "target": "machine:demo-gpu-node-c",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-solstice-bench:02",
-      "target": "file:notion-export-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-solstice-bench:02",
-      "target": "tech:claude-code-plugin",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-solstice-bench:02",
-      "target": "method:synthetic-graph-rehearsal",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-solstice-bench:03",
-      "target": "project:project-solstice-bench",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-solstice-bench:03",
-      "target": "machine:demo-laptop-b",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-solstice-bench:03",
-      "target": "file:encrypt-publish-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-solstice-bench:03",
-      "target": "tech:github-pages",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-solstice-bench:03",
-      "target": "method:timeline-filtering",
-      "type": "explores"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "project:project-prism-cache",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "machine:demo-mac-studio-e",
-      "type": "located"
-    },
-    {
-      "source": "agent:codex",
-      "target": "entry:project-prism-cache:01",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "dataset:minidepot-trajectories",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "file:encrypt-publish-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "tech:claude-code-plugin",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "method:synthetic-graph-rehearsal",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "model:demo-vlm-small-v0",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "wandb:demo-run-aurora-001",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "notion:release-notes",
-      "type": "syncs"
-    },
-    {
-      "source": "entry:project-prism-cache:01",
-      "target": "server:demo-server-b",
-      "type": "on"
-    },
-    {
-      "source": "entry:project-prism-cache:02",
-      "target": "project:project-prism-cache",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-prism-cache:02",
-      "target": "machine:demo-workstation-a",
-      "type": "located"
-    },
-    {
-      "source": "agent:claude",
-      "target": "entry:project-prism-cache:02",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-prism-cache:02",
-      "target": "dataset:syntheticcity-rgbd-1k",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:02",
-      "target": "file:session-distiller-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-prism-cache:02",
-      "target": "tech:codex-skill",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:02",
-      "target": "method:privacy-redaction-pass",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:03",
-      "target": "project:project-prism-cache",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-prism-cache:03",
-      "target": "machine:demo-mac-studio-e",
-      "type": "located"
-    },
-    {
-      "source": "agent:cursor",
-      "target": "entry:project-prism-cache:03",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-prism-cache:03",
-      "target": "dataset:minidepot-trajectories",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:03",
-      "target": "file:train-pipeline-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-prism-cache:03",
-      "target": "tech:claude-code-plugin",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:03",
-      "target": "method:synthetic-graph-rehearsal",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:03",
-      "target": "model:demo-vlm-small-v0",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-prism-cache:03",
-      "target": "wandb:demo-run-aurora-001",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-prism-cache:04",
-      "target": "project:project-prism-cache",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-prism-cache:04",
-      "target": "machine:demo-workstation-a",
-      "type": "located"
-    },
-    {
-      "source": "agent:human",
-      "target": "entry:project-prism-cache:04",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-prism-cache:04",
-      "target": "dataset:syntheticcity-rgbd-1k",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:04",
-      "target": "file:encrypt-publish-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-prism-cache:04",
-      "target": "tech:codex-skill",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:04",
-      "target": "method:privacy-redaction-pass",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:04",
-      "target": "notion:release-notes",
-      "type": "syncs"
-    },
-    {
-      "source": "entry:project-prism-cache:04",
-      "target": "server:demo-server-b",
-      "type": "on"
-    },
-    {
-      "source": "entry:project-prism-cache:05",
-      "target": "project:project-prism-cache",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-prism-cache:05",
-      "target": "machine:demo-mac-studio-e",
-      "type": "located"
-    },
-    {
-      "source": "agent:automator",
-      "target": "entry:project-prism-cache:05",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-prism-cache:05",
-      "target": "dataset:minidepot-trajectories",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:05",
-      "target": "file:session-distiller-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-prism-cache:05",
-      "target": "tech:claude-code-plugin",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:05",
-      "target": "method:synthetic-graph-rehearsal",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:05",
-      "target": "model:demo-vlm-small-v0",
-      "type": "trains"
-    },
-    {
-      "source": "entry:project-prism-cache:05",
-      "target": "wandb:demo-run-aurora-001",
-      "type": "tracks"
-    },
-    {
-      "source": "entry:project-prism-cache:06",
-      "target": "project:project-prism-cache",
-      "type": "in"
-    },
-    {
-      "source": "entry:project-prism-cache:06",
-      "target": "machine:demo-workstation-a",
-      "type": "located"
-    },
-    {
-      "source": "agent:codex",
-      "target": "entry:project-prism-cache:06",
-      "type": "did"
-    },
-    {
-      "source": "entry:project-prism-cache:06",
-      "target": "dataset:syntheticcity-rgbd-1k",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:06",
-      "target": "file:train-pipeline-py",
-      "type": "touches"
-    },
-    {
-      "source": "entry:project-prism-cache:06",
-      "target": "tech:codex-skill",
-      "type": "uses"
-    },
-    {
-      "source": "entry:project-prism-cache:06",
-      "target": "method:privacy-redaction-pass",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-prism-cache:01",
-      "target": "project:project-prism-cache",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-prism-cache:01",
-      "target": "machine:demo-workstation-a",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-prism-cache:01",
-      "target": "file:encrypt-publish-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-prism-cache:01",
-      "target": "tech:claude-code-plugin",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-prism-cache:01",
-      "target": "method:synthetic-graph-rehearsal",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-prism-cache:02",
-      "target": "project:project-prism-cache",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-prism-cache:02",
-      "target": "machine:demo-mac-studio-e",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-prism-cache:02",
-      "target": "file:session-distiller-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-prism-cache:02",
-      "target": "tech:codex-skill",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-prism-cache:02",
-      "target": "method:privacy-redaction-pass",
-      "type": "explores"
-    },
-    {
-      "source": "fact:project-prism-cache:03",
-      "target": "project:project-prism-cache",
-      "type": "in"
-    },
-    {
-      "source": "fact:project-prism-cache:03",
-      "target": "machine:demo-workstation-a",
-      "type": "located"
-    },
-    {
-      "source": "fact:project-prism-cache:03",
-      "target": "file:train-pipeline-py",
-      "type": "touches"
-    },
-    {
-      "source": "fact:project-prism-cache:03",
-      "target": "tech:claude-code-plugin",
-      "type": "uses"
-    },
-    {
-      "source": "fact:project-prism-cache:03",
-      "target": "method:synthetic-graph-rehearsal",
-      "type": "explores"
-    },
-    {
-      "source": "project:project-aurora-loom",
-      "target": "project:project-harbor-lens",
-      "type": "references"
-    },
-    {
-      "source": "project:project-harbor-lens",
-      "target": "project:project-meridian-sync",
-      "type": "references"
-    },
-    {
-      "source": "project:project-meridian-sync",
-      "target": "project:project-atlas-relay",
-      "type": "references"
-    },
-    {
-      "source": "project:project-atlas-relay",
-      "target": "project:project-solstice-bench",
-      "type": "references"
-    },
-    {
-      "source": "project:project-solstice-bench",
-      "target": "project:project-prism-cache",
-      "type": "references"
-    },
-    {
-      "source": "project:project-prism-cache",
-      "target": "project:project-aurora-loom",
-      "type": "references"
-    },
-    {
-      "source": "project:project-aurora-loom",
-      "target": "project:project-atlas-relay",
-      "type": "references"
-    },
-    {
-      "source": "project:project-harbor-lens",
-      "target": "project:project-solstice-bench",
-      "type": "references"
-    },
-    {
-      "source": "project:project-meridian-sync",
-      "target": "project:project-prism-cache",
-      "type": "references"
-    },
-    {
-      "source": "model:demo-vlm-small-v0",
-      "target": "dataset:syntheticcity-rgbd-1k",
-      "type": "uses"
-    },
-    {
-      "source": "model:meridian-merge-probe",
-      "target": "dataset:toyfleet-mcap-v0",
-      "type": "uses"
-    },
-    {
-      "source": "method:client-side-decrypt",
-      "target": "tech:aes-gcm",
-      "type": "uses"
-    },
-    {
-      "source": "method:client-side-decrypt",
       "target": "tech:pbkdf2",
       "type": "uses"
     },
     {
-      "source": "tech:github-pages",
-      "target": "file:encrypt-publish-py",
+      "source": "entry:project-atlas-relay:06",
+      "target": "method:live-presence-pulse",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-atlas-relay:01",
+      "target": "project:project-atlas-relay",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-atlas-relay:01",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-atlas-relay:01",
+      "target": "file:privacy-checklist-md",
       "type": "touches"
     },
     {
-      "source": "tech:claude-code-plugin",
+      "source": "fact:project-atlas-relay:01",
+      "target": "tech:claude-code-plugin",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-atlas-relay:01",
+      "target": "method:synthetic-graph-rehearsal",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-atlas-relay:02",
+      "target": "project:project-atlas-relay",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-atlas-relay:02",
+      "target": "machine:demo-ci-runner-d",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-atlas-relay:02",
+      "target": "file:fragment-merge-tests-py",
+      "type": "touches"
+    },
+    {
+      "source": "fact:project-atlas-relay:02",
       "target": "tech:codex-skill",
-      "type": "references"
+      "type": "uses"
     },
     {
-      "source": "tech:graph-json",
-      "target": "file:graph-loader-py",
+      "source": "fact:project-atlas-relay:02",
+      "target": "method:privacy-redaction-pass",
+      "type": "explores"
+    },
+    {
+      "source": "fact:project-atlas-relay:03",
+      "target": "project:project-atlas-relay",
+      "type": "in"
+    },
+    {
+      "source": "fact:project-atlas-relay:03",
+      "target": "machine:demo-pages-host-e",
+      "type": "located"
+    },
+    {
+      "source": "fact:project-atlas-relay:03",
+      "target": "file:presence-heartbeat-py",
       "type": "touches"
     },
     {
-      "source": "notion:weekly-progress",
-      "target": "notion:release-notes",
-      "type": "references"
+      "source": "fact:project-atlas-relay:03",
+      "target": "tech:graph-json",
+      "type": "uses"
+    },
+    {
+      "source": "fact:project-atlas-relay:03",
+      "target": "method:shared-entity-linking",
+      "type": "explores"
     },
     {
       "source": "liveagent:demo-workstation-a:codex",
@@ -3633,33 +3966,33 @@
       "type": "did"
     },
     {
-      "source": "liveagent:demo-gpu-node-c:claude",
-      "target": "machine:demo-gpu-node-c",
+      "source": "liveagent:demo-ci-runner-d:claude",
+      "target": "machine:demo-ci-runner-d",
       "type": "located"
     },
     {
-      "source": "liveagent:demo-gpu-node-c:claude",
-      "target": "project:project-meridian-sync",
+      "source": "liveagent:demo-ci-runner-d:claude",
+      "target": "project:project-atlas-relay",
       "type": "working_on"
     },
     {
       "source": "agent:claude",
-      "target": "liveagent:demo-gpu-node-c:claude",
+      "target": "liveagent:demo-ci-runner-d:claude",
       "type": "did"
     },
     {
-      "source": "liveagent:demo-mac-studio-e:cursor",
-      "target": "machine:demo-mac-studio-e",
+      "source": "liveagent:demo-pages-host-e:cursor",
+      "target": "machine:demo-pages-host-e",
       "type": "located"
     },
     {
-      "source": "liveagent:demo-mac-studio-e:cursor",
-      "target": "project:project-prism-cache",
+      "source": "liveagent:demo-pages-host-e:cursor",
+      "target": "project:project-harbor-lens",
       "type": "working_on"
     },
     {
       "source": "agent:cursor",
-      "target": "liveagent:demo-mac-studio-e:cursor",
+      "target": "liveagent:demo-pages-host-e:cursor",
       "type": "did"
     },
     {
@@ -3669,7 +4002,7 @@
     },
     {
       "source": "liveagent:demo-ci-runner-d:automator",
-      "target": "project:project-atlas-relay",
+      "target": "project:project-meridian-sync",
       "type": "working_on"
     },
     {
@@ -3678,19 +4011,39 @@
       "type": "did"
     },
     {
+      "source": "liveagent:demo-laptop-b:human",
+      "target": "machine:demo-laptop-b",
+      "type": "located"
+    },
+    {
+      "source": "liveagent:demo-laptop-b:human",
+      "target": "project:project-solstice-bench",
+      "type": "working_on"
+    },
+    {
+      "source": "agent:human",
+      "target": "liveagent:demo-laptop-b:human",
+      "type": "did"
+    },
+    {
       "source": "liveagent:demo-workstation-a:codex",
-      "target": "liveagent:demo-gpu-node-c:claude",
-      "type": "link"
+      "target": "liveagent:demo-ci-runner-d:claude",
+      "type": "handoff_to"
     },
     {
-      "source": "liveagent:demo-gpu-node-c:claude",
-      "target": "liveagent:demo-mac-studio-e:cursor",
-      "type": "link"
+      "source": "liveagent:demo-ci-runner-d:claude",
+      "target": "liveagent:demo-pages-host-e:cursor",
+      "type": "handoff_to"
     },
     {
-      "source": "liveagent:demo-mac-studio-e:cursor",
+      "source": "liveagent:demo-pages-host-e:cursor",
       "target": "liveagent:demo-ci-runner-d:automator",
-      "type": "link"
+      "type": "handoff_to"
+    },
+    {
+      "source": "liveagent:demo-ci-runner-d:automator",
+      "target": "liveagent:demo-laptop-b:human",
+      "type": "handoff_to"
     }
   ]
 }

@@ -653,6 +653,61 @@ h1 {
 """
 
 
+
+CSS += r"""
+.hero.landing-hero {
+  grid-template-columns: minmax(0, .92fr) minmax(440px, 1.08fr);
+}
+.hero-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 24px;
+  max-width: 760px;
+}
+.hero-stat {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  padding: 12px;
+}
+.hero-stat b { display: block; font-size: 24px; color: var(--accent); }
+.hero-stat span { color: var(--muted); font-size: 12px; }
+.domain-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+}
+.domain-table th,
+.domain-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 13px 14px;
+  text-align: left;
+  vertical-align: top;
+}
+.domain-table th { color: var(--accent); font-size: 12px; text-transform: uppercase; }
+.domain-table tr:last-child td { border-bottom: 0; }
+.callout-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.command-stack .code { margin-top: 10px; }
+.mini-label { color: var(--accent); font: 800 11px/1.2 "JetBrains Mono", monospace; text-transform: uppercase; }
+@media (max-width: 1080px) {
+  .hero.landing-hero { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .hero-stat-grid, .callout-band { grid-template-columns: 1fr; }
+  .domain-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .domain-table { min-width: 620px; }
+  .modal-head .muted { display: none; }
+}
+"""
+
 JS = r"""
 (function () {
   var modal = document.querySelector('[data-galaxy-modal]');
@@ -755,11 +810,11 @@ def modal_markup(prefix: str) -> str:
 """
 
 
-def galaxy_card(prefix: str, stats: dict, compact: bool = False) -> str:
+def galaxy_card(prefix: str, stats: dict, compact: bool = False, element_id: str = "preview") -> str:
     demo = f"{prefix}demo/?style=galaxy"
     compact_class = " compact" if compact else ""
     return f"""
-<div class="galaxy-card{compact_class}" id="preview" data-demo-src="{demo}" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
+<div class="galaxy-card{compact_class}" id="{element_id}" data-demo-src="{demo}" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
   <div class="framebar">
     <span class="lights"><i></i><i></i><i></i></span>
     <span class="mono">synthetic graph preview</span>
@@ -778,7 +833,7 @@ def nav(prefix: str, compare_href: str) -> str:
   <div class="nav-inner">
     <a class="brand" href="{prefix}index.html">Agent Memory Galaxy</a>
     <div class="nav-links">
-      <a href="{compare_href}">Concepts</a>
+      <a href="{compare_href}">Design archive</a>
       <a href="#preview">Demo</a>
       <a href="#privacy">Privacy</a>
       <a href="#install">Install</a>
@@ -951,15 +1006,134 @@ def gallery_html(prefix: str, concept_prefix: str, stats: dict, out_title: str) 
 """
 
 
+def landing_html(stats: dict) -> str:
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Agent Memory Galaxy turns scattered AI-agent work traces into a private, inspectable memory graph.">
+<title>Agent Memory Galaxy</title>
+<link rel="stylesheet" href="assets/landing.css">
+</head>
+<body class="theme-bento">
+{nav("", "concepts/index.html")}
+<main class="page">
+  <section class="hero landing-hero">
+    <div class="hero-copy">
+      <div class="kicker">PUBLIC FRAMEWORK / PRIVATE MEMORY</div>
+      <h1>Your agents remember together. Privately.</h1>
+      <p class="lead">Turn scattered agent traces across machines into one private, inspectable memory graph. Collect reviewed notes, safe session metadata, machine fragments, and live presence, then explore the result in a static Galaxy Viewer.</p>
+      <div class="actions">
+        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=galaxy">Open synthetic demo</button>
+        <a class="btn" href="#install">Install as skill</a>
+        <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
+      </div>
+      <div class="hero-stat-grid">
+        <div class="hero-stat"><b>{stats['nodes']}</b><span>synthetic nodes</span></div>
+        <div class="hero-stat"><b>{stats['edges']}</b><span>synthetic links</span></div>
+        <div class="hero-stat"><b>{stats['projects']}</b><span>fictional projects</span></div>
+        <div class="hero-stat"><b>{stats['machines']}</b><span>fictional machines</span></div>
+      </div>
+    </div>
+{galaxy_card("", stats, element_id="hero-demo")}
+  </section>
+
+  <section class="section" id="preview">
+    <div class="section-head">
+      <h2>Live synthetic demo. No real memory.</h2>
+      <p>The public graph demonstrates multi-server collaboration, currently-working agents, project inheritance, shared assets, and private/public/encrypted boundaries using fictional labels only.</p>
+    </div>
+    <div class="grid">
+      <article class="tile"><div class="mini-label">Search</div><h3>Find a project or artifact</h3><p>Search across projects, agents, files, models, servers, and derived facts.</p></article>
+      <article class="tile"><div class="mini-label">Filter</div><h3>Focus by machine or activity</h3><p>Switch from the full graph to one machine, one project, recent work, or live doing state.</p></article>
+      <article class="tile"><div class="mini-label">Inspect</div><h3>Click through evidence</h3><p>Open a node readout, inspect neighbors, and follow inheritance or publishing edges.</p></article>
+    </div>
+  </section>
+
+  <section class="section" id="install">
+    <div class="section-head">
+      <h2>Install in two Claude Code messages.</h2>
+      <p>The public repository carries a Claude Code plugin/skill package. Use it to set up private hubs, connect contributors, aggregate fragments, publish encrypted viewers, or review privacy before release.</p>
+    </div>
+    <div class="install-grid">
+      <article class="tile command-stack">
+        <h3>Plugin/skill install</h3>
+        <pre class="code"><code>/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy</code></pre>
+        <button class="copy-btn" type="button" data-copy="/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy">Copy marketplace command</button>
+        <pre class="code"><code>/plugin install agent-memory-galaxy@agent-memory-galaxy</code></pre>
+        <button class="copy-btn" type="button" data-copy="/plugin install agent-memory-galaxy@agent-memory-galaxy">Copy install command</button>
+      </article>
+      <article class="tile command-stack">
+        <h3>Local demo fallback</h3>
+        <pre class="code"><code>git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git
+cd agent-memory-galaxy
+python3 scripts/build-public-demo.py
+python3 -m http.server 8765 --directory docs</code></pre>
+        <button class="copy-btn" type="button" data-copy="git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git&#10;cd agent-memory-galaxy&#10;python3 scripts/build-public-demo.py&#10;python3 -m http.server 8765 --directory docs">Copy demo commands</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="workflow">
+    <div class="section-head">
+      <h2>Collect, distill, merge, encrypt, view.</h2>
+      <p>Contributor machines write private fragments. An aggregator merges shared entities, injects live presence, and optionally publishes an encrypted viewer shell.</p>
+    </div>
+    <div class="pipeline">
+      <div class="step"><b>01</b><span>Collect</span><p>Scan reviewed `agent_memory.md` notes from explicit project roots.</p></div>
+      <div class="step"><b>02</b><span>Distill</span><p>Extract safe structured metadata from agent sessions without copying raw text.</p></div>
+      <div class="step"><b>03</b><span>Merge</span><p>Connect projects through shared files, datasets, models, tools, and servers.</p></div>
+      <div class="step"><b>04</b><span>Encrypt</span><p>Publish ciphertext only when deploying an encrypted viewer shell to Pages.</p></div>
+      <div class="step"><b>05</b><span>View</span><p>Search, filter, zoom, and inspect the resulting memory galaxy.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="privacy">
+    <div class="section-head">
+      <h2>Public framework. Private memory.</h2>
+      <p>GitHub Pages is not private access control. Public pages carry the framework and fake demo data. Real fragments and plaintext graphs belong in a private hub or local machine.</p>
+    </div>
+    <div class="callout-band">
+      <article class="tile"><h3>Contributor</h3><p>Writes `fragments/&lt;machine&gt;.json` in a private hub. Does not need encryption passwords and should not touch `docs/galaxy/`.</p></article>
+      <article class="tile"><h3>Aggregator</h3><p>Merges all fragments, builds local `standalone.html`, and optionally creates `docs/galaxy/graph.enc.json` with strong passwords.</p></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Know which URL you are sharing.</h2>
+      <p>The marketing site, synthetic demo, and optional encrypted runtime viewer are separate paths.</p>
+    </div>
+    <div class="domain-scroll">
+      <table class="domain-table">
+        <thead><tr><th>Path</th><th>Purpose</th><th>Data policy</th></tr></thead>
+        <tbody>
+          <tr><td><code>/agent-memory-galaxy/</code></td><td>Public promo landing</td><td>No real data</td></tr>
+          <tr><td><code>/agent-memory-galaxy/demo/</code></td><td>Synthetic interactive demo</td><td>Fake graph only</td></tr>
+          <tr><td><code>/agent-memory-galaxy/concepts/</code></td><td>Design exploration archive</td><td>Public, secondary</td></tr>
+          <tr><td><code>/agent-memory-galaxy/galaxy/</code></td><td>Optional encrypted viewer shell</td><td>Public shell, ciphertext only</td></tr>
+          <tr><td><code>standalone.html</code></td><td>Local plaintext viewer</td><td>Local only, gitignored</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<footer class="footer"><div class="page"><span>Agent Memory Galaxy</span><span>Synthetic demo public. Real memory private.</span></div></footer>
+{modal_markup("")}
+<script src="assets/landing.js"></script>
+</body>
+</html>
+"""
+
+
 def main():
     stats = graph_meta()
     CONCEPTS.mkdir(parents=True, exist_ok=True)
     ASSETS.mkdir(parents=True, exist_ok=True)
     (ASSETS / "landing.css").write_text(CSS.strip() + "\n", encoding="utf-8")
     (ASSETS / "landing.js").write_text(JS.strip() + "\n", encoding="utf-8")
-    (DOCS / "index.html").write_text(
-        gallery_html("", "concepts/", stats, "Concept Gallery"), encoding="utf-8"
-    )
+    (DOCS / "index.html").write_text(landing_html(stats), encoding="utf-8")
     (CONCEPTS / "index.html").write_text(
         gallery_html("../", "", stats, "Concept Gallery"), encoding="utf-8"
     )

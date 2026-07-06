@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Encrypted Viewer Shell | Agent Memory Galaxy</title>
 </head>
 <body>
@@ -14,7 +14,7 @@
   html,body{margin:0;height:100%;background:var(--bg0);color:var(--fg);overflow:hidden;
     font-family:ui-monospace,SFMono-Regular,Menlo,"PingFang SC","Microsoft YaHei",monospace}
   #app{position:fixed;inset:0}
-  canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair}
+  canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair;touch-action:none}
   canvas.drag{cursor:grabbing}
   /* 顶部 HUD 条 */
   header{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:16px;
@@ -131,15 +131,78 @@
     radial-gradient(ellipse 62% 34% at 50% 52%,rgba(255,222,164,.92),rgba(255,150,80,.32) 45%,transparent 72%),
     radial-gradient(ellipse 92% 58% at 50% 50%,rgba(130,150,255,.22),transparent 75%),
     linear-gradient(160deg,#0b0b26,#02010a)}
+  /* ===== 移动端适配（共享规范：≤768px 或矮视口(横屏手机)进入移动模式；桌面端不受影响）===== */
+  #sideToggle,#searchBtn,#statBadge{display:none}
+  #sideBackdrop{display:none;position:fixed;inset:0;background:rgba(2,4,12,.55);z-index:8;
+    -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+  #statwrap{display:contents}
+  @media (pointer:coarse){header button{min-height:44px}#side select{min-height:44px}}
+  @media (max-width:768px),(max-height:480px){
+    /* 顶栏：允许两行换行，不裁切 */
+    header{flex-wrap:wrap;gap:6px 8px;padding:8px 10px;padding-top:calc(8px + env(safe-area-inset-top));
+      background:linear-gradient(180deg,rgba(2,6,15,.96) 70%,rgba(2,6,15,0))}
+    header h1{font-size:11px;letter-spacing:1px;max-width:38vw;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    header button{min-height:44px}
+    /* 计数折叠成紧凑徽标，点开弹出完整统计 */
+    #statBadge{display:inline-flex;align-items:center;gap:5px;justify-content:center;min-width:44px;
+      font-variant-numeric:tabular-nums}
+    #statBadge b{color:var(--gold)}
+    #statwrap{display:none}
+    header.stat-open #statwrap{display:flex;flex-direction:column;align-items:flex-start;gap:7px;position:fixed;
+      left:8px;right:8px;top:calc(58px + env(safe-area-inset-top));z-index:9;background:var(--panel);
+      border:1px solid var(--line);border-radius:5px;padding:12px 14px;backdrop-filter:blur(8px);
+      box-shadow:0 0 30px rgba(0,0,0,.6)}
+    /* 搜索：图标点开，展开成整行（16px 防 iOS 聚焦缩放） */
+    #search{display:none}
+    #searchBtn{display:inline-flex;align-items:center;justify-content:center;min-width:44px}
+    header.search-open #search{display:block;order:99;flex:1 1 100%;min-height:44px;font-size:16px}
+    /* 左侧面板 → 抽屉：默认收起，覆盖在星空上 */
+    #side{position:fixed;top:0;left:0;bottom:0;width:min(80vw,320px);max-height:none;border-radius:0;z-index:9;
+      padding-top:calc(4px + env(safe-area-inset-top));padding-bottom:calc(10px + env(safe-area-inset-bottom));
+      transform:translateX(-105%);transition:transform .22s ease;font-size:13px}
+    #side.open{transform:translateX(0);box-shadow:0 0 40px rgba(0,0,0,.75)}
+    #sideBackdrop.show{display:block}
+    #sideToggle{display:flex;align-items:center;justify-content:center;position:fixed;left:12px;
+      bottom:calc(12px + env(safe-area-inset-bottom));width:52px;height:52px;border-radius:50%;z-index:10;
+      font-size:19px;padding:0;background:rgba(10,24,44,.92);box-shadow:0 0 18px rgba(0,0,0,.6),0 0 10px rgba(56,225,255,.25)}
+    #sideToggle .st-badge{position:absolute;top:-4px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;
+      background:var(--holo);color:#02060f;font-size:10px;font-weight:700;display:flex;align-items:center;
+      justify-content:center;font-variant-numeric:tabular-nums}
+    /* 侧栏内部：触控目标 ≥44px、正文 ≥11px */
+    .tog{min-height:44px;padding:5px 0}
+    .desc{font-size:11px}
+    .hd{font-size:11px;padding:9px 11px}
+    .row label{font-size:11px}
+    .row select{min-height:44px;font-size:13px}
+    .ctl{gap:10px}
+    .ctl label{min-height:36px}
+    .mem div{padding:8px 6px}
+    .mem{max-height:200px}
+    /* 详情读出 → 底部滑出面板 */
+    #detail{top:auto;left:0;right:0;bottom:0;width:auto;max-height:55vh;border-radius:10px 10px 0 0;z-index:8;
+      border-left:none;border-right:none;border-bottom:none;padding-bottom:env(safe-area-inset-bottom)}
+    #detail.show{animation:dslide .22s ease}
+    #detail .close{min-width:44px;min-height:44px;font-size:20px}
+    #detail .src{font-size:11px}
+    #detail .excerpt{font-size:11.5px}
+    #detail .nb{padding:8px 10px}
+    /* 风格菜单：挂到视口右上，防溢出 */
+    #sq-menu{position:fixed;top:calc(104px + env(safe-area-inset-top));right:8px;left:auto;max-width:calc(100vw - 16px)}
+    /* 底部 hint：移动端隐藏（无 hover，交互见抽屉按钮/触摸手势） */
+    #hint{display:none}
+  }
+  @keyframes dslide{from{transform:translateY(30%);opacity:.4}to{transform:translateY(0);opacity:1}}
 </style>
 
 <div id="app">
   <canvas id="cv"></canvas>
   <header>
     <h1>◢ ENCRYPTED VIEWER SHELL</h1>
-    <span id="stat" class="live">BOOTING...</span>
-    <span id="live" style="color:#ff5566;font-weight:700;text-shadow:0 0 10px rgba(255,60,80,.7);font-size:11px;letter-spacing:1px"></span>
+    <span id="statwrap"><span id="stat" class="live">BOOTING...</span>
+    <span id="live" style="color:#ff5566;font-weight:700;text-shadow:0 0 10px rgba(255,60,80,.7);font-size:11px;letter-spacing:1px"></span></span>
+    <button id="statBadge" type="button" aria-haspopup="true" aria-expanded="false" title="STATS">◉ …</button>
     <input id="search" placeholder="SEARCH ⏎">
+    <button id="searchBtn" type="button" aria-controls="search" aria-expanded="false" title="SEARCH">🔍</button>
     <div class="grow"></div>
     <button id="fit">RECENTER</button>
         <button id="sq-trig" aria-haspopup="true" aria-expanded="false" title="STYLE"><span id="sq-cur">🌠 星空</span><span class="sq-caret">▾</span></button>
@@ -187,6 +250,8 @@
   <div id="detail"><div class="dh"><span id="dtag" class="tag"></span><span id="readoutLabel" style="font-size:10px;color:var(--mut);letter-spacing:1px">READOUT</span><button class="close" id="dClose">✕</button></div><div class="db" id="dBody"></div></div>
   <div id="hint">Drag to rotate · Wheel to zoom · Click readout · 🟢 recent records · 🔴 working now</div>
   <div id="empty">NO MATCH</div>
+  <div id="sideBackdrop"></div>
+  <button id="sideToggle" type="button" aria-controls="side" aria-expanded="false" title="CONTROLS"><span class="st-ic">☰</span><span class="st-badge" id="stBadge"></span></button>
 </div>
 
 <script>
@@ -198,8 +263,8 @@ function readLang(){const q=new URLSearchParams(location.search).get('lang');
   return nav.startsWith('zh')?'zh':'en';}
 let LANG=readLang();
 const UI={
-  en:{booting:'BOOTING...',noData:'NO DATA',encrypted:'🔒 ENCRYPTED',unlockTitle:'◢ Memory Galaxy',unlockSub1:'Encrypted · enter a password to unlock locally',unlockSub2:'Encrypted · enter two passwords to unlock locally',password1:'Password 1',password2:'Password 2',password:'PASSWORD',unlock:'UNLOCK',decrypting:'DECRYPTING...',badPassword:'Wrong password. Try again.',lockFoot:'Passwords are used only in your browser for decryption. They are not uploaded or stored. Search engines and unauthorized visitors only see ciphertext.',search:'SEARCH ⏎',recenter:'RECENTER',styleTitle:'STYLE',types:'NODE TYPES',tasks:'TASK TYPES',color:'COLOR:',type:'TYPE',task:'TASK',tool:'TOOL',project:'PROJECT',machine:'MACHINE',status:'STATUS',activity:'ACTIVITY',all:'ALL',active:'🟢 RECENT RECORDS',live:'🔴 WORKING NOW',timeline:'TIMELINE',spin:'SPIN',edges:'EDGES',hideDerived:'HIDE AUTO-DERIVED',hideDerivedTitle:'Hide memories derived from native Claude/Codex/Cursor sessions.',readout:'READOUT',hint:'Drag to rotate · Wheel to zoom · Click readout · 🟢 recent records · 🔴 working now',noMatch:'NO MATCH',online:'ONLINE',nodes:'NODES',links:'LINKS',proj:'PROJ',mach:'MACH',agentsOnline:'agents online',noneDates:'(no dates)',working:'working now',autoDerived:'auto-derived',doing:'Doing',heartbeat:'Heartbeat',activeState:'active',staleState:'stale',session:'Session',source:'Source',primary:'Primary',memoryType:'Memory type',weight:'Weight',degree:'Links',related:'Related',justNow:'just now',minutesAgo:'minutes ago',hoursAgo:'hours ago',daysAgo:'days ago',languageNext:'中文'},
-  zh:{booting:'启动中...',noData:'无数据',encrypted:'🔒 已加密',unlockTitle:'◢ Memory Galaxy',unlockSub1:'已加密 · 输入密码在本地解锁',unlockSub2:'已加密 · 输入两个密码在本地解锁',password1:'密码 1',password2:'密码 2',password:'密码',unlock:'解锁',decrypting:'解密中...',badPassword:'密码错误，请重试',lockFoot:'密码只在你的浏览器里用于解密，不上传、不留存。搜索引擎与未授权访问者只能看到密文。',search:'搜索 ⏎',recenter:'回中',styleTitle:'视觉风格 STYLE',types:'节点类型 NODE TYPES',tasks:'任务类型 TASK',color:'着色:',type:'类型',task:'任务',tool:'工具',project:'项目 PROJECT',machine:'机器 MACHINE',status:'状态 STATUS',activity:'活跃 ACTIVITY',all:'全部',active:'🟢 近3天有记录',live:'🔴 正在工作',timeline:'时间轴',spin:'自转',edges:'连线',hideDerived:'隐藏自动提炼',hideDerivedTitle:'隐藏从 Claude/Codex/Cursor 原生会话自动提炼、无人工 agent_memory.md 的记忆。',readout:'读出 READOUT',hint:'拖拽旋转 · 滚轮缩放 · 点击读出 · 🟢近3天有记录 · 🔴正在工作',noMatch:'没有匹配',online:'ONLINE',nodes:'NODES',links:'LINKS',proj:'PROJ',mach:'MACH',agentsOnline:'个 agent 在线',noneDates:'(无日期)',working:'正在工作',autoDerived:'自动提炼',doing:'正在做',heartbeat:'心跳',activeState:'活跃',staleState:'已超时',session:'Session',source:'来源',primary:'主要项目',memoryType:'记忆类型',weight:'体量',degree:'连接',related:'关联',justNow:'刚刚',minutesAgo:'分钟前',hoursAgo:'小时前',daysAgo:'天前',languageNext:'EN'}
+  en:{booting:'BOOTING...',noData:'NO DATA',encrypted:'🔒 ENCRYPTED',unlockTitle:'◢ Memory Galaxy',unlockSub1:'Encrypted · enter a password to unlock locally',unlockSub2:'Encrypted · enter two passwords to unlock locally',password1:'Password 1',password2:'Password 2',password:'PASSWORD',unlock:'UNLOCK',decrypting:'DECRYPTING...',badPassword:'Wrong password. Try again.',lockFoot:'Passwords are used only in your browser for decryption. They are not uploaded or stored. Search engines and unauthorized visitors only see ciphertext.',search:'SEARCH ⏎',recenter:'RECENTER',styleTitle:'STYLE',types:'NODE TYPES',tasks:'TASK TYPES',color:'COLOR:',type:'TYPE',task:'TASK',tool:'TOOL',project:'PROJECT',machine:'MACHINE',status:'STATUS',activity:'ACTIVITY',all:'ALL',active:'🟢 RECENT RECORDS',live:'🔴 WORKING NOW',timeline:'TIMELINE',spin:'SPIN',edges:'EDGES',hideDerived:'HIDE AUTO-DERIVED',hideDerivedTitle:'Hide memories derived from native Claude/Codex/Cursor sessions.',readout:'READOUT',hint:'Drag to rotate · Wheel to zoom · Click readout · 🟢 recent records · 🔴 working now',noMatch:'NO MATCH',online:'ONLINE',nodes:'NODES',links:'LINKS',proj:'PROJ',mach:'MACH',agentsOnline:'agents online',noneDates:'(no dates)',working:'working now',autoDerived:'auto-derived',doing:'Doing',heartbeat:'Heartbeat',activeState:'active',staleState:'stale',session:'Session',source:'Source',primary:'Primary',memoryType:'Memory type',weight:'Weight',degree:'Links',related:'Related',justNow:'just now',minutesAgo:'minutes ago',hoursAgo:'hours ago',daysAgo:'days ago',languageNext:'中文',panelBtn:'CONTROLS',statsBtn:'STATS'},
+  zh:{booting:'启动中...',noData:'无数据',encrypted:'🔒 已加密',unlockTitle:'◢ Memory Galaxy',unlockSub1:'已加密 · 输入密码在本地解锁',unlockSub2:'已加密 · 输入两个密码在本地解锁',password1:'密码 1',password2:'密码 2',password:'密码',unlock:'解锁',decrypting:'解密中...',badPassword:'密码错误，请重试',lockFoot:'密码只在你的浏览器里用于解密，不上传、不留存。搜索引擎与未授权访问者只能看到密文。',search:'搜索 ⏎',recenter:'回中',styleTitle:'视觉风格 STYLE',types:'节点类型 NODE TYPES',tasks:'任务类型 TASK',color:'着色:',type:'类型',task:'任务',tool:'工具',project:'项目 PROJECT',machine:'机器 MACHINE',status:'状态 STATUS',activity:'活跃 ACTIVITY',all:'全部',active:'🟢 近3天有记录',live:'🔴 正在工作',timeline:'时间轴',spin:'自转',edges:'连线',hideDerived:'隐藏自动提炼',hideDerivedTitle:'隐藏从 Claude/Codex/Cursor 原生会话自动提炼、无人工 agent_memory.md 的记忆。',readout:'读出 READOUT',hint:'拖拽旋转 · 滚轮缩放 · 点击读出 · 🟢近3天有记录 · 🔴正在工作',noMatch:'没有匹配',online:'ONLINE',nodes:'NODES',links:'LINKS',proj:'PROJ',mach:'MACH',agentsOnline:'个 agent 在线',noneDates:'(无日期)',working:'正在工作',autoDerived:'自动提炼',doing:'正在做',heartbeat:'心跳',activeState:'活跃',staleState:'已超时',session:'Session',source:'来源',primary:'主要项目',memoryType:'记忆类型',weight:'体量',degree:'连接',related:'关联',justNow:'刚刚',minutesAgo:'分钟前',hoursAgo:'小时前',daysAgo:'天前',languageNext:'EN',panelBtn:'控制面板',statsBtn:'统计'}
 };
 function tr(k){return (UI[LANG]&&UI[LANG][k])||UI.en[k]||k;}
 const TYPE_LABELS={
@@ -234,6 +299,9 @@ const TOOLC={claude:"#c39bff",codex:"#10b981",cursor:"#38bdf8",human:"#ffd24b",a
 const BASE={project:13,machine:15,agent:10,fact:7,entry:6,notion:9,dataset:9,server:9,model:8,method:8,tech:8,file:5,boundary:10,artifact:8};
 const DEFAULT_OFF=new Set(["file"]);
 const FOV=820,DIST=920;
+// 移动断点：与 CSS 的 @media (max-width:768px),(max-height:480px) 保持一致
+const _mqMobile=window.matchMedia?window.matchMedia('(max-width:768px),(max-height:480px)'):null;
+function _isMobile(){return !!(_mqMobile&&_mqMobile.matches);}
 
 let RAW=null,N=[],E=[],byId={},adj={};
 let cv,ctx,W=0,H=0,DPR=1,cx=0,cy=0;
@@ -262,6 +330,9 @@ function applyLanguage(){
   setText('statusLabel','status');setText('activityLabel','activity');setText('timelineLabel','timeline');setText('spinLabel','spin');setText('edgesLabel','edges');
   setText('derivedLabel','hideDerived');setText('readoutLabel','readout');setText('hint','hint');setText('empty','noMatch');
   const dw=document.getElementById('derivedWrap');if(dw)dw.title=tr('hideDerivedTitle');
+  const _sbt=document.getElementById('searchBtn');if(_sbt)_sbt.title=tr('search');
+  const _stg=document.getElementById('sideToggle');if(_stg)_stg.title=tr('panelBtn');
+  const _sbg=document.getElementById('statBadge');if(_sbg)_sbg.title=tr('statsBtn');
   setFirstOption('fProject');setFirstOption('fMachine');setFirstOption('fStatus');setFirstOption('fActivity');
   const fa=document.getElementById('fActivity');if(fa&&fa.options.length>=3){fa.options[1].textContent=tr('active');fa.options[2].textContent=tr('live');}
   if(document.getElementById('sq-cur'))_styleSync(styleKey);   // 风格触发钮标签跟随语言（中/英半段）
@@ -331,6 +402,7 @@ function go(){
   const m=RAW.meta||{};
   document.getElementById('stat').innerHTML=`${tr('online')} · <b>${N.length}</b> ${tr('nodes')} · <b>${E.length}</b> ${tr('links')} · <b>${(m.projects||[]).length}</b> ${tr('proj')} · <b>${(m.machines||[]).length}</b> ${tr('mach')}`;
   document.getElementById('stat').className='';
+  const _sb=document.getElementById('statBadge');if(_sb)_sb.innerHTML=`◉ <b>${N.length}</b>`;   // 移动端紧凑计数徽标
   resize();applyFilter();loop();
 }
 function col(n){ if(n.type==='entry'){ if(colorMode==='task')return TASKC[n.task]||'#6b7690'; if(colorMode==='tool')return TOOLC[n.tool]||'#8aa0c8'; } return PALETTE[n.type]||'#9fb0d0'; }
@@ -427,7 +499,8 @@ function buildFocus(){
   focusSet=s;
 }
 function applyFilter(){buildFocus();visN=N.filter(visible);visSet=new Set(visN.map(n=>n.id));
-  document.getElementById('empty').style.display=visN.length?'none':'flex';alpha=Math.max(alpha,.6);}
+  document.getElementById('empty').style.display=visN.length?'none':'flex';alpha=Math.max(alpha,.6);
+  const _stb=document.getElementById('stBadge');if(_stb)_stb.textContent=visN.length;}   // 抽屉按钮上的可见节点数徽标
 function radiusOf(n){return 2.4+26*(Math.sqrt(n.weight||1)/wmax);}
 
 function step3d(){
@@ -679,6 +752,28 @@ function setup(){
     else{hover=pick(e.clientX,e.clientY);cv.style.cursor=hover?'pointer':'crosshair';}});
   window.addEventListener('mouseup',e=>{if(dragging&&!moved){const p=pick(e.clientX,e.clientY);select(p);}dragging=false;cv.classList.remove('drag');});
   cv.addEventListener('wheel',e=>{e.preventDefault();zoom*=e.deltaY<0?1.12:1/1.12;zoom=Math.max(.2,Math.min(6,zoom));},{passive:false});
+  // —— 触摸：单指拖拽=旋转 · 双指捏合=缩放 · 单击=选中读出（与鼠标逻辑等价；preventDefault 抑制合成鼠标事件与页面滚动）——
+  let _pd=0,_pinch=false,_tap=null;
+  const _dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+  cv.addEventListener('touchstart',e=>{e.preventDefault();
+    const h=document.querySelector('header');if(h)h.classList.remove('stat-open','search-open');   // 点画布收起顶栏弹层
+    if(e.touches.length===1){const t=e.touches[0];last={x:t.clientX,y:t.clientY};_tap={x:t.clientX,y:t.clientY};
+      moved=false;dragging=true;_pinch=false;cv.classList.add('drag');}
+    else if(e.touches.length>=2){_pinch=true;dragging=false;moved=true;_pd=_dist(e.touches);}
+  },{passive:false});
+  cv.addEventListener('touchmove',e=>{e.preventDefault();
+    if(_pinch&&e.touches.length>=2){const d=_dist(e.touches);
+      if(_pd>0){zoom*=d/_pd;zoom=Math.max(.2,Math.min(6,zoom));}_pd=d;}
+    else if(dragging&&e.touches.length===1){const t=e.touches[0],dx=t.clientX-last.x,dy=t.clientY-last.y;
+      if(_tap&&Math.abs(t.clientX-_tap.x)+Math.abs(t.clientY-_tap.y)>6)moved=true;
+      yaw+=dx*.005;pitch+=dy*.005;pitch=Math.max(-1.4,Math.min(1.4,pitch));last={x:t.clientX,y:t.clientY};}
+  },{passive:false});
+  cv.addEventListener('touchend',e=>{e.preventDefault();
+    if(e.touches.length===0){if(dragging&&!moved&&_tap)select(pick(_tap.x,_tap.y));
+      dragging=false;_pinch=false;_pd=0;_tap=null;cv.classList.remove('drag');}
+    else if(e.touches.length===1){const t=e.touches[0];last={x:t.clientX,y:t.clientY};_pinch=false;_pd=0;dragging=true;moved=true;}
+  },{passive:false});
+  cv.addEventListener('touchcancel',()=>{dragging=false;_pinch=false;_pd=0;_tap=null;cv.classList.remove('drag');});
 }
 function pick(mx,my){const r=cv.getBoundingClientRect();mx-=r.left;my-=r.top;let best=null,bd=1e9;
   for(const n of visN){if(n._sx==null)continue;const dx=n._sx-mx,dy=n._sy-my,d=dx*dx+dy*dy,rr=(n._r+6)*(n._r+6);if(d<rr&&n._z<bd){bd=n._z;best=n;}}return best;}
@@ -715,14 +810,14 @@ function face(n){yaw=-Math.atan2(n.x,n.z+1e-6);pitch=Math.atan2(n.y,Math.hypot(n
 function doSearch(q){if(!q)return;q=q.toLowerCase();
   let hit=N.find(n=>(nodeLabel(n)||'').toLowerCase().includes(q)||(n.label||'').toLowerCase().includes(q))||N.find(n=>(nodeValue(n,'excerpt')||n.excerpt||'').toLowerCase().includes(q)||(nodeValue(n,'description')||n.description||'').toLowerCase().includes(q));
   if(hit){ensureVisible(hit);select(hit);face(hit);}}
-function resize(){const r=cv.getBoundingClientRect();DPR=window.devicePixelRatio||1;W=r.width;H=r.height;cx=W/2;cy=H/2;cv.width=W*DPR;cv.height=H*DPR;
+function resize(){const r=cv.getBoundingClientRect();DPR=Math.min(window.devicePixelRatio||1,2);W=r.width;H=r.height;cx=W/2;cy=H/2;cv.width=W*DPR;cv.height=H*DPR;   // DPR 上限 2：控制移动端 canvas 像素量
   if(TH().initBg)TH().initBg();}
 // 星空(cosmos)背景粒子：星云 + 星场 + 银河带
 function initBgCosmos(){
   const mn=Math.min(W,H);
   const NC=['#6d4aff','#2a6cff','#1fc8b0','#c44aff','#5a8cff','#3a2a8f'];
   nebula=[];for(let i=0;i<7;i++)nebula.push({x:(0.12+0.76*Math.random())*W,y:(0.12+0.76*Math.random())*H,r:mn*(0.32+Math.random()*0.42),col:NC[i%NC.length],a:0.07+Math.random()*0.08,ph:Math.random()*6});
-  stars=[];const ns=Math.round(W*H/2300);
+  stars=[];const ns=Math.round(W*H/(_isMobile()?3400:2300));   // 小屏适当降星场密度
   for(let i=0;i<ns;i++){const t=Math.random(),sz=t<.8?1:(t<.96?2:3),h=Math.random(),c=h<.72?'220,228,255':h<.88?'150,180,255':'255,224,196';
     stars.push({x:Math.random()*W,y:Math.random()*H,r:sz,a:.1+Math.random()*.6,c,p:Math.random()*6});}
   const ca=-0.5,bx=Math.cos(ca),by=Math.sin(ca),bn=Math.round(ns*0.6);
@@ -1092,10 +1187,28 @@ function _styleSync(k){const c=sqCards.find(b=>b.dataset.s===k);   // setStyle()
     b.classList.toggle('on',on);b.setAttribute('aria-checked',on?'true':'false');});}
 sqTrig.onclick=e=>{e.stopPropagation();_sqOpen(!sqMenu.classList.contains('show'));};
 sqCards.forEach(b=>b.onclick=e=>{e.stopPropagation();setStyle(b.dataset.s);_styleSync(styleKey);_sqOpen(false);});
-document.addEventListener('click',e=>{if(!sqTrig.contains(e.target)&&!sqMenu.contains(e.target))_sqOpen(false);});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sqMenu.classList.contains('show'))_sqOpen(false);});
+document.addEventListener('click',e=>{if(!sqTrig.contains(e.target)&&!sqMenu.contains(e.target))_sqOpen(false);
+  if(_headerEl&&!_headerEl.contains(e.target))_headerEl.classList.remove('stat-open','search-open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(sqMenu.classList.contains('show'))_sqOpen(false);
+  if(_sideEl&&_sideEl.classList.contains('open'))toggleSide(false);
+  if(_headerEl)_headerEl.classList.remove('stat-open','search-open');}});
 const langTrig=document.getElementById('lang-trig');
 if(langTrig)langTrig.onclick=()=>setLanguage(LANG==='zh'?'en':'zh');
+// —— 移动端控件：左侧抽屉 / 计数弹层 / 搜索展开（≤768px 生效；桌面上这些控件隐藏、行为不变）——
+const _headerEl=document.querySelector('header'),_sideEl=document.getElementById('side'),
+      _sideTog=document.getElementById('sideToggle'),_sideBk=document.getElementById('sideBackdrop'),
+      _statBadge=document.getElementById('statBadge'),_searchBtn=document.getElementById('searchBtn');
+function toggleSide(o){if(!_sideEl||!_sideTog)return;if(o===undefined)o=!_sideEl.classList.contains('open');
+  _sideEl.classList.toggle('open',o);if(_sideBk)_sideBk.classList.toggle('show',o);
+  _sideTog.setAttribute('aria-expanded',o?'true':'false');}
+if(_sideTog)_sideTog.onclick=e=>{e.stopPropagation();toggleSide();};
+if(_sideBk)_sideBk.onclick=()=>toggleSide(false);
+if(_statBadge)_statBadge.onclick=e=>{e.stopPropagation();_headerEl.classList.remove('search-open');
+  const o=_headerEl.classList.toggle('stat-open');_statBadge.setAttribute('aria-expanded',o?'true':'false');};
+if(_searchBtn)_searchBtn.onclick=e=>{e.stopPropagation();_headerEl.classList.remove('stat-open');
+  const o=_headerEl.classList.toggle('search-open');_searchBtn.setAttribute('aria-expanded',o?'true':'false');
+  if(o)setTimeout(()=>{const s=document.getElementById('search');if(s)s.focus();},40);};
+if(/(^|[#&?])panel=open\b/.test(location.hash))toggleSide(true);   // #panel=open：深链/headless 直接展开抽屉（桌面无副作用）
 _styleSync(styleKey);   // 初始状态来自 styleKey（hash/localStorage/默认值），修正 HTML 里写死的高亮
 applyThemeCss();
 applyLanguage();

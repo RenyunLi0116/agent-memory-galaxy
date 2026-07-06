@@ -970,6 +970,240 @@ CSS += r"""
 }
 """
 
+CSS += r"""
+/* === Landing v2: contrast-impact launch (docs/index.html only; concepts untouched) === */
+.landing-v2 .hero-intro { padding: 56px 0 4px; }
+.landing-v2 .hero-intro h1 {
+  max-width: 1060px;
+  margin: 16px 0 18px;
+  font-size: clamp(46px, 6.6vw, 94px);
+  line-height: .96;
+}
+.landing-v2 .hero-intro .lead { max-width: 840px; font-size: 19px; }
+.landing-v2 .hero-intro .proof-row { margin-top: 22px; }
+
+.contrast { padding: 40px 0 14px; }
+.contrast-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+.contrast-side { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.contrast-tag {
+  display: flex; align-items: center; gap: 10px;
+  color: #878d97;
+  font: 800 11px/1.3 "JetBrains Mono", "Cascadia Code", monospace;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.contrast-tag::before {
+  content: ""; width: 9px; height: 9px; border-radius: 50%;
+  background: #62666e; flex: none;
+}
+.contrast-tag.gold { color: var(--accent); }
+.contrast-tag.gold::before { background: var(--accent); box-shadow: 0 0 12px rgba(242, 184, 75, .85); }
+.contrast-tag em {
+  font-style: normal; font-weight: 650; letter-spacing: .02em; text-transform: none;
+  border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px;
+  color: var(--muted); font-size: 10.5px; white-space: nowrap;
+}
+.contrast-caption { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.55; max-width: 62ch; }
+.contrast-arrow {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); font-size: 38px; font-weight: 800;
+  text-shadow: 0 0 20px rgba(242, 184, 75, .7);
+}
+.contrast-grid .galaxy-card { flex: 1; height: auto; min-height: 420px; }
+
+.chaos-board {
+  position: relative; flex: 1; min-height: 420px; overflow: hidden;
+  border: 1px dashed rgba(255, 255, 255, .17);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, .028) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, .028) 1px, transparent 1px),
+    radial-gradient(circle at 50% 36%, #101114 0%, #0a0b0d 74%);
+  background-size: 34px 34px, 34px 34px, 100% 100%;
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, .55);
+}
+.chaos-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.chaos-lines path {
+  fill: none; stroke: rgba(255, 255, 255, .15); stroke-width: 1.3;
+  stroke-dasharray: 5 9; stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.chaos-chip {
+  position: absolute; z-index: 2;
+  transform: rotate(var(--rot, 0deg));
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-radius: 6px; padding: 5px 9px 5px 8px;
+  background: #131417; color: #989ea7;
+  font: 600 11px/1.3 "JetBrains Mono", "Cascadia Code", monospace;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .45);
+}
+.chaos-chip::before {
+  content: ""; display: inline-block; width: 7px; height: 7px;
+  border-radius: 50%; background: #53575e; margin-right: 7px;
+}
+.chaos-term {
+  position: absolute; z-index: 1;
+  transform: rotate(var(--rot, 0deg));
+  border: 1px solid rgba(255, 255, 255, .12); border-radius: 7px;
+  background: #0b0c0e; overflow: hidden;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, .5);
+}
+.chaos-term b {
+  display: block; padding: 6px 10px;
+  background: #15161a; color: #767c86;
+  font: 700 10px/1.4 "JetBrains Mono", "Cascadia Code", monospace;
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.chaos-term b::before {
+  content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: #3e424a; box-shadow: 10px 0 0 #3e424a, 20px 0 0 #3e424a;
+  margin-right: 28px;
+}
+.chaos-term code {
+  display: block; padding: 3px 10px; color: #7c828b; font-size: 11px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.chaos-term code:last-child { padding-bottom: 8px; }
+.chaos-term code.q { color: #c7ccd4; }
+.chaos-note {
+  position: absolute; z-index: 2;
+  transform: rotate(var(--rot, 0deg));
+  max-width: 34%;
+  background: #17150f;
+  border: 1px solid rgba(242, 184, 75, .3);
+  border-radius: 3px;
+  padding: 8px 10px;
+  color: #ac9a6d;
+  font-size: 11.5px; line-height: 1.4; font-weight: 600;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .45);
+}
+.chaos-q {
+  position: absolute; z-index: 0;
+  color: rgba(255, 255, 255, .12);
+  font-weight: 860; font-size: 44px; line-height: 1;
+  transform: rotate(var(--rot, 0deg));
+}
+
+.pain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.pain-card {
+  min-width: 0;
+  border: 1px solid var(--line); border-radius: 8px; padding: 20px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+}
+.pain-num {
+  display: block; margin-bottom: 12px;
+  color: var(--danger);
+  font: 800 11px/1 "JetBrains Mono", "Cascadia Code", monospace; letter-spacing: .12em;
+}
+.pain-fig {
+  width: 100%; height: 116px; display: block; margin-bottom: 14px;
+  border-radius: 6px; background: #0b0c10; border: 1px solid rgba(255, 255, 255, .06);
+}
+.pain-card h3 { margin: 0 0 8px; font-size: 19px; }
+.pain-card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+.stat-band {
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--line));
+  border-radius: 10px;
+  padding: 24px 22px 16px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(242, 184, 75, .09), transparent 52%),
+    color-mix(in srgb, var(--surface) 94%, transparent);
+}
+.stat-band .mini-label { display: block; margin-bottom: 16px; }
+.stat-band-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.stat-cell { min-width: 0; }
+.stat-cell b { display: block; font-size: clamp(26px, 2.6vw, 38px); font-weight: 860; color: var(--accent); line-height: 1.1; }
+.stat-cell.live b { color: var(--danger); }
+.stat-cell.live b::after {
+  content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--danger); box-shadow: 0 0 10px var(--danger);
+  margin-left: 8px; vertical-align: 6px;
+  animation: mini-live-blink 1.6s ease-in-out infinite;
+}
+.stat-cell span { color: var(--muted); font-size: 12.5px; }
+.stat-honest { margin: 18px 0 0; padding-top: 12px; border-top: 1px dashed var(--line); color: var(--muted); font-size: 12.5px; }
+
+.timeline { position: relative; padding-left: 40px; display: grid; gap: 30px; max-width: 880px; }
+.timeline::before {
+  content: ""; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 2px;
+  background: linear-gradient(180deg, var(--accent), rgba(242, 184, 75, .08));
+}
+.tl-item { position: relative; }
+.tl-item::before {
+  content: ""; position: absolute; left: -36px; top: 2px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--bg); border: 3px solid var(--accent);
+  box-shadow: 0 0 14px rgba(242, 184, 75, .5);
+}
+.tl-item.live::before { border-color: var(--danger); box-shadow: 0 0 14px rgba(240, 111, 121, .65); }
+.tl-step { display: block; color: var(--accent); font: 800 11px/1.3 "JetBrains Mono", "Cascadia Code", monospace; letter-spacing: .12em; }
+.tl-item.live .tl-step { color: var(--danger); }
+.tl-item h3 { margin: 8px 0 6px; font-size: 21px; }
+.tl-item p { margin: 0; color: var(--muted); font-size: 15px; max-width: 76ch; }
+
+.demo-wide { margin-bottom: 26px; }
+
+.cta-band {
+  margin: 76px 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+  border-radius: 12px;
+  padding: 58px 26px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(242, 184, 75, .16), transparent 58%),
+    #0b0c10;
+}
+.cta-band h2 { margin: 0 0 12px; font-size: clamp(30px, 4vw, 50px); line-height: 1.02; }
+.cta-band > p { margin: 0 auto; max-width: 680px; color: var(--muted); font-size: 16px; }
+.cta-band .actions { justify-content: center; }
+
+@media (max-width: 1080px) {
+  .contrast-grid { grid-template-columns: 1fr; }
+  .contrast-arrow { transform: rotate(90deg); min-height: 42px; }
+  .stat-band-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .pain-grid { grid-template-columns: 1fr; }
+  .pain-fig { height: 104px; }
+}
+@media (max-width: 760px) {
+  .landing-v2 .hero-intro h1 { font-size: clamp(40px, 11vw, 56px); }
+  .stat-band-grid { grid-template-columns: repeat(2, 1fr); gap: 16px 12px; }
+  .chaos-board { min-height: 460px; }
+  .contrast-grid .galaxy-card { min-height: 400px; }
+  .timeline { padding-left: 32px; }
+  .timeline::before { left: 7px; }
+  .tl-item::before { left: -28px; }
+  .cta-band { padding: 44px 18px; margin: 48px 0; }
+}
+/* Narrow chaos board: re-seat the collage so nothing collides. The inline
+   left/top values are tuned for the two-column desktop board, hence !important. */
+@media (max-width: 600px) {
+  .chaos-chip { font-size: 9px; padding: 4px 7px; }
+  .chaos-term code { font-size: 9.5px; }
+  .chaos-note { font-size: 10.5px; left: 6% !important; top: 68% !important; max-width: 40%; }
+  .chaos-q { font-size: 34px; }
+  .chaos-term:nth-of-type(1) { left: 52% !important; width: 45% !important; }
+  .chaos-term:nth-of-type(2) { left: 2% !important; width: 48% !important; }
+  .chaos-term:nth-of-type(3) { right: 2% !important; width: 50% !important; }
+  .chaos-term:nth-of-type(3) code { font-size: 8.8px; }
+  .chaos-chip.c5 { right: 2% !important; }
+  .chaos-chip.c7 { left: 2% !important; }
+  .chaos-chip.c8 { left: 2% !important; top: 80% !important; }
+  .chaos-chip.c9 { top: 93% !important; }
+  .chaos-chip.c10 { left: 50% !important; top: 76% !important; }
+  .chaos-chip.c11 { top: 87% !important; }
+}
+"""
+
 
 JS = r"""
 (function () {
@@ -984,8 +1218,8 @@ JS = r"""
       expandGalaxy: 'Expand galaxy', miniSideTitle: 'NODE TYPES', miniProject: 'Project', miniServer: 'Server', miniAgent: 'Agent', miniBoundary: 'Boundary', miniArtifact: 'Artifact', miniReadoutTitle: 'ONLINE HUD', miniReadout: 'multi-server handoff / live agents / encrypted boundary',
       modalMuted: 'Synthetic demo. Drag, zoom, filter, and inspect nodes.', openFullDemo: 'Open full demo', close: 'Close', copied: 'Copied', copyFailed: 'Copy failed',
       status: function (n, e, m) { return n + ' nodes / ' + e + ' links / ' + m + ' machines'; },
-      heroKicker: 'PUBLIC FRAMEWORK / PRIVATE MEMORY', heroTitle: 'Your agents remember together. Privately.',
-      heroLead: 'Turn scattered agent traces across machines into one private, inspectable memory graph. Collect reviewed notes, safe session metadata, machine fragments, and live presence, then explore the result in a static Galaxy Viewer.',
+      heroKicker: 'FOR RESEARCHERS RUNNING MANY AGENTS', heroTitle: 'Which agent did that?',
+      heroLead: 'Claude on your laptop, a training agent on the GPU node, Codex on the CI box. By 11 pm each has touched a dozen files, and none of them knows the others exist. Agent Memory Galaxy merges the agent memory from every machine into one private, searchable galaxy - so tomorrow you can just look.',
       openDemo: 'Open synthetic demo', installSkill: 'Install as skill', syntheticNodes: 'synthetic nodes', syntheticLinks: 'synthetic links', fictionalProjects: 'fictional projects', fictionalMachines: 'fictional machines',
       previewHeading: 'Live synthetic demo. No real memory.', previewBody: 'The public graph demonstrates multi-server collaboration, currently-working agents, project inheritance, shared assets, and private/public/encrypted boundaries using fictional labels only.',
       searchLabel: 'Search', searchTitle: 'Find a project or artifact', searchBody: 'Search across projects, agents, files, models, servers, and derived facts.',
@@ -999,7 +1233,25 @@ JS = r"""
       contributor: 'Contributor', contributorBody: 'Writes `fragments/<machine>.json` in a private hub. Does not need encryption passwords and should not touch `docs/galaxy/`.', aggregator: 'Aggregator', aggregatorBody: 'Merges all fragments, builds local `standalone.html`, and optionally creates `docs/galaxy/graph.enc.json` with strong passwords.',
       urlHeading: 'Know which URL you are sharing.', urlBody: 'The marketing site, synthetic demo, and optional encrypted runtime viewer are separate paths.', path: 'Path', purpose: 'Purpose', dataPolicy: 'Data policy',
       urlPromo: 'Public promo landing', urlNoReal: 'No real data', urlDemo: 'Synthetic interactive demo', urlFake: 'Fake graph only', urlConcepts: 'Design exploration archive', urlSecondary: 'Public, secondary', urlGalaxy: 'Optional encrypted viewer shell', urlCipher: 'Public shell, ciphertext only', urlStandalone: 'Local plaintext viewer', urlLocal: 'Local only, gitignored',
-      footerPrivacy: 'Synthetic demo public. Real memory private.'
+      footerPrivacy: 'Synthetic demo public. Real memory private.',
+      heroPillDaemon: 'no daemon, no build step', heroPillStatic: 'static HTML viewer', heroPillPrivate: 'private by default, encrypted to publish',
+      beforeTag: 'WITHOUT SHARED MEMORY', afterTag: 'WITH AGENT MEMORY GALAXY', illustrativeTag: 'illustrative scene', syntheticTag: 'synthetic data',
+      beforeCaption: '11 agents, 5 machines, zero shared context. Every window remembers a different slice of the day, and it all evaporates when the terminal closes.',
+      afterCaption: 'The same day as one graph: gold edges are cross-project references, red pulses are agents working right now, amber marks the encryption boundary. This demo is fully synthetic - your galaxy stays private.',
+      chaosNote1: 'who changed dataloader.py?', chaosNote2: 're-ran the same sweep. twice.', chaosNote3: '47 checkpoints, 0 notes', chaosNote4: 'was this fix already merged?',
+      painHeading: 'Three ways the day falls apart.', painBody: 'Run agents on more than one machine and you already know all three.',
+      pain1Title: 'Nobody remembers who did what', pain1Body: 'Each agent leaves its trail in a different scrollback on a different machine. By the next morning, "why did this change?" has no answer.',
+      pain2Title: 'Duplicate work, hours apart', pain2Body: 'Two agents chase the same bug on two machines. Neither knows a fix already exists, so the same afternoon gets spent twice.',
+      pain3Title: 'No collaboration network', pain3Body: 'Agents cannot see each other, so there is no handoff: configs get overwritten, runs get orphaned, and context dies with the session.',
+      statBandTitle: 'The demo galaxy, in real numbers', statEntries: 'memory entries', statLive: 'agents live right now',
+      statHonest: 'Counts load live from the public demo graph.json. Every machine, project, agent, and file in it is synthetic and clearly fictional - no real work memory is published here.',
+      howHeading: 'From scattered traces to one galaxy.', howBody: 'Plain files and static HTML - no daemon, no database, no build step. This is the path a day of agent work takes.',
+      tl1Tag: 'STEP 01 - IN EVERY PROJECT', tl1Title: 'Agents write memory as they work', tl1Body: 'Each project keeps an agent_memory.md: what changed, why, and which files. Agents read it when a session starts and append after meaningful changes.',
+      tl2Tag: 'STEP 02 - ON EVERY MACHINE', tl2Title: 'Each machine contributes a fragment', tl2Body: 'contribute.sh scans reviewed notes and safe session metadata - never raw conversations - into fragments/<machine>.json.',
+      tl3Tag: 'STEP 03 - ON THE AGGREGATOR', tl3Title: 'One aggregator merges the graph', tl3Body: 'Shared files, datasets, models, and servers connect projects across machines. A gold reference skeleton emerges between project hubs.',
+      tl4Tag: 'LIVE - EVERY FEW MINUTES', tl4Title: 'Working agents light up red', tl4Body: 'Agents currently on the clock carry a red pulse and a doing line that says what they are on - visible to you and to every other agent before work overlaps.',
+      tl5Tag: 'STEP 05 - ONLY IF YOU PUBLISH', tl5Title: 'Encryption before anything leaves', tl5Body: 'Plaintext graphs stay local or in a private hub. A public Pages deploy ships the viewer shell plus ciphertext only, unlocked client-side.',
+      ctaTitle: 'Stop asking "which agent did that?"', ctaBody: 'Install the skill, point it at your project roots, and give tomorrow-you - and every other agent - one place to look.'
     },
     zh: {
       navConcepts: '设计存档', navDemo: '演示', navPrivacy: '隐私', navInstall: '安装',
@@ -1007,8 +1259,8 @@ JS = r"""
       expandGalaxy: '展开图谱', miniSideTitle: '节点类型', miniProject: '项目', miniServer: '机器', miniAgent: 'Agent', miniBoundary: '边界', miniArtifact: '产物', miniReadoutTitle: '在线 HUD', miniReadout: '多服务器交接 / 在线 agent / 加密边界',
       modalMuted: '合成 demo。可拖拽、缩放、过滤并点击节点读出。', openFullDemo: '打开完整 demo', close: '关闭', copied: '已复制', copyFailed: '复制失败',
       status: function (n, e, m) { return n + ' 节点 / ' + e + ' 连线 / ' + m + ' 机器'; },
-      heroKicker: '公开框架 / 私有记忆', heroTitle: '让你的 agents 一起记住工作。并保持私有。',
-      heroLead: '把分散在多台机器上的 agent 工作痕迹汇成一个私有、可检索、可检查的记忆图谱。它收集审阅后的笔记、安全会话元数据、机器 fragment 和在线状态，并在静态 Galaxy Viewer 中探索。',
+      heroKicker: '写给同时跑很多 agent 的研究者', heroTitle: '昨天是哪个 agent 改的？',
+      heroLead: '笔记本上的 Claude、GPU 节点上的训练 agent、CI 机器上的 Codex——到晚上 11 点，每个都改过十几个文件，而它们互相不知道对方的存在。Agent Memory Galaxy 把每台机器的 agent 记忆汇成一张私有、可搜索的银河，第二天你只需要看一眼。',
       openDemo: '打开合成 demo', installSkill: '安装为 skill', syntheticNodes: '合成节点', syntheticLinks: '合成连线', fictionalProjects: '虚构项目', fictionalMachines: '虚构机器',
       previewHeading: '实时合成 demo，不含真实记忆。', previewBody: '公开图谱用虚构标签展示多服务器协作、正在工作的 agent、项目继承、共享资产，以及公开/私有/加密边界。',
       searchLabel: '搜索', searchTitle: '查找项目或产物', searchBody: '跨项目、agent、文件、模型、服务器和自动提炼事实搜索。',
@@ -1022,7 +1274,25 @@ JS = r"""
       contributor: '贡献机器', contributorBody: '在私有 hub 中写入 `fragments/<machine>.json`。不需要加密密码，也不应修改 `docs/galaxy/`。', aggregator: '聚合端', aggregatorBody: '合并所有 fragments，构建本地 `standalone.html`，并可用强密码创建 `docs/galaxy/graph.enc.json`。',
       urlHeading: '分清你正在分享哪个 URL。', urlBody: '宣传站、合成 demo 和可选加密运行 viewer 是不同路径。', path: '路径', purpose: '用途', dataPolicy: '数据策略',
       urlPromo: '公开宣传页', urlNoReal: '没有真实数据', urlDemo: '合成交互 demo', urlFake: '仅虚构图谱', urlConcepts: '设计探索存档', urlSecondary: '公开、次级页面', urlGalaxy: '可选加密 viewer shell', urlCipher: '公开 shell，仅密文', urlStandalone: '本地明文 viewer', urlLocal: '仅本地，已 gitignore',
-      footerPrivacy: '合成 demo 公开，真实记忆私有。'
+      footerPrivacy: '合成 demo 公开，真实记忆私有。',
+      heroPillDaemon: '无守护进程、无构建步骤', heroPillStatic: '静态 HTML viewer', heroPillPrivate: '默认私有，发布即加密',
+      beforeTag: '没有共享记忆的一天', afterTag: '接入 AGENT MEMORY GALAXY', illustrativeTag: '示意场景', syntheticTag: '合成数据',
+      beforeCaption: '11 个 agent、5 台机器、0 份共享上下文。每个窗口只记得这一天的一个切片，终端一关就全部蒸发。',
+      afterCaption: '同一天变成一张图：金色连线是跨项目引用，红色脉冲是此刻正在工作的 agent，琥珀色是加密边界。此 demo 全部为合成数据——你的银河保持私有。',
+      chaosNote1: 'dataloader.py 是谁改的？', chaosNote2: '同一个 sweep 跑了两遍。', chaosNote3: '47 个 checkpoint，0 条记录', chaosNote4: '这个 fix 是不是已经改过一次了？',
+      painHeading: '多 agent 的一天，是这样失控的。', painBody: '只要你在多台机器上同时用 agent，这三个场景你一定都见过。',
+      pain1Title: '记不得谁做了什么', pain1Body: '每个 agent 的痕迹散落在不同机器的终端历史里。到第二天早上，「这里为什么改了」已经没有答案。',
+      pain2Title: '前后脚的重复劳动', pain2Body: '两个 agent 在两台机器上先后追同一个 bug，谁也不知道修复早已存在——同一个下午被花掉了两次。',
+      pain3Title: '没有合作网络', pain3Body: 'agents 看不见彼此，也就没有交接：配置被互相覆盖、实验成了孤儿、上下文随 session 一起消失。',
+      statBandTitle: 'demo 银河的真实统计', statEntries: '条记忆记录', statLive: '个 agent 正在工作',
+      statHonest: '以上数字实时读取自公开 demo 的 graph.json；其中所有机器、项目、agent 和文件均为合成的虚构数据，这里不发布任何真实工作记忆。',
+      howHeading: '从零散痕迹，到一张银河。', howBody: '纯文件加静态 HTML——没有守护进程、没有数据库、没有构建步骤。一天的 agent 工作会走过这条路径。',
+      tl1Tag: '步骤 01 · 在每个项目里', tl1Title: 'agents 边工作边写记忆', tl1Body: '每个项目维护一份 agent_memory.md：改了什么、为什么、涉及哪些文件。agent 在会话开始时读取，在有意义的改动后追加。',
+      tl2Tag: '步骤 02 · 在每台机器上', tl2Title: '每台机器贡献一个 fragment', tl2Body: 'contribute.sh 扫描已审阅的笔记与安全会话元数据——绝不包含原始对话——写入 fragments/<machine>.json。',
+      tl3Tag: '步骤 03 · 在聚合端', tl3Title: '聚合端合并成一张图', tl3Body: '共享的文件、数据集、模型和服务器把跨机器的项目连接起来，项目枢纽之间浮现出金色引用骨架。',
+      tl4Tag: '实时 · 每隔几分钟', tl4Title: '正在工作的 agent 亮起红光', tl4Body: '正在干活的 agent 带红色脉冲和一行 doing 说明——你和其它 agent 都能看到，在重复劳动发生之前。',
+      tl5Tag: '步骤 05 · 仅在发布时', tl5Title: '任何东西出门前先加密', tl5Body: '明文图谱只留在本地或私有 hub。公开的 Pages 部署只携带 viewer shell 和密文，在浏览器端解锁。',
+      ctaTitle: '别再问「是哪个 agent 改的」。', ctaBody: '安装 skill，指向你的项目根目录，让明天的你——以及所有其它 agent——只需要看一个地方。'
     }
   };
 
@@ -1608,13 +1878,16 @@ def graph_meta():
     if GRAPH.exists():
         with GRAPH.open("r", encoding="utf-8") as f:
             meta = json.load(f).get("meta", {})
+        type_counts = meta.get("type_counts", {})
         return {
             "nodes": meta.get("node_count", 0),
             "edges": meta.get("edge_count", 0),
             "projects": len(meta.get("projects", [])),
             "machines": len(meta.get("machines", [])),
+            "entries": type_counts.get("entry", 0),
+            "live": type_counts.get("liveagent", 0),
         }
-    return {"nodes": 125, "edges": 445, "projects": 6, "machines": 5}
+    return {"nodes": 125, "edges": 445, "projects": 6, "machines": 5, "entries": 0, "live": 0}
 
 
 def esc(value: str) -> str:
@@ -1909,43 +2182,213 @@ def gallery_html(prefix: str, concept_prefix: str, stats: dict, out_title: str) 
 """
 
 
+CHAOS_LINE_PATHS = [
+    "M 28 12 L 39 19",
+    "M 36 23 L 45 30",
+    "M 47 41 L 56 47",
+    "M 30 57 L 39 64",
+    "M 63 52 L 70 57",
+    "M 20 73 L 29 80",
+]
+
+CHAOS_CHIPS = [
+    ("left:4%;top:4%;--rot:-3deg", "claude · demo-laptop-b", " c1"),
+    ("left:2%;top:17%;--rot:2deg", "train-loop · demo-gpu-node-c", " c2"),
+    ("right:3%;top:30%;--rot:3deg", "codex · demo-gpu-node-c", " c3"),
+    ("left:4%;top:29%;--rot:-1deg", "eval-runner · demo-ci-runner-d", " c4"),
+    ("right:4%;top:46%;--rot:-2deg", "sweep-agent · demo-gpu-node-c", " c5"),
+    ("left:50%;top:38%;--rot:2deg", "docs-agent · demo-laptop-b", " c6"),
+    ("left:6%;top:61%;--rot:1deg", "claude · demo-workstation-a", " c7"),
+    ("left:4%;top:81%;--rot:-2deg", "codex · demo-workstation-a", " c8"),
+    ("left:4%;top:91%;--rot:2deg", "data-agent · demo-capture-server", " c9"),
+    ("left:52%;top:91%;--rot:-1deg", "merge-bot · demo-merge-runner", " c10"),
+    ("right:2%;top:83%;--rot:2deg", "deploy-agent · demo-pages-host-e", " c11"),
+]
+
+CHAOS_TERMS = [
+    ("left:40%;top:4%;width:42%;--rot:.6deg", "demo-gpu-node-c",
+     [(None, "$ tail -f train.log"), ("chaosNote3", "47 checkpoints, 0 notes")]),
+    ("left:4%;top:38%;width:42%;--rot:-.8deg", "demo-workstation-a",
+     [(None, "$ git log --oneline -1"), ("chaosNote1", "who changed dataloader.py?")]),
+    ("right:4%;top:57%;width:44%;--rot:.8deg", "demo-ci-runner-d",
+     [(None, "$ ls runs/ | wc -l"), ("chaosNote2", "re-ran the same sweep. twice.")]),
+]
+
+CHAOS_QMARKS = [
+    "left:30%;top:8%;--rot:-8deg",
+    "left:48%;top:48%;--rot:6deg",
+    "left:40%;top:83%;--rot:-6deg",
+]
+
+
+def chaos_board_markup() -> str:
+    lines = "".join(f'<path d="{d}" />' for d in CHAOS_LINE_PATHS)
+    chips = "".join(
+        f'<span class="chaos-chip{cls}" style="{style}">{esc(label)}</span>'
+        for style, label, cls in CHAOS_CHIPS
+    )
+    terms = []
+    for style, host, rows in CHAOS_TERMS:
+        row_html = ""
+        for key, text in rows:
+            if key:
+                row_html += f'<code class="q" data-i18n="{key}">{esc(text)}</code>'
+            else:
+                row_html += f"<code>{esc(text)}</code>"
+        terms.append(f'<div class="chaos-term" style="{style}"><b>{esc(host)}</b>{row_html}</div>')
+    qmarks = "".join(f'<span class="chaos-q" style="{style}">?</span>' for style in CHAOS_QMARKS)
+    note = ('<span class="chaos-note" style="left:12%;top:70%;--rot:-5deg" data-i18n="chaosNote4">'
+            "was this fix already merged?</span>")
+    return (
+        '<div class="chaos-board" aria-hidden="true">'
+        f'<svg class="chaos-lines" viewBox="0 0 100 100" preserveAspectRatio="none">{lines}</svg>'
+        f'{"".join(terms)}{chips}{note}{qmarks}'
+        "</div>"
+    )
+
+
+PAIN_FIGS = {
+    1: """<svg class="pain-fig" viewBox="0 0 240 116" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+  <g stroke="#565b63" stroke-dasharray="4 7" fill="none" stroke-width="1.4">
+    <path d="M 40 30 L 82 48" /><path d="M 202 28 L 154 47" /><path d="M 48 90 L 88 72" />
+  </g>
+  <circle cx="33" cy="27" r="7" fill="#767c86" /><circle cx="208" cy="25" r="7" fill="#767c86" /><circle cx="42" cy="93" r="7" fill="#767c86" />
+  <rect x="98" y="32" width="46" height="54" rx="6" fill="#15171b" stroke="#3e424a" />
+  <path d="M 106 44 H 136 M 106 52 H 130" stroke="#3e424a" fill="none" />
+  <text x="121" y="78" fill="#f06f79" font-size="26" font-weight="800" text-anchor="middle" font-family="Inter,sans-serif">?</text>
+</svg>""",
+    2: """<svg class="pain-fig" viewBox="0 0 240 116" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+  <circle cx="34" cy="56" r="8" fill="#767c86" /><circle cx="206" cy="56" r="8" fill="#767c86" />
+  <path d="M 44 56 H 90" stroke="#565b63" stroke-width="1.4" /><path d="M 196 56 H 150" stroke="#565b63" stroke-width="1.4" />
+  <rect x="92" y="34" width="34" height="34" rx="5" fill="#15171b" stroke="#767c86" />
+  <rect x="112" y="46" width="34" height="34" rx="5" fill="#15171b" stroke="#767c86" />
+  <path d="M 100 51 L 118 51 M 100 58 L 112 58" stroke="#3e424a" fill="none" />
+  <path d="M 120 63 L 138 63 M 120 70 L 132 70" stroke="#3e424a" fill="none" />
+  <text x="120" y="104" fill="#f2b84b" font-size="13" font-weight="800" text-anchor="middle" font-family="JetBrains Mono,monospace">x2</text>
+</svg>""",
+    3: """<svg class="pain-fig" viewBox="0 0 240 116" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+  <g fill="#767c86">
+    <circle cx="44" cy="34" r="5" /><circle cx="118" cy="72" r="5" /><circle cx="164" cy="30" r="5" />
+    <circle cx="208" cy="72" r="5" /><circle cx="70" cy="92" r="5" />
+  </g>
+  <g stroke="#565b63" stroke-dasharray="3 6" fill="none">
+    <circle cx="44" cy="34" r="15" /><circle cx="118" cy="72" r="15" /><circle cx="164" cy="30" r="15" />
+    <circle cx="208" cy="72" r="15" /><circle cx="70" cy="92" r="15" />
+  </g>
+  <path d="M 60 42 L 84 56" stroke="#565b63" stroke-dasharray="3 7" fill="none" />
+  <path d="M 178 38 L 194 52" stroke="#565b63" stroke-dasharray="3 7" fill="none" />
+</svg>""",
+}
+
+
 def landing_html(stats: dict) -> str:
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Agent Memory Galaxy turns scattered AI-agent work traces into a private, inspectable memory graph.">
+<meta name="description" content="Agent Memory Galaxy: when many AI agents work across many machines, nobody remembers who did what. Merge their memory into one private, searchable galaxy.">
 <title>Agent Memory Galaxy</title>
 <link rel="stylesheet" href="assets/landing.css">
 </head>
-<body class="theme-bento">
+<body class="theme-bento landing-v2">
 {nav("", "concepts/index.html")}
 <main class="page">
-  <section class="hero landing-hero">
-    <div class="hero-copy">
-      <div class="kicker" data-i18n="heroKicker">PUBLIC FRAMEWORK / PRIVATE MEMORY</div>
-      <h1 data-i18n="heroTitle">Your agents remember together. Privately.</h1>
-      <p class="lead" data-i18n="heroLead">Turn scattered agent traces across machines into one private, inspectable memory graph. Collect reviewed notes, safe session metadata, machine fragments, and live presence, then explore the result in a static Galaxy Viewer.</p>
-      <div class="actions">
-        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open synthetic demo</button>
-        <a class="btn" href="#install" data-i18n="installSkill">Install as skill</a>
-        <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
+  <header class="hero-intro">
+    <div class="kicker" data-i18n="heroKicker">FOR RESEARCHERS RUNNING MANY AGENTS</div>
+    <h1 data-i18n="heroTitle">Which agent did that?</h1>
+    <p class="lead" data-i18n="heroLead">Claude on your laptop, a training agent on the GPU node, Codex on the CI box. By 11 pm each has touched a dozen files, and none of them knows the others exist. Agent Memory Galaxy merges the agent memory from every machine into one private, searchable galaxy - so tomorrow you can just look.</p>
+    <div class="actions">
+      <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open synthetic demo</button>
+      <a class="btn" href="#install" data-i18n="installSkill">Install as skill</a>
+      <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
+    </div>
+    <div class="proof-row">
+      <span class="pill" data-i18n="heroPillDaemon">no daemon, no build step</span>
+      <span class="pill" data-i18n="heroPillStatic">static HTML viewer</span>
+      <span class="pill" data-i18n="heroPillPrivate">private by default, encrypted to publish</span>
+    </div>
+  </header>
+
+  <section class="contrast" id="contrast" aria-label="Before and after: scattered agents vs one shared memory galaxy">
+    <div class="contrast-grid">
+      <div class="contrast-side">
+        <div class="contrast-tag"><span data-i18n="beforeTag">WITHOUT SHARED MEMORY</span><em data-i18n="illustrativeTag">illustrative scene</em></div>
+{chaos_board_markup()}
+        <p class="contrast-caption" data-i18n="beforeCaption">11 agents, 5 machines, zero shared context. Every window remembers a different slice of the day, and it all evaporates when the terminal closes.</p>
       </div>
-      <div class="hero-stat-grid">
-        <div class="hero-stat"><b>{stats['nodes']}</b><span data-i18n="syntheticNodes">synthetic nodes</span></div>
-        <div class="hero-stat"><b>{stats['edges']}</b><span data-i18n="syntheticLinks">synthetic links</span></div>
-        <div class="hero-stat"><b>{stats['projects']}</b><span data-i18n="fictionalProjects">fictional projects</span></div>
-        <div class="hero-stat"><b>{stats['machines']}</b><span data-i18n="fictionalMachines">fictional machines</span></div>
+      <div class="contrast-arrow" aria-hidden="true"><span>&#8594;</span></div>
+      <div class="contrast-side">
+        <div class="contrast-tag gold"><span data-i18n="afterTag">WITH AGENT MEMORY GALAXY</span><em data-i18n="syntheticTag">synthetic data</em></div>
+{galaxy_card("", stats, element_id="after-galaxy")}
+        <p class="contrast-caption" data-i18n="afterCaption">The same day as one graph: gold edges are cross-project references, red pulses are agents working right now, amber marks the encryption boundary. This demo is fully synthetic - your galaxy stays private.</p>
       </div>
     </div>
-{galaxy_card("", stats, element_id="hero-demo")}
+  </section>
+
+  <section class="section" id="pain">
+    <div class="section-head">
+      <h2 data-i18n="painHeading">Three ways the day falls apart.</h2>
+      <p data-i18n="painBody">Run agents on more than one machine and you already know all three.</p>
+    </div>
+    <div class="pain-grid">
+      <article class="pain-card">
+        <span class="pain-num">PAIN 01</span>
+        {PAIN_FIGS[1]}
+        <h3 data-i18n="pain1Title">Nobody remembers who did what</h3>
+        <p data-i18n="pain1Body">Each agent leaves its trail in a different scrollback on a different machine. By the next morning, "why did this change?" has no answer.</p>
+      </article>
+      <article class="pain-card">
+        <span class="pain-num">PAIN 02</span>
+        {PAIN_FIGS[2]}
+        <h3 data-i18n="pain2Title">Duplicate work, hours apart</h3>
+        <p data-i18n="pain2Body">Two agents chase the same bug on two machines. Neither knows a fix already exists, so the same afternoon gets spent twice.</p>
+      </article>
+      <article class="pain-card">
+        <span class="pain-num">PAIN 03</span>
+        {PAIN_FIGS[3]}
+        <h3 data-i18n="pain3Title">No collaboration network</h3>
+        <p data-i18n="pain3Body">Agents cannot see each other, so there is no handoff: configs get overwritten, runs get orphaned, and context dies with the session.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="numbers">
+    <div class="stat-band">
+      <span class="mini-label" data-i18n="statBandTitle">The demo galaxy, in real numbers</span>
+      <div class="stat-band-grid">
+        <div class="stat-cell"><b>{stats['nodes']}</b><span data-i18n="syntheticNodes">synthetic nodes</span></div>
+        <div class="stat-cell"><b>{stats['edges']}</b><span data-i18n="syntheticLinks">synthetic links</span></div>
+        <div class="stat-cell"><b>{stats['entries']}</b><span data-i18n="statEntries">memory entries</span></div>
+        <div class="stat-cell"><b>{stats['projects']}</b><span data-i18n="fictionalProjects">fictional projects</span></div>
+        <div class="stat-cell"><b>{stats['machines']}</b><span data-i18n="fictionalMachines">fictional machines</span></div>
+        <div class="stat-cell live"><b>{stats['live']}</b><span data-i18n="statLive">agents live right now</span></div>
+      </div>
+      <p class="stat-honest" data-i18n="statHonest">Counts load live from the public demo graph.json. Every machine, project, agent, and file in it is synthetic and clearly fictional - no real work memory is published here.</p>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="section-head">
+      <h2 data-i18n="howHeading">From scattered traces to one galaxy.</h2>
+      <p data-i18n="howBody">Plain files and static HTML - no daemon, no database, no build step. This is the path a day of agent work takes.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item"><span class="tl-step" data-i18n="tl1Tag">STEP 01 - IN EVERY PROJECT</span><h3 data-i18n="tl1Title">Agents write memory as they work</h3><p data-i18n="tl1Body">Each project keeps an agent_memory.md: what changed, why, and which files. Agents read it when a session starts and append after meaningful changes.</p></div>
+      <div class="tl-item"><span class="tl-step" data-i18n="tl2Tag">STEP 02 - ON EVERY MACHINE</span><h3 data-i18n="tl2Title">Each machine contributes a fragment</h3><p data-i18n="tl2Body">contribute.sh scans reviewed notes and safe session metadata - never raw conversations - into fragments/&lt;machine&gt;.json.</p></div>
+      <div class="tl-item"><span class="tl-step" data-i18n="tl3Tag">STEP 03 - ON THE AGGREGATOR</span><h3 data-i18n="tl3Title">One aggregator merges the graph</h3><p data-i18n="tl3Body">Shared files, datasets, models, and servers connect projects across machines. A gold reference skeleton emerges between project hubs.</p></div>
+      <div class="tl-item live"><span class="tl-step" data-i18n="tl4Tag">LIVE - EVERY FEW MINUTES</span><h3 data-i18n="tl4Title">Working agents light up red</h3><p data-i18n="tl4Body">Agents currently on the clock carry a red pulse and a doing line that says what they are on - visible to you and to every other agent before work overlaps.</p></div>
+      <div class="tl-item"><span class="tl-step" data-i18n="tl5Tag">STEP 05 - ONLY IF YOU PUBLISH</span><h3 data-i18n="tl5Title">Encryption before anything leaves</h3><p data-i18n="tl5Body">Plaintext graphs stay local or in a private hub. A public Pages deploy ships the viewer shell plus ciphertext only, unlocked client-side.</p></div>
+    </div>
   </section>
 
   <section class="section" id="preview">
     <div class="section-head">
       <h2 data-i18n="previewHeading">Live synthetic demo. No real memory.</h2>
       <p data-i18n="previewBody">The public graph demonstrates multi-server collaboration, currently-working agents, project inheritance, shared assets, and private/public/encrypted boundaries using fictional labels only.</p>
+    </div>
+    <div class="demo-wide">
+{galaxy_card("", stats, compact=True, element_id="preview-galaxy")}
     </div>
     <div class="grid">
       <article class="tile"><div class="mini-label" data-i18n="searchLabel">Search</div><h3 data-i18n="searchTitle">Find a project or artifact</h3><p data-i18n="searchBody">Search across projects, agents, files, models, servers, and derived facts.</p></article>
@@ -1978,20 +2421,6 @@ python3 -m http.server 8765 --directory docs</code></pre>
     </div>
   </section>
 
-  <section class="section" id="workflow">
-    <div class="section-head">
-      <h2 data-i18n="workflowHeading">Collect, distill, merge, encrypt, view.</h2>
-      <p data-i18n="workflowBody">Contributor machines write private fragments. An aggregator merges shared entities, injects live presence, and optionally publishes an encrypted viewer shell.</p>
-    </div>
-    <div class="pipeline">
-      <div class="step"><b>01</b><span data-i18n="stepCollect">Collect</span><p data-i18n="stepCollectBody">Scan reviewed `agent_memory.md` notes from explicit project roots.</p></div>
-      <div class="step"><b>02</b><span data-i18n="stepDistill">Distill</span><p data-i18n="stepDistillBody">Extract safe structured metadata from agent sessions without copying raw text.</p></div>
-      <div class="step"><b>03</b><span data-i18n="stepMerge">Merge</span><p data-i18n="stepMergeBody">Connect projects through shared files, datasets, models, tools, and servers.</p></div>
-      <div class="step"><b>04</b><span data-i18n="stepEncrypt">Encrypt</span><p data-i18n="stepEncryptBody">Publish ciphertext only when deploying an encrypted viewer shell to Pages.</p></div>
-      <div class="step"><b>05</b><span data-i18n="stepView">View</span><p data-i18n="stepViewBody">Search, filter, zoom, and inspect the resulting memory galaxy.</p></div>
-    </div>
-  </section>
-
   <section class="section" id="privacy">
     <div class="section-head">
       <h2 data-i18n="privacyHeading">Public framework. Private memory.</h2>
@@ -2019,6 +2448,16 @@ python3 -m http.server 8765 --directory docs</code></pre>
           <tr><td><code>standalone.html</code></td><td data-i18n="urlStandalone">Local plaintext viewer</td><td data-i18n="urlLocal">Local only, gitignored</td></tr>
         </tbody>
       </table>
+    </div>
+  </section>
+
+  <section class="cta-band" id="cta">
+    <h2 data-i18n="ctaTitle">Stop asking "which agent did that?"</h2>
+    <p data-i18n="ctaBody">Install the skill, point it at your project roots, and give tomorrow-you - and every other agent - one place to look.</p>
+    <div class="actions">
+      <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open synthetic demo</button>
+      <a class="btn" href="#install" data-i18n="installSkill">Install as skill</a>
+      <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
     </div>
   </section>
 </main>

@@ -77,6 +77,10 @@
       "demo-pages-edge"
     ],
     "privacy_note": "All labels, sessions, machines, projects, files, datasets, models, servers, and live work states are fictional.",
+    "privacy_note_i18n": {
+      "en": "All labels, sessions, machines, projects, files, datasets, models, servers, and live work states are fictional.",
+      "zh": "所有标签、session、机器、项目、文件、数据集、模型、服务器和当前工作状态都是虚构的。"
+    },
     "demo_features": [
       "multi-server collaboration",
       "currently working agents",
@@ -91,8 +95,20 @@
       "id": "machine:demo-workstation-a",
       "type": "machine",
       "label": "demo-workstation-a",
+      "label_i18n": {
+        "en": "demo-workstation-a",
+        "zh": "演示工作站 A"
+      },
       "primary": "capture + local viewer",
+      "primary_i18n": {
+        "en": "capture + local viewer",
+        "zh": "采集 + 本地 viewer"
+      },
       "role": "Contributor",
+      "role_i18n": {
+        "en": "Contributor",
+        "zh": "贡献机器"
+      },
       "weight": 24,
       "degree": 12
     },
@@ -100,8 +116,20 @@
       "id": "machine:demo-laptop-b",
       "type": "machine",
       "label": "demo-laptop-b",
+      "label_i18n": {
+        "en": "demo-laptop-b",
+        "zh": "演示笔记本 B"
+      },
       "primary": "writing + release review",
+      "primary_i18n": {
+        "en": "writing + release review",
+        "zh": "写作 + 发布审阅"
+      },
       "role": "Contributor",
+      "role_i18n": {
+        "en": "Contributor",
+        "zh": "贡献机器"
+      },
       "weight": 24,
       "degree": 12
     },
@@ -109,8 +137,20 @@
       "id": "machine:demo-gpu-node-c",
       "type": "machine",
       "label": "demo-gpu-node-c",
+      "label_i18n": {
+        "en": "demo-gpu-node-c",
+        "zh": "演示 GPU 节点 C"
+      },
       "primary": "training + merge rehearsals",
+      "primary_i18n": {
+        "en": "training + merge rehearsals",
+        "zh": "训练 + 合并演练"
+      },
       "role": "Contributor",
+      "role_i18n": {
+        "en": "Contributor",
+        "zh": "贡献机器"
+      },
       "weight": 24,
       "degree": 17
     },
@@ -118,8 +158,20 @@
       "id": "machine:demo-ci-runner-d",
       "type": "machine",
       "label": "demo-ci-runner-d",
+      "label_i18n": {
+        "en": "demo-ci-runner-d",
+        "zh": "演示 CI Runner D"
+      },
       "primary": "nightly validation",
+      "primary_i18n": {
+        "en": "nightly validation",
+        "zh": "夜间验证"
+      },
       "role": "Aggregator",
+      "role_i18n": {
+        "en": "Aggregator",
+        "zh": "聚合机器"
+      },
       "weight": 24,
       "degree": 13
     },
@@ -127,8 +179,20 @@
       "id": "machine:demo-pages-host-e",
       "type": "machine",
       "label": "demo-pages-host-e",
+      "label_i18n": {
+        "en": "demo-pages-host-e",
+        "zh": "演示 Pages 主机 E"
+      },
       "primary": "public Pages dry run",
+      "primary_i18n": {
+        "en": "public Pages dry run",
+        "zh": "公开 Pages 预演"
+      },
       "role": "Publisher",
+      "role_i18n": {
+        "en": "Publisher",
+        "zh": "发布机器"
+      },
       "weight": 24,
       "degree": 18
     },
@@ -138,6 +202,10 @@
       "label": "codex",
       "tool": "codex",
       "role": "implementation",
+      "role_i18n": {
+        "en": "implementation",
+        "zh": "实现"
+      },
       "weight": 20,
       "degree": 9
     },
@@ -147,6 +215,10 @@
       "label": "claude",
       "tool": "claude",
       "role": "research synthesis",
+      "role_i18n": {
+        "en": "research synthesis",
+        "zh": "研究综合"
+      },
       "weight": 20,
       "degree": 8
     },
@@ -156,6 +228,10 @@
       "label": "cursor",
       "tool": "cursor",
       "role": "editor sessions",
+      "role_i18n": {
+        "en": "editor sessions",
+        "zh": "编辑器会话"
+      },
       "weight": 20,
       "degree": 8
     },
@@ -165,6 +241,10 @@
       "label": "human",
       "tool": "human",
       "role": "release review",
+      "role_i18n": {
+        "en": "release review",
+        "zh": "发布审阅"
+      },
       "weight": 20,
       "degree": 8
     },
@@ -174,6 +254,10 @@
       "label": "automator",
       "tool": "automator",
       "role": "scheduled jobs",
+      "role_i18n": {
+        "en": "scheduled jobs",
+        "zh": "定时任务"
+      },
       "weight": 20,
       "degree": 8
     },
@@ -181,12 +265,20 @@
       "id": "project:project-aurora-loom",
       "type": "project",
       "label": "Project Aurora Loom",
+      "label_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "machines": [
         "demo-workstation-a",
         "demo-gpu-node-c"
       ],
       "phase": "01 schema/viewer",
       "description": "Memory graph schema and Galaxy Viewer",
+      "description_i18n": {
+        "en": "Memory graph schema and Galaxy Viewer",
+        "zh": "记忆图谱 schema 与 Galaxy Viewer"
+      },
       "visibility": "public-safe",
       "weight": 92,
       "degree": 14
@@ -195,12 +287,20 @@
       "id": "project:project-meridian-sync",
       "type": "project",
       "label": "Project Meridian Sync",
+      "label_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "machines": [
         "demo-gpu-node-c",
         "demo-ci-runner-d"
       ],
       "phase": "02 merge",
       "description": "Multi-machine fragment merge and shared entity linking",
+      "description_i18n": {
+        "en": "Multi-machine fragment merge and shared entity linking",
+        "zh": "多机器 fragment 合并与共享实体链接"
+      },
       "visibility": "private-hub",
       "weight": 92,
       "degree": 16
@@ -209,12 +309,20 @@
       "id": "project:project-harbor-lens",
       "type": "project",
       "label": "Project Harbor Lens",
+      "label_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "machines": [
         "demo-laptop-b",
         "demo-pages-host-e"
       ],
       "phase": "03 review",
       "description": "Human and agent review of graph clarity",
+      "description_i18n": {
+        "en": "Human and agent review of graph clarity",
+        "zh": "人类与 agent 共同审阅图谱清晰度"
+      },
       "visibility": "public-safe",
       "weight": 92,
       "degree": 15
@@ -223,12 +331,20 @@
       "id": "project:project-solstice-bench",
       "type": "project",
       "label": "Project Solstice Bench",
+      "label_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "machines": [
         "demo-gpu-node-c",
         "demo-laptop-b"
       ],
       "phase": "04 benchmark",
       "description": "Toy benchmark using shared datasets and models",
+      "description_i18n": {
+        "en": "Toy benchmark using shared datasets and models",
+        "zh": "使用共享数据集和模型的玩具评测"
+      },
       "visibility": "public-safe",
       "weight": 92,
       "degree": 14
@@ -237,12 +353,20 @@
       "id": "project:project-prism-cache",
       "type": "project",
       "label": "Project Prism Cache",
+      "label_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "machines": [
         "demo-pages-host-e",
         "demo-workstation-a"
       ],
       "phase": "05 distill",
       "description": "Safe session metadata distillation",
+      "description_i18n": {
+        "en": "Safe session metadata distillation",
+        "zh": "安全会话元数据提炼"
+      },
       "visibility": "private-hub",
       "weight": 92,
       "degree": 13
@@ -251,12 +375,20 @@
       "id": "project:project-atlas-relay",
       "type": "project",
       "label": "Project Atlas Relay",
+      "label_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "machines": [
         "demo-ci-runner-d",
         "demo-pages-host-e"
       ],
       "phase": "06 publish",
       "description": "Encrypted Pages publishing and public demo split",
+      "description_i18n": {
+        "en": "Encrypted Pages publishing and public demo split",
+        "zh": "加密 Pages 发布与公开 demo 分离"
+      },
       "visibility": "public-boundary",
       "weight": 92,
       "degree": 16
@@ -265,8 +397,16 @@
       "id": "server:demo-capture-server",
       "type": "server",
       "label": "demo-capture-server",
+      "label_i18n": {
+        "en": "demo-capture-server",
+        "zh": "演示采集服务器"
+      },
       "role": "capture",
       "primary": "collects workstation and laptop fragments",
+      "primary_i18n": {
+        "en": "collects workstation and laptop fragments",
+        "zh": "采集工作站与笔记本 fragment"
+      },
       "weight": 34,
       "degree": 5
     },
@@ -274,8 +414,16 @@
       "id": "server:demo-merge-runner",
       "type": "server",
       "label": "demo-merge-runner",
+      "label_i18n": {
+        "en": "demo-merge-runner",
+        "zh": "演示合并 Runner"
+      },
       "role": "merge",
       "primary": "normalizes fragments into graph.json",
+      "primary_i18n": {
+        "en": "normalizes fragments into graph.json",
+        "zh": "将 fragment 归一化为 graph.json"
+      },
       "weight": 34,
       "degree": 6
     },
@@ -283,8 +431,16 @@
       "id": "server:demo-ci-validator",
       "type": "server",
       "label": "demo-ci-validator",
+      "label_i18n": {
+        "en": "demo-ci-validator",
+        "zh": "演示 CI 验证器"
+      },
       "role": "ci",
       "primary": "runs privacy and demo integrity checks",
+      "primary_i18n": {
+        "en": "runs privacy and demo integrity checks",
+        "zh": "运行隐私与 demo 完整性检查"
+      },
       "weight": 34,
       "degree": 6
     },
@@ -292,8 +448,16 @@
       "id": "server:demo-vault",
       "type": "server",
       "label": "demo-vault",
+      "label_i18n": {
+        "en": "demo-vault",
+        "zh": "演示私有保险库"
+      },
       "role": "vault",
       "primary": "keeps plaintext graph and passwords private",
+      "primary_i18n": {
+        "en": "keeps plaintext graph and passwords private",
+        "zh": "保管明文图谱与密码"
+      },
       "weight": 34,
       "degree": 5
     },
@@ -301,8 +465,16 @@
       "id": "server:demo-pages-edge",
       "type": "server",
       "label": "demo-pages-edge",
+      "label_i18n": {
+        "en": "demo-pages-edge",
+        "zh": "演示 Pages 边缘节点"
+      },
       "role": "public-host",
       "primary": "serves the public landing and synthetic demo",
+      "primary_i18n": {
+        "en": "serves the public landing and synthetic demo",
+        "zh": "服务公开宣传页与合成 demo"
+      },
       "weight": 34,
       "degree": 5
     },
@@ -471,7 +643,15 @@
       "id": "artifact:local-plaintext-graph",
       "type": "artifact",
       "label": "local plaintext graph",
+      "label_i18n": {
+        "en": "local plaintext graph",
+        "zh": "本地明文图谱"
+      },
       "primary": "private artifact, gitignored",
+      "primary_i18n": {
+        "en": "private artifact, gitignored",
+        "zh": "私有产物，已 gitignore"
+      },
       "weight": 34,
       "degree": 2
     },
@@ -479,7 +659,15 @@
       "id": "artifact:standalone-local-viewer",
       "type": "artifact",
       "label": "standalone local viewer",
+      "label_i18n": {
+        "en": "standalone local viewer",
+        "zh": "本地单文件 viewer"
+      },
       "primary": "private single-file viewer, gitignored",
+      "primary_i18n": {
+        "en": "private single-file viewer, gitignored",
+        "zh": "私有单文件 viewer，已 gitignore"
+      },
       "weight": 34,
       "degree": 1
     },
@@ -487,7 +675,15 @@
       "id": "artifact:encrypted-pages-graph",
       "type": "artifact",
       "label": "encrypted pages graph",
+      "label_i18n": {
+        "en": "encrypted pages graph",
+        "zh": "加密 Pages 图谱"
+      },
       "primary": "ciphertext artifact for optional private Pages viewer",
+      "primary_i18n": {
+        "en": "ciphertext artifact for optional private Pages viewer",
+        "zh": "可选私有 Pages viewer 的密文产物"
+      },
       "weight": 34,
       "degree": 4
     },
@@ -495,7 +691,15 @@
       "id": "artifact:public-synthetic-demo-graph",
       "type": "artifact",
       "label": "public synthetic demo graph",
+      "label_i18n": {
+        "en": "public synthetic demo graph",
+        "zh": "公开合成 demo 图谱"
+      },
       "primary": "publishable fictional graph",
+      "primary_i18n": {
+        "en": "publishable fictional graph",
+        "zh": "可发布的虚构图谱"
+      },
       "weight": 34,
       "degree": 2
     },
@@ -503,7 +707,15 @@
       "id": "artifact:privacy-redaction-report",
       "type": "artifact",
       "label": "privacy redaction report",
+      "label_i18n": {
+        "en": "privacy redaction report",
+        "zh": "隐私脱敏报告"
+      },
       "primary": "CI evidence for public boundary",
+      "primary_i18n": {
+        "en": "CI evidence for public boundary",
+        "zh": "公开边界的 CI 证据"
+      },
       "weight": 34,
       "degree": 2
     },
@@ -511,7 +723,15 @@
       "id": "artifact:plugin-marketplace-package",
       "type": "artifact",
       "label": "plugin marketplace package",
+      "label_i18n": {
+        "en": "plugin marketplace package",
+        "zh": "插件市场包"
+      },
       "primary": "installable skill wrapper",
+      "primary_i18n": {
+        "en": "installable skill wrapper",
+        "zh": "可安装的 skill 包装层"
+      },
       "weight": 34,
       "degree": 3
     },
@@ -519,7 +739,15 @@
       "id": "boundary:public-framework",
       "type": "boundary",
       "label": "Public Framework",
+      "label_i18n": {
+        "en": "Public Framework",
+        "zh": "公开框架"
+      },
       "primary": "code, docs, skill package, synthetic demo",
+      "primary_i18n": {
+        "en": "code, docs, skill package, synthetic demo",
+        "zh": "代码、文档、skill 包与合成 demo"
+      },
       "weight": 40,
       "degree": 2
     },
@@ -527,7 +755,15 @@
       "id": "boundary:private-memory-hub",
       "type": "boundary",
       "label": "Private Memory Hub",
+      "label_i18n": {
+        "en": "Private Memory Hub",
+        "zh": "私有记忆 Hub"
+      },
       "primary": "real fragments, presence, plaintext graph",
+      "primary_i18n": {
+        "en": "real fragments, presence, plaintext graph",
+        "zh": "真实 fragment、presence 与明文图谱"
+      },
       "weight": 40,
       "degree": 2
     },
@@ -535,7 +771,15 @@
       "id": "boundary:encrypted-viewer-zone",
       "type": "boundary",
       "label": "Encrypted Viewer Zone",
+      "label_i18n": {
+        "en": "Encrypted Viewer Zone",
+        "zh": "加密 Viewer 区"
+      },
       "primary": "viewer shell plus ciphertext only",
+      "primary_i18n": {
+        "en": "viewer shell plus ciphertext only",
+        "zh": "仅 viewer shell 与密文"
+      },
       "weight": 40,
       "degree": 1
     },
@@ -543,7 +787,15 @@
       "id": "boundary:synthetic-demo-zone",
       "type": "boundary",
       "label": "Synthetic Demo Zone",
+      "label_i18n": {
+        "en": "Synthetic Demo Zone",
+        "zh": "合成 Demo 区"
+      },
       "primary": "fictional graph for marketing and testing",
+      "primary_i18n": {
+        "en": "fictional graph for marketing and testing",
+        "zh": "用于宣传和测试的虚构图谱"
+      },
       "weight": 40,
       "degree": 1
     },
@@ -586,6 +838,10 @@
       "id": "method:shared-entity-linking",
       "type": "method",
       "label": "shared-entity linking",
+      "label_i18n": {
+        "en": "shared-entity linking",
+        "zh": "共享实体链接"
+      },
       "weight": 30,
       "degree": 7
     },
@@ -593,6 +849,10 @@
       "id": "method:derived-gap-filling",
       "type": "method",
       "label": "derived gap filling",
+      "label_i18n": {
+        "en": "derived gap filling",
+        "zh": "自动提炼补全"
+      },
       "weight": 31,
       "degree": 7
     },
@@ -600,6 +860,10 @@
       "id": "method:client-side-decrypt",
       "type": "method",
       "label": "client-side decrypt",
+      "label_i18n": {
+        "en": "client-side decrypt",
+        "zh": "客户端解密"
+      },
       "weight": 30,
       "degree": 9
     },
@@ -607,6 +871,10 @@
       "id": "method:live-presence-pulse",
       "type": "method",
       "label": "live presence pulse",
+      "label_i18n": {
+        "en": "live presence pulse",
+        "zh": "在线状态脉冲"
+      },
       "weight": 33,
       "degree": 8
     },
@@ -614,6 +882,10 @@
       "id": "method:timeline-filtering",
       "type": "method",
       "label": "timeline filtering",
+      "label_i18n": {
+        "en": "timeline filtering",
+        "zh": "时间轴过滤"
+      },
       "weight": 24,
       "degree": 8
     },
@@ -621,6 +893,10 @@
       "id": "method:synthetic-graph-rehearsal",
       "type": "method",
       "label": "synthetic graph rehearsal",
+      "label_i18n": {
+        "en": "synthetic graph rehearsal",
+        "zh": "合成图谱演练"
+      },
       "weight": 26,
       "degree": 9
     },
@@ -628,6 +904,10 @@
       "id": "method:privacy-redaction-pass",
       "type": "method",
       "label": "privacy redaction pass",
+      "label_i18n": {
+        "en": "privacy redaction pass",
+        "zh": "隐私脱敏流程"
+      },
       "weight": 30,
       "degree": 9
     },
@@ -691,6 +971,10 @@
       "id": "notion:weekly-progress",
       "type": "notion",
       "label": "Weekly Progress",
+      "label_i18n": {
+        "en": "Weekly Progress",
+        "zh": "每周进展"
+      },
       "weight": 23,
       "degree": 4
     },
@@ -698,6 +982,10 @@
       "id": "notion:release-notes",
       "type": "notion",
       "label": "Release Notes",
+      "label_i18n": {
+        "en": "Release Notes",
+        "zh": "发布说明"
+      },
       "weight": 27,
       "degree": 3
     },
@@ -705,6 +993,10 @@
       "id": "notion:experiment-ledger",
       "type": "notion",
       "label": "Experiment Ledger",
+      "label_i18n": {
+        "en": "Experiment Ledger",
+        "zh": "实验台账"
+      },
       "weight": 30,
       "degree": 2
     },
@@ -712,6 +1004,10 @@
       "id": "notion:deployment-runbook",
       "type": "notion",
       "label": "Deployment Runbook",
+      "label_i18n": {
+        "en": "Deployment Runbook",
+        "zh": "部署 Runbook"
+      },
       "weight": 25,
       "degree": 3
     },
@@ -719,16 +1015,28 @@
       "id": "entry:project-aurora-loom:01",
       "type": "entry",
       "label": "Linked synthetic fragments for Aurora Loom",
+      "label_i18n": {
+        "en": "Linked synthetic fragments for Aurora Loom",
+        "zh": "极光织机项目：链接合成 fragments"
+      },
       "date": "2026-06-10",
       "status": "done",
       "task": "数据",
       "tool": "codex",
       "machine": "demo-workstation-a",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "phase": "01 schema/viewer",
       "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-001",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 76,
       "degree": 11
     },
@@ -736,16 +1044,28 @@
       "id": "entry:project-aurora-loom:02",
       "type": "entry",
       "label": "Reviewed viewer controls for Aurora Loom",
+      "label_i18n": {
+        "en": "Reviewed viewer controls for Aurora Loom",
+        "zh": "极光织机项目：审阅viewer 控件"
+      },
       "date": "2026-06-11",
       "status": "logged",
       "task": "训练",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "phase": "01 schema/viewer",
       "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-002",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 83,
       "degree": 7
     },
@@ -753,16 +1073,28 @@
       "id": "entry:project-aurora-loom:03",
       "type": "entry",
       "label": "Distilled safe session metadata for Aurora Loom",
+      "label_i18n": {
+        "en": "Distilled safe session metadata for Aurora Loom",
+        "zh": "极光织机项目：提炼安全会话元数据"
+      },
       "date": "2026-06-12",
       "status": "doing",
       "task": "评测",
       "tool": "cursor",
       "machine": "demo-workstation-a",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "phase": "01 schema/viewer",
       "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-003",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 84,
       "degree": 9
     },
@@ -770,16 +1102,28 @@
       "id": "entry:project-aurora-loom:04",
       "type": "entry",
       "label": "Validated encrypted publish path for Aurora Loom",
+      "label_i18n": {
+        "en": "Validated encrypted publish path for Aurora Loom",
+        "zh": "极光织机项目：验证加密发布路径"
+      },
       "date": "2026-06-13",
       "status": "planned",
       "task": "部署",
       "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "phase": "01 schema/viewer",
       "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-004",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 67,
       "degree": 9
     },
@@ -787,16 +1131,28 @@
       "id": "entry:project-aurora-loom:05",
       "type": "entry",
       "label": "Merged multi-server handoff for Aurora Loom",
+      "label_i18n": {
+        "en": "Merged multi-server handoff for Aurora Loom",
+        "zh": "极光织机项目：合并多服务器交接"
+      },
       "date": "2026-06-14",
       "status": "done",
       "task": "调研",
       "tool": "automator",
       "machine": "demo-workstation-a",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "phase": "01 schema/viewer",
       "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-005",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 81,
       "degree": 9
     },
@@ -804,16 +1160,28 @@
       "id": "entry:project-aurora-loom:06",
       "type": "entry",
       "label": "Benchmarked demo graph labels for Aurora Loom",
+      "label_i18n": {
+        "en": "Benchmarked demo graph labels for Aurora Loom",
+        "zh": "极光织机项目：评测demo 图谱标签"
+      },
       "date": "2026-06-15",
       "status": "logged",
       "task": "同步",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "phase": "01 schema/viewer",
       "visibility": "public-safe",
       "session": "demo://project-aurora-loom/session-006",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 83,
       "degree": 7
     },
@@ -821,15 +1189,27 @@
       "id": "fact:project-aurora-loom:01",
       "type": "fact",
       "label": "Derived synthetic fact 1 for Aurora Loom",
+      "label_i18n": {
+        "en": "Derived synthetic fact 1 for Aurora Loom",
+        "zh": "极光织机项目：自动提炼事实 1"
+      },
       "date": "2026-06-18",
       "status": "logged",
       "task": "调研",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-aurora-loom/derived-001",
       "weight": 68,
       "degree": 5
@@ -838,15 +1218,27 @@
       "id": "fact:project-aurora-loom:02",
       "type": "fact",
       "label": "Derived synthetic fact 2 for Aurora Loom",
+      "label_i18n": {
+        "en": "Derived synthetic fact 2 for Aurora Loom",
+        "zh": "极光织机项目：自动提炼事实 2"
+      },
       "date": "2026-06-19",
       "status": "logged",
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-workstation-a",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-aurora-loom/derived-002",
       "weight": 49,
       "degree": 5
@@ -855,15 +1247,27 @@
       "id": "fact:project-aurora-loom:03",
       "type": "fact",
       "label": "Derived synthetic fact 3 for Aurora Loom",
+      "label_i18n": {
+        "en": "Derived synthetic fact 3 for Aurora Loom",
+        "zh": "极光织机项目：自动提炼事实 3"
+      },
       "date": "2026-06-20",
       "status": "logged",
       "task": "调研",
       "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-aurora-loom/derived-003",
       "weight": 44,
       "degree": 5
@@ -872,16 +1276,28 @@
       "id": "entry:project-meridian-sync:01",
       "type": "entry",
       "label": "Reviewed safe session metadata for Meridian Sync",
+      "label_i18n": {
+        "en": "Reviewed safe session metadata for Meridian Sync",
+        "zh": "经线同步项目：审阅安全会话元数据"
+      },
       "date": "2026-06-12",
       "status": "doing",
       "task": "训练",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "phase": "02 merge",
       "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-001",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 69,
       "degree": 11
     },
@@ -889,16 +1305,28 @@
       "id": "entry:project-meridian-sync:02",
       "type": "entry",
       "label": "Distilled encrypted publish path for Meridian Sync",
+      "label_i18n": {
+        "en": "Distilled encrypted publish path for Meridian Sync",
+        "zh": "经线同步项目：提炼加密发布路径"
+      },
       "date": "2026-06-13",
       "status": "planned",
       "task": "评测",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "phase": "02 merge",
       "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-002",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 67,
       "degree": 7
     },
@@ -906,16 +1334,28 @@
       "id": "entry:project-meridian-sync:03",
       "type": "entry",
       "label": "Validated multi-server handoff for Meridian Sync",
+      "label_i18n": {
+        "en": "Validated multi-server handoff for Meridian Sync",
+        "zh": "经线同步项目：验证多服务器交接"
+      },
       "date": "2026-06-14",
       "status": "done",
       "task": "部署",
       "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "phase": "02 merge",
       "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-003",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 59,
       "degree": 9
     },
@@ -923,16 +1363,28 @@
       "id": "entry:project-meridian-sync:04",
       "type": "entry",
       "label": "Merged demo graph labels for Meridian Sync",
+      "label_i18n": {
+        "en": "Merged demo graph labels for Meridian Sync",
+        "zh": "经线同步项目：合并demo 图谱标签"
+      },
       "date": "2026-06-15",
       "status": "logged",
       "task": "调研",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "phase": "02 merge",
       "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-004",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 71,
       "degree": 9
     },
@@ -940,16 +1392,28 @@
       "id": "entry:project-meridian-sync:05",
       "type": "entry",
       "label": "Benchmarked privacy scan output for Meridian Sync",
+      "label_i18n": {
+        "en": "Benchmarked privacy scan output for Meridian Sync",
+        "zh": "经线同步项目：评测隐私扫描输出"
+      },
       "date": "2026-06-16",
       "status": "doing",
       "task": "同步",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "phase": "02 merge",
       "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-005",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 64,
       "degree": 9
     },
@@ -957,16 +1421,28 @@
       "id": "entry:project-meridian-sync:06",
       "type": "entry",
       "label": "Published timeline filters for Meridian Sync",
+      "label_i18n": {
+        "en": "Published timeline filters for Meridian Sync",
+        "zh": "经线同步项目：发布时间轴过滤器"
+      },
       "date": "2026-06-17",
       "status": "planned",
       "task": "规划",
       "tool": "claude",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "phase": "02 merge",
       "visibility": "private-hub",
       "session": "demo://project-meridian-sync/session-006",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 78,
       "degree": 7
     },
@@ -974,15 +1450,27 @@
       "id": "fact:project-meridian-sync:01",
       "type": "fact",
       "label": "Derived synthetic fact 1 for Meridian Sync",
+      "label_i18n": {
+        "en": "Derived synthetic fact 1 for Meridian Sync",
+        "zh": "经线同步项目：自动提炼事实 1"
+      },
       "date": "2026-06-19",
       "status": "logged",
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-meridian-sync/derived-001",
       "weight": 60,
       "degree": 5
@@ -991,15 +1479,27 @@
       "id": "fact:project-meridian-sync:02",
       "type": "fact",
       "label": "Derived synthetic fact 2 for Meridian Sync",
+      "label_i18n": {
+        "en": "Derived synthetic fact 2 for Meridian Sync",
+        "zh": "经线同步项目：自动提炼事实 2"
+      },
       "date": "2026-06-20",
       "status": "logged",
       "task": "调研",
       "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-meridian-sync/derived-002",
       "weight": 45,
       "degree": 5
@@ -1008,15 +1508,27 @@
       "id": "fact:project-meridian-sync:03",
       "type": "fact",
       "label": "Derived synthetic fact 3 for Meridian Sync",
+      "label_i18n": {
+        "en": "Derived synthetic fact 3 for Meridian Sync",
+        "zh": "经线同步项目：自动提炼事实 3"
+      },
       "date": "2026-06-21",
       "status": "logged",
       "task": "调研",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-meridian-sync/derived-003",
       "weight": 56,
       "degree": 5
@@ -1025,16 +1537,28 @@
       "id": "entry:project-harbor-lens:01",
       "type": "entry",
       "label": "Distilled multi-server handoff for Harbor Lens",
+      "label_i18n": {
+        "en": "Distilled multi-server handoff for Harbor Lens",
+        "zh": "港湾透镜项目：提炼多服务器交接"
+      },
       "date": "2026-06-14",
       "status": "done",
       "task": "评测",
       "tool": "cursor",
       "machine": "demo-laptop-b",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "phase": "03 review",
       "visibility": "public-safe",
       "session": "demo://project-harbor-lens/session-001",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 84,
       "degree": 11
     },
@@ -1042,16 +1566,28 @@
       "id": "entry:project-harbor-lens:02",
       "type": "entry",
       "label": "Validated demo graph labels for Harbor Lens",
+      "label_i18n": {
+        "en": "Validated demo graph labels for Harbor Lens",
+        "zh": "港湾透镜项目：验证demo 图谱标签"
+      },
       "date": "2026-06-15",
       "status": "logged",
       "task": "部署",
       "tool": "human",
       "machine": "demo-pages-host-e",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "phase": "03 review",
       "visibility": "public-safe",
       "session": "demo://project-harbor-lens/session-002",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 86,
       "degree": 7
     },
@@ -1059,16 +1595,28 @@
       "id": "entry:project-harbor-lens:03",
       "type": "entry",
       "label": "Merged privacy scan output for Harbor Lens",
+      "label_i18n": {
+        "en": "Merged privacy scan output for Harbor Lens",
+        "zh": "港湾透镜项目：合并隐私扫描输出"
+      },
       "date": "2026-06-16",
       "status": "doing",
       "task": "调研",
       "tool": "automator",
       "machine": "demo-laptop-b",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "phase": "03 review",
       "visibility": "public-safe",
       "session": "demo://project-harbor-lens/session-003",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 59,
       "degree": 9
     },
@@ -1076,16 +1624,28 @@
       "id": "entry:project-harbor-lens:04",
       "type": "entry",
       "label": "Benchmarked timeline filters for Harbor Lens",
+      "label_i18n": {
+        "en": "Benchmarked timeline filters for Harbor Lens",
+        "zh": "港湾透镜项目：评测时间轴过滤器"
+      },
       "date": "2026-06-17",
       "status": "planned",
       "task": "同步",
       "tool": "codex",
       "machine": "demo-pages-host-e",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "phase": "03 review",
       "visibility": "public-safe",
       "session": "demo://project-harbor-lens/session-004",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 68,
       "degree": 9
     },
@@ -1093,16 +1653,28 @@
       "id": "entry:project-harbor-lens:05",
       "type": "entry",
       "label": "Published synthetic fragments for Harbor Lens",
+      "label_i18n": {
+        "en": "Published synthetic fragments for Harbor Lens",
+        "zh": "港湾透镜项目：发布合成 fragments"
+      },
       "date": "2026-06-18",
       "status": "done",
       "task": "规划",
       "tool": "claude",
       "machine": "demo-laptop-b",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "phase": "03 review",
       "visibility": "public-safe",
       "session": "demo://project-harbor-lens/session-005",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 64,
       "degree": 9
     },
@@ -1110,16 +1682,28 @@
       "id": "entry:project-harbor-lens:06",
       "type": "entry",
       "label": "Mapped viewer controls for Harbor Lens",
+      "label_i18n": {
+        "en": "Mapped viewer controls for Harbor Lens",
+        "zh": "港湾透镜项目：映射viewer 控件"
+      },
       "date": "2026-06-19",
       "status": "logged",
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "phase": "03 review",
       "visibility": "public-safe",
       "session": "demo://project-harbor-lens/session-006",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 95,
       "degree": 7
     },
@@ -1127,15 +1711,27 @@
       "id": "fact:project-harbor-lens:01",
       "type": "fact",
       "label": "Derived synthetic fact 1 for Harbor Lens",
+      "label_i18n": {
+        "en": "Derived synthetic fact 1 for Harbor Lens",
+        "zh": "港湾透镜项目：自动提炼事实 1"
+      },
       "date": "2026-06-20",
       "status": "logged",
       "task": "调研",
       "tool": "human",
       "machine": "demo-pages-host-e",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-harbor-lens/derived-001",
       "weight": 46,
       "degree": 5
@@ -1144,15 +1740,27 @@
       "id": "fact:project-harbor-lens:02",
       "type": "fact",
       "label": "Derived synthetic fact 2 for Harbor Lens",
+      "label_i18n": {
+        "en": "Derived synthetic fact 2 for Harbor Lens",
+        "zh": "港湾透镜项目：自动提炼事实 2"
+      },
       "date": "2026-06-21",
       "status": "logged",
       "task": "调研",
       "tool": "automator",
       "machine": "demo-laptop-b",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-harbor-lens/derived-002",
       "weight": 55,
       "degree": 5
@@ -1161,15 +1769,27 @@
       "id": "fact:project-harbor-lens:03",
       "type": "fact",
       "label": "Derived synthetic fact 3 for Harbor Lens",
+      "label_i18n": {
+        "en": "Derived synthetic fact 3 for Harbor Lens",
+        "zh": "港湾透镜项目：自动提炼事实 3"
+      },
       "date": "2026-06-22",
       "status": "logged",
       "task": "调研",
       "tool": "codex",
       "machine": "demo-pages-host-e",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-harbor-lens/derived-003",
       "weight": 68,
       "degree": 5
@@ -1178,16 +1798,28 @@
       "id": "entry:project-solstice-bench:01",
       "type": "entry",
       "label": "Validated privacy scan output for Solstice Bench",
+      "label_i18n": {
+        "en": "Validated privacy scan output for Solstice Bench",
+        "zh": "至日评测项目：验证隐私扫描输出"
+      },
       "date": "2026-06-16",
       "status": "doing",
       "task": "部署",
       "tool": "human",
       "machine": "demo-gpu-node-c",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "phase": "04 benchmark",
       "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-001",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 96,
       "degree": 11
     },
@@ -1195,16 +1827,28 @@
       "id": "entry:project-solstice-bench:02",
       "type": "entry",
       "label": "Merged timeline filters for Solstice Bench",
+      "label_i18n": {
+        "en": "Merged timeline filters for Solstice Bench",
+        "zh": "至日评测项目：合并时间轴过滤器"
+      },
       "date": "2026-06-17",
       "status": "planned",
       "task": "调研",
       "tool": "automator",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "phase": "04 benchmark",
       "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-002",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 58,
       "degree": 7
     },
@@ -1212,16 +1856,28 @@
       "id": "entry:project-solstice-bench:03",
       "type": "entry",
       "label": "Benchmarked synthetic fragments for Solstice Bench",
+      "label_i18n": {
+        "en": "Benchmarked synthetic fragments for Solstice Bench",
+        "zh": "至日评测项目：评测合成 fragments"
+      },
       "date": "2026-06-18",
       "status": "done",
       "task": "同步",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "phase": "04 benchmark",
       "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-003",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 67,
       "degree": 9
     },
@@ -1229,16 +1885,28 @@
       "id": "entry:project-solstice-bench:04",
       "type": "entry",
       "label": "Published viewer controls for Solstice Bench",
+      "label_i18n": {
+        "en": "Published viewer controls for Solstice Bench",
+        "zh": "至日评测项目：发布viewer 控件"
+      },
       "date": "2026-06-19",
       "status": "logged",
       "task": "规划",
       "tool": "claude",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "phase": "04 benchmark",
       "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-004",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 73,
       "degree": 9
     },
@@ -1246,16 +1914,28 @@
       "id": "entry:project-solstice-bench:05",
       "type": "entry",
       "label": "Mapped safe session metadata for Solstice Bench",
+      "label_i18n": {
+        "en": "Mapped safe session metadata for Solstice Bench",
+        "zh": "至日评测项目：映射安全会话元数据"
+      },
       "date": "2026-06-20",
       "status": "doing",
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "phase": "04 benchmark",
       "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-005",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 60,
       "degree": 9
     },
@@ -1263,16 +1943,28 @@
       "id": "entry:project-solstice-bench:06",
       "type": "entry",
       "label": "Linked encrypted publish path for Solstice Bench",
+      "label_i18n": {
+        "en": "Linked encrypted publish path for Solstice Bench",
+        "zh": "至日评测项目：链接加密发布路径"
+      },
       "date": "2026-06-21",
       "status": "planned",
       "task": "数据",
       "tool": "human",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "phase": "04 benchmark",
       "visibility": "public-safe",
       "session": "demo://project-solstice-bench/session-006",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 63,
       "degree": 7
     },
@@ -1280,15 +1972,27 @@
       "id": "fact:project-solstice-bench:01",
       "type": "fact",
       "label": "Derived synthetic fact 1 for Solstice Bench",
+      "label_i18n": {
+        "en": "Derived synthetic fact 1 for Solstice Bench",
+        "zh": "至日评测项目：自动提炼事实 1"
+      },
       "date": "2026-06-21",
       "status": "logged",
       "task": "调研",
       "tool": "automator",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-solstice-bench/derived-001",
       "weight": 57,
       "degree": 5
@@ -1297,15 +2001,27 @@
       "id": "fact:project-solstice-bench:02",
       "type": "fact",
       "label": "Derived synthetic fact 2 for Solstice Bench",
+      "label_i18n": {
+        "en": "Derived synthetic fact 2 for Solstice Bench",
+        "zh": "至日评测项目：自动提炼事实 2"
+      },
       "date": "2026-06-22",
       "status": "logged",
       "task": "调研",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-solstice-bench/derived-002",
       "weight": 47,
       "degree": 5
@@ -1314,15 +2030,27 @@
       "id": "fact:project-solstice-bench:03",
       "type": "fact",
       "label": "Derived synthetic fact 3 for Solstice Bench",
+      "label_i18n": {
+        "en": "Derived synthetic fact 3 for Solstice Bench",
+        "zh": "至日评测项目：自动提炼事实 3"
+      },
       "date": "2026-06-23",
       "status": "logged",
       "task": "调研",
       "tool": "claude",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-solstice-bench/derived-003",
       "weight": 54,
       "degree": 5
@@ -1331,16 +2059,28 @@
       "id": "entry:project-prism-cache:01",
       "type": "entry",
       "label": "Merged synthetic fragments for Prism Cache",
+      "label_i18n": {
+        "en": "Merged synthetic fragments for Prism Cache",
+        "zh": "棱镜缓存项目：合并合成 fragments"
+      },
       "date": "2026-06-18",
       "status": "done",
       "task": "调研",
       "tool": "automator",
       "machine": "demo-pages-host-e",
       "project": "Project Prism Cache",
+      "project_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "phase": "05 distill",
       "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-001",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 73,
       "degree": 11
     },
@@ -1348,16 +2088,28 @@
       "id": "entry:project-prism-cache:02",
       "type": "entry",
       "label": "Benchmarked viewer controls for Prism Cache",
+      "label_i18n": {
+        "en": "Benchmarked viewer controls for Prism Cache",
+        "zh": "棱镜缓存项目：评测viewer 控件"
+      },
       "date": "2026-06-19",
       "status": "logged",
       "task": "同步",
       "tool": "codex",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
+      "project_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "phase": "05 distill",
       "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-002",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 100,
       "degree": 7
     },
@@ -1365,16 +2117,28 @@
       "id": "entry:project-prism-cache:03",
       "type": "entry",
       "label": "Published safe session metadata for Prism Cache",
+      "label_i18n": {
+        "en": "Published safe session metadata for Prism Cache",
+        "zh": "棱镜缓存项目：发布安全会话元数据"
+      },
       "date": "2026-06-20",
       "status": "doing",
       "task": "规划",
       "tool": "claude",
       "machine": "demo-pages-host-e",
       "project": "Project Prism Cache",
+      "project_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "phase": "05 distill",
       "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-003",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 83,
       "degree": 9
     },
@@ -1382,16 +2146,28 @@
       "id": "entry:project-prism-cache:04",
       "type": "entry",
       "label": "Mapped encrypted publish path for Prism Cache",
+      "label_i18n": {
+        "en": "Mapped encrypted publish path for Prism Cache",
+        "zh": "棱镜缓存项目：映射加密发布路径"
+      },
       "date": "2026-06-21",
       "status": "planned",
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
+      "project_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "phase": "05 distill",
       "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-004",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 71,
       "degree": 9
     },
@@ -1399,16 +2175,28 @@
       "id": "entry:project-prism-cache:05",
       "type": "entry",
       "label": "Linked multi-server handoff for Prism Cache",
+      "label_i18n": {
+        "en": "Linked multi-server handoff for Prism Cache",
+        "zh": "棱镜缓存项目：链接多服务器交接"
+      },
       "date": "2026-06-22",
       "status": "done",
       "task": "数据",
       "tool": "human",
       "machine": "demo-pages-host-e",
       "project": "Project Prism Cache",
+      "project_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "phase": "05 distill",
       "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-005",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 81,
       "degree": 9
     },
@@ -1416,16 +2204,28 @@
       "id": "entry:project-prism-cache:06",
       "type": "entry",
       "label": "Reviewed demo graph labels for Prism Cache",
+      "label_i18n": {
+        "en": "Reviewed demo graph labels for Prism Cache",
+        "zh": "棱镜缓存项目：审阅demo 图谱标签"
+      },
       "date": "2026-06-23",
       "status": "logged",
       "task": "训练",
       "tool": "automator",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
+      "project_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "phase": "05 distill",
       "visibility": "private-hub",
       "session": "demo://project-prism-cache/session-006",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 95,
       "degree": 7
     },
@@ -1433,15 +2233,27 @@
       "id": "fact:project-prism-cache:01",
       "type": "fact",
       "label": "Derived synthetic fact 1 for Prism Cache",
+      "label_i18n": {
+        "en": "Derived synthetic fact 1 for Prism Cache",
+        "zh": "棱镜缓存项目：自动提炼事实 1"
+      },
       "date": "2026-06-22",
       "status": "logged",
       "task": "调研",
       "tool": "codex",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
+      "project_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-prism-cache/derived-001",
       "weight": 71,
       "degree": 5
@@ -1450,15 +2262,27 @@
       "id": "fact:project-prism-cache:02",
       "type": "fact",
       "label": "Derived synthetic fact 2 for Prism Cache",
+      "label_i18n": {
+        "en": "Derived synthetic fact 2 for Prism Cache",
+        "zh": "棱镜缓存项目：自动提炼事实 2"
+      },
       "date": "2026-06-23",
       "status": "logged",
       "task": "调研",
       "tool": "claude",
       "machine": "demo-pages-host-e",
       "project": "Project Prism Cache",
+      "project_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-prism-cache/derived-002",
       "weight": 48,
       "degree": 5
@@ -1467,15 +2291,27 @@
       "id": "fact:project-prism-cache:03",
       "type": "fact",
       "label": "Derived synthetic fact 3 for Prism Cache",
+      "label_i18n": {
+        "en": "Derived synthetic fact 3 for Prism Cache",
+        "zh": "棱镜缓存项目：自动提炼事实 3"
+      },
       "date": "2026-06-24",
       "status": "logged",
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-workstation-a",
       "project": "Project Prism Cache",
+      "project_i18n": {
+        "en": "Project Prism Cache",
+        "zh": "棱镜缓存项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-prism-cache/derived-003",
       "weight": 53,
       "degree": 5
@@ -1484,16 +2320,28 @@
       "id": "entry:project-atlas-relay:01",
       "type": "entry",
       "label": "Benchmarked safe session metadata for Atlas Relay",
+      "label_i18n": {
+        "en": "Benchmarked safe session metadata for Atlas Relay",
+        "zh": "阿特拉斯中继项目：评测安全会话元数据"
+      },
       "date": "2026-06-20",
       "status": "doing",
       "task": "同步",
       "tool": "codex",
       "machine": "demo-ci-runner-d",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "phase": "06 publish",
       "visibility": "public-boundary",
       "session": "demo://project-atlas-relay/session-001",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 68,
       "degree": 11
     },
@@ -1501,16 +2349,28 @@
       "id": "entry:project-atlas-relay:02",
       "type": "entry",
       "label": "Published encrypted publish path for Atlas Relay",
+      "label_i18n": {
+        "en": "Published encrypted publish path for Atlas Relay",
+        "zh": "阿特拉斯中继项目：发布加密发布路径"
+      },
       "date": "2026-06-21",
       "status": "planned",
       "task": "规划",
       "tool": "claude",
       "machine": "demo-pages-host-e",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "phase": "06 publish",
       "visibility": "public-boundary",
       "session": "demo://project-atlas-relay/session-002",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 70,
       "degree": 7
     },
@@ -1518,16 +2378,28 @@
       "id": "entry:project-atlas-relay:03",
       "type": "entry",
       "label": "Mapped multi-server handoff for Atlas Relay",
+      "label_i18n": {
+        "en": "Mapped multi-server handoff for Atlas Relay",
+        "zh": "阿特拉斯中继项目：映射多服务器交接"
+      },
       "date": "2026-06-22",
       "status": "done",
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "phase": "06 publish",
       "visibility": "public-boundary",
       "session": "demo://project-atlas-relay/session-003",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 64,
       "degree": 9
     },
@@ -1535,16 +2407,28 @@
       "id": "entry:project-atlas-relay:04",
       "type": "entry",
       "label": "Linked demo graph labels for Atlas Relay",
+      "label_i18n": {
+        "en": "Linked demo graph labels for Atlas Relay",
+        "zh": "阿特拉斯中继项目：链接demo 图谱标签"
+      },
       "date": "2026-06-23",
       "status": "logged",
       "task": "数据",
       "tool": "human",
       "machine": "demo-pages-host-e",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "phase": "06 publish",
       "visibility": "public-boundary",
       "session": "demo://project-atlas-relay/session-004",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 73,
       "degree": 9
     },
@@ -1552,16 +2436,28 @@
       "id": "entry:project-atlas-relay:05",
       "type": "entry",
       "label": "Reviewed privacy scan output for Atlas Relay",
+      "label_i18n": {
+        "en": "Reviewed privacy scan output for Atlas Relay",
+        "zh": "阿特拉斯中继项目：审阅隐私扫描输出"
+      },
       "date": "2026-06-24",
       "status": "doing",
       "task": "训练",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "phase": "06 publish",
       "visibility": "public-boundary",
       "session": "demo://project-atlas-relay/session-005",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 61,
       "degree": 9
     },
@@ -1569,16 +2465,28 @@
       "id": "entry:project-atlas-relay:06",
       "type": "entry",
       "label": "Distilled timeline filters for Atlas Relay",
+      "label_i18n": {
+        "en": "Distilled timeline filters for Atlas Relay",
+        "zh": "阿特拉斯中继项目：提炼时间轴过滤器"
+      },
       "date": "2026-06-25",
       "status": "planned",
       "task": "评测",
       "tool": "codex",
       "machine": "demo-pages-host-e",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "phase": "06 publish",
       "visibility": "public-boundary",
       "session": "demo://project-atlas-relay/session-006",
       "excerpt": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+      "excerpt_i18n": {
+        "en": "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+        "zh": "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。"
+      },
       "weight": 61,
       "degree": 7
     },
@@ -1586,15 +2494,27 @@
       "id": "fact:project-atlas-relay:01",
       "type": "fact",
       "label": "Derived synthetic fact 1 for Atlas Relay",
+      "label_i18n": {
+        "en": "Derived synthetic fact 1 for Atlas Relay",
+        "zh": "阿特拉斯中继项目：自动提炼事实 1"
+      },
       "date": "2026-06-23",
       "status": "logged",
       "task": "调研",
       "tool": "claude",
       "machine": "demo-pages-host-e",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-atlas-relay/derived-001",
       "weight": 71,
       "degree": 5
@@ -1603,15 +2523,27 @@
       "id": "fact:project-atlas-relay:02",
       "type": "fact",
       "label": "Derived synthetic fact 2 for Atlas Relay",
+      "label_i18n": {
+        "en": "Derived synthetic fact 2 for Atlas Relay",
+        "zh": "阿特拉斯中继项目：自动提炼事实 2"
+      },
       "date": "2026-06-24",
       "status": "logged",
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-atlas-relay/derived-002",
       "weight": 47,
       "degree": 5
@@ -1620,15 +2552,27 @@
       "id": "fact:project-atlas-relay:03",
       "type": "fact",
       "label": "Derived synthetic fact 3 for Atlas Relay",
+      "label_i18n": {
+        "en": "Derived synthetic fact 3 for Atlas Relay",
+        "zh": "阿特拉斯中继项目：自动提炼事实 3"
+      },
       "date": "2026-06-25",
       "status": "logged",
       "task": "调研",
       "tool": "human",
       "machine": "demo-pages-host-e",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "derived": true,
       "memtype": "session-summary",
       "excerpt": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+      "excerpt_i18n": {
+        "en": "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+        "zh": "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。"
+      },
       "source": "demo://project-atlas-relay/derived-003",
       "weight": 64,
       "degree": 5
@@ -1637,12 +2581,24 @@
       "id": "liveagent:demo-workstation-a:codex",
       "type": "liveagent",
       "label": "codex@demo-workstation-a",
+      "label_i18n": {
+        "en": "codex@demo-workstation-a",
+        "zh": "codex@演示工作站 A"
+      },
       "agent": "codex",
       "machine": "demo-workstation-a",
       "project": "Project Aurora Loom",
+      "project_i18n": {
+        "en": "Project Aurora Loom",
+        "zh": "极光织机项目"
+      },
       "project_canonical": "project-aurora-loom",
       "status": "working",
       "current": "wiring project inheritance edges into the demo graph",
+      "current_i18n": {
+        "en": "wiring project inheritance edges into the demo graph",
+        "zh": "正在把项目继承边接入 demo 图谱"
+      },
       "heartbeat": "2026-07-06T00:00:00Z",
       "demo_live": true,
       "tool": "codex",
@@ -1653,12 +2609,24 @@
       "id": "liveagent:demo-ci-runner-d:claude",
       "type": "liveagent",
       "label": "claude@demo-ci-runner-d",
+      "label_i18n": {
+        "en": "claude@demo-ci-runner-d",
+        "zh": "claude@演示 CI Runner D"
+      },
       "agent": "claude",
       "machine": "demo-ci-runner-d",
       "project": "Project Atlas Relay",
+      "project_i18n": {
+        "en": "Project Atlas Relay",
+        "zh": "阿特拉斯中继项目"
+      },
       "project_canonical": "project-atlas-relay",
       "status": "working",
       "current": "checking encrypted Pages boundary language",
+      "current_i18n": {
+        "en": "checking encrypted Pages boundary language",
+        "zh": "正在检查加密 Pages 边界文案"
+      },
       "heartbeat": "2026-07-06T00:00:00Z",
       "demo_live": true,
       "tool": "claude",
@@ -1669,12 +2637,24 @@
       "id": "liveagent:demo-pages-host-e:cursor",
       "type": "liveagent",
       "label": "cursor@demo-pages-host-e",
+      "label_i18n": {
+        "en": "cursor@demo-pages-host-e",
+        "zh": "cursor@演示 Pages 主机 E"
+      },
       "agent": "cursor",
       "machine": "demo-pages-host-e",
       "project": "Project Harbor Lens",
+      "project_i18n": {
+        "en": "Project Harbor Lens",
+        "zh": "港湾透镜项目"
+      },
       "project_canonical": "project-harbor-lens",
       "status": "working",
       "current": "reviewing the public landing preview",
+      "current_i18n": {
+        "en": "reviewing the public landing preview",
+        "zh": "正在审阅公开宣传页预览"
+      },
       "heartbeat": "2026-07-06T00:00:00Z",
       "demo_live": true,
       "tool": "cursor",
@@ -1685,12 +2665,24 @@
       "id": "liveagent:demo-ci-runner-d:automator",
       "type": "liveagent",
       "label": "automator@demo-ci-runner-d",
+      "label_i18n": {
+        "en": "automator@demo-ci-runner-d",
+        "zh": "automator@演示 CI Runner D"
+      },
       "agent": "automator",
       "machine": "demo-ci-runner-d",
       "project": "Project Meridian Sync",
+      "project_i18n": {
+        "en": "Project Meridian Sync",
+        "zh": "经线同步项目"
+      },
       "project_canonical": "project-meridian-sync",
       "status": "working",
       "current": "running synthetic graph integrity checks",
+      "current_i18n": {
+        "en": "running synthetic graph integrity checks",
+        "zh": "正在运行合成图谱完整性检查"
+      },
       "heartbeat": "2026-07-06T00:00:00Z",
       "demo_live": true,
       "tool": "automator",
@@ -1701,12 +2693,24 @@
       "id": "liveagent:demo-laptop-b:human",
       "type": "liveagent",
       "label": "human@demo-laptop-b",
+      "label_i18n": {
+        "en": "human@demo-laptop-b",
+        "zh": "human@演示笔记本 B"
+      },
       "agent": "human",
       "machine": "demo-laptop-b",
       "project": "Project Solstice Bench",
+      "project_i18n": {
+        "en": "Project Solstice Bench",
+        "zh": "至日评测项目"
+      },
       "project_canonical": "project-solstice-bench",
       "status": "working",
       "current": "approving the release story",
+      "current_i18n": {
+        "en": "approving the release story",
+        "zh": "正在批准发布叙事"
+      },
       "heartbeat": "2026-07-06T00:00:00Z",
       "demo_live": true,
       "tool": "human",

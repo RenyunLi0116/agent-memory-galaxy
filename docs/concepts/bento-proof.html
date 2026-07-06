@@ -13,11 +13,15 @@
   <div class="nav-inner">
     <a class="brand" href="../index.html">Agent Memory Galaxy</a>
     <div class="nav-links">
-      <a href="index.html">Design archive</a>
-      <a href="#preview">Demo</a>
-      <a href="#privacy">Privacy</a>
-      <a href="#install">Install</a>
+      <a href="index.html" data-i18n="navConcepts">Design archive</a>
+      <a href="#preview" data-i18n="navDemo">Demo</a>
+      <a href="#privacy" data-i18n="navPrivacy">Privacy</a>
+      <a href="#install" data-i18n="navInstall">Install</a>
       <a href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
+      <div class="lang-switch" aria-label="Language">
+        <button type="button" data-lang-choice="en">EN</button>
+        <button type="button" data-lang-choice="zh">中文</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -29,7 +33,7 @@
       <h1>Understand the repo in ten seconds.</h1>
       <p class="lead">A dense proof page that puts install commands, data policy, multi-machine roles, and the interactive galaxy in the first viewport.</p>
       <div class="actions">
-        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="../demo/?style=galaxy">Open synthetic demo</button>
+        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="../demo/?style=jarvis&lang=en">Open synthetic demo</button>
         <a class="btn" href="#install">Install skill</a>
         <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
       </div>
@@ -39,15 +43,24 @@
 <span class="pill">Synthetic demo public</span></div>
     </div>
 
-<div class="galaxy-card" id="preview" data-demo-src="../demo/?style=galaxy" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
+<div class="galaxy-card" id="preview" data-demo-src="../demo/?style=jarvis&lang=en" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
   <div class="framebar">
     <span class="lights"><i></i><i></i><i></i></span>
-    <span class="mono">synthetic graph preview</span>
-    <span class="status mono">137 nodes / 466 links / 5 machines</span>
+    <span class="mono" data-i18n="previewTitle">synthetic graph preview</span>
+    <span class="status mono" data-preview-status data-nodes="137" data-edges="466" data-machines="5">137 nodes / 466 links / 5 machines</span>
   </div>
-  <iframe title="Agent Memory Galaxy synthetic demo" src="../demo/?style=galaxy" loading="lazy"></iframe>
-  <p class="preview-note">This is live synthetic data, not a screenshot and not real memory.</p>
-  <button class="expand-galaxy" type="button" data-expand-galaxy>Expand galaxy</button>
+  <div class="mini-galaxy-preview" aria-hidden="true">
+    <span class="mini-grid"></span>
+    <span class="mini-ring ring-a"></span>
+    <span class="mini-ring ring-b"></span>
+    <span class="mini-link link-a"></span><span class="mini-link link-b"></span><span class="mini-link link-c"></span><span class="mini-link link-d"></span><span class="mini-link link-e"></span>
+    <span class="mini-node project n1"></span><span class="mini-node project n2"></span><span class="mini-node server n3"></span><span class="mini-node server n4"></span>
+    <span class="mini-node agent n5"></span><span class="mini-node agent n6"></span><span class="mini-node boundary n7"></span><span class="mini-node artifact n8"></span>
+    <div class="mini-side"><b data-i18n="miniSideTitle">NODE TYPES</b><span>project</span><span>server</span><span>liveagent</span><span>boundary</span></div>
+    <div class="mini-readout"><b data-i18n="miniReadoutTitle">ONLINE HUD</b><span data-i18n="miniReadout">multi-server handoff / live agents / encrypted boundary</span></div>
+  </div>
+  <p class="preview-note" data-i18n="previewNote">Compressed public preview. Open the full demo for search, filters, zoom, and readouts.</p>
+  <button class="expand-galaxy" type="button" data-expand-galaxy data-i18n="expandGalaxy">Expand galaxy</button>
 </div>
 
   </section>
@@ -64,7 +77,7 @@
 
   <section class="section">
     <div class="section-head">
-      <h2>Collect, distill, merge, encrypt, view.</h2>
+      <h2 data-i18n="workflowHeading">Collect, distill, merge, encrypt, view.</h2>
       <p>Each page keeps the same product story and changes only the visual system, so you can compare style without losing the core message.</p>
     </div>
     <div class="pipeline">
@@ -78,7 +91,7 @@
 
   <section class="section" id="privacy">
     <div class="section-head">
-      <h2>Public framework. Private memory.</h2>
+      <h2 data-i18n="privacyHeading">Public framework. Private memory.</h2>
       <p>Public pages use fictional graph data. Real fragments, presence files, graph.json, and standalone.html belong in a private hub or local machine.</p>
     </div>
     <div class="grid">
@@ -97,9 +110,9 @@
       <article class="tile">
         <h3>Claude Code skill</h3>
         <pre class="code"><code>/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy</code></pre>
-        <button class="copy-btn" type="button" data-copy="/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy">Copy marketplace command</button>
+        <button class="copy-btn" type="button" data-copy="/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy"><span data-i18n="copyMarketplace">Copy marketplace command</span></button>
         <pre class="code"><code>/plugin install agent-memory-galaxy@agent-memory-galaxy</code></pre>
-        <button class="copy-btn" type="button" data-copy="/plugin install agent-memory-galaxy@agent-memory-galaxy">Copy install command</button>
+        <button class="copy-btn" type="button" data-copy="/plugin install agent-memory-galaxy@agent-memory-galaxy"><span data-i18n="copyInstall">Copy install command</span></button>
       </article>
       <article class="tile">
         <h3>Local CLI</h3>
@@ -111,15 +124,15 @@ cd agent-memory-galaxy
     </div>
   </section>
 </main>
-<footer class="footer"><div class="page"><span>Agent Memory Galaxy</span><span>Synthetic demo public. Real memory private.</span></div></footer>
+<footer class="footer"><div class="page"><span>Agent Memory Galaxy</span><span data-i18n="footerPrivacy">Synthetic demo public. Real memory private.</span></div></footer>
 
 <div class="modal" data-galaxy-modal hidden>
   <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Expanded synthetic galaxy demo">
     <div class="modal-head">
       <strong>Agent Memory Galaxy</strong>
-      <span class="muted">Synthetic demo. Drag, zoom, filter, and inspect nodes.</span>
-      <a class="btn" href="../demo/?style=galaxy">Open full demo</a>
-      <button class="modal-close" type="button" data-modal-close>Close</button>
+      <span class="muted" data-i18n="modalMuted">Synthetic demo. Drag, zoom, filter, and inspect nodes.</span>
+      <a class="btn" href="../demo/?style=jarvis&lang=en" data-demo-link data-i18n="openFullDemo">Open full demo</a>
+      <button class="modal-close" type="button" data-modal-close data-i18n="close">Close</button>
     </div>
     <iframe title="Expanded Agent Memory Galaxy synthetic demo" src="about:blank"></iframe>
   </div>

@@ -27,6 +27,128 @@ FORBIDDEN_PATTERNS = [
 ]
 
 
+
+
+PROJECT_ZH = {
+    "Project Aurora Loom": "极光织机项目",
+    "Project Meridian Sync": "经线同步项目",
+    "Project Harbor Lens": "港湾透镜项目",
+    "Project Solstice Bench": "至日评测项目",
+    "Project Prism Cache": "棱镜缓存项目",
+    "Project Atlas Relay": "阿特拉斯中继项目",
+}
+PROJECT_SUMMARY_ZH = {
+    "Memory graph schema and Galaxy Viewer": "记忆图谱 schema 与 Galaxy Viewer",
+    "Multi-machine fragment merge and shared entity linking": "多机器 fragment 合并与共享实体链接",
+    "Human and agent review of graph clarity": "人类与 agent 共同审阅图谱清晰度",
+    "Toy benchmark using shared datasets and models": "使用共享数据集和模型的玩具评测",
+    "Safe session metadata distillation": "安全会话元数据提炼",
+    "Encrypted Pages publishing and public demo split": "加密 Pages 发布与公开 demo 分离",
+}
+MACHINE_ZH = {
+    "demo-workstation-a": "演示工作站 A",
+    "demo-laptop-b": "演示笔记本 B",
+    "demo-gpu-node-c": "演示 GPU 节点 C",
+    "demo-ci-runner-d": "演示 CI Runner D",
+    "demo-pages-host-e": "演示 Pages 主机 E",
+}
+MACHINE_PRIMARY_ZH = {
+    "capture + local viewer": "采集 + 本地 viewer",
+    "writing + release review": "写作 + 发布审阅",
+    "training + merge rehearsals": "训练 + 合并演练",
+    "nightly validation": "夜间验证",
+    "public Pages dry run": "公开 Pages 预演",
+}
+ROLE_ZH = {"Contributor": "贡献机器", "Aggregator": "聚合机器", "Publisher": "发布机器"}
+SERVER_ZH = {
+    "demo-capture-server": "演示采集服务器",
+    "demo-merge-runner": "演示合并 Runner",
+    "demo-ci-validator": "演示 CI 验证器",
+    "demo-vault": "演示私有保险库",
+    "demo-pages-edge": "演示 Pages 边缘节点",
+}
+SERVER_SUMMARY_ZH = {
+    "collects workstation and laptop fragments": "采集工作站与笔记本 fragment",
+    "normalizes fragments into graph.json": "将 fragment 归一化为 graph.json",
+    "runs privacy and demo integrity checks": "运行隐私与 demo 完整性检查",
+    "keeps plaintext graph and passwords private": "保管明文图谱与密码",
+    "serves the public landing and synthetic demo": "服务公开宣传页与合成 demo",
+}
+ARTIFACT_ZH = {
+    "local plaintext graph": "本地明文图谱",
+    "standalone local viewer": "本地单文件 viewer",
+    "encrypted pages graph": "加密 Pages 图谱",
+    "public synthetic demo graph": "公开合成 demo 图谱",
+    "privacy redaction report": "隐私脱敏报告",
+    "plugin marketplace package": "插件市场包",
+}
+ARTIFACT_SUMMARY_ZH = {
+    "private artifact, gitignored": "私有产物，已 gitignore",
+    "private single-file viewer, gitignored": "私有单文件 viewer，已 gitignore",
+    "ciphertext artifact for optional private Pages viewer": "可选私有 Pages viewer 的密文产物",
+    "publishable fictional graph": "可发布的虚构图谱",
+    "CI evidence for public boundary": "公开边界的 CI 证据",
+    "installable skill wrapper": "可安装的 skill 包装层",
+}
+BOUNDARY_ZH = {
+    "Public Framework": "公开框架",
+    "Private Memory Hub": "私有记忆 Hub",
+    "Encrypted Viewer Zone": "加密 Viewer 区",
+    "Synthetic Demo Zone": "合成 Demo 区",
+}
+BOUNDARY_SUMMARY_ZH = {
+    "code, docs, skill package, synthetic demo": "代码、文档、skill 包与合成 demo",
+    "real fragments, presence, plaintext graph": "真实 fragment、presence 与明文图谱",
+    "viewer shell plus ciphertext only": "仅 viewer shell 与密文",
+    "fictional graph for marketing and testing": "用于宣传和测试的虚构图谱",
+}
+METHOD_ZH = {
+    "shared-entity linking": "共享实体链接",
+    "derived gap filling": "自动提炼补全",
+    "client-side decrypt": "客户端解密",
+    "live presence pulse": "在线状态脉冲",
+    "timeline filtering": "时间轴过滤",
+    "synthetic graph rehearsal": "合成图谱演练",
+    "privacy redaction pass": "隐私脱敏流程",
+}
+NOTION_ZH = {
+    "Weekly Progress": "每周进展",
+    "Release Notes": "发布说明",
+    "Experiment Ledger": "实验台账",
+    "Deployment Runbook": "部署 Runbook",
+}
+VERB_ZH = {
+    "Linked": "链接", "Reviewed": "审阅", "Distilled": "提炼", "Validated": "验证",
+    "Merged": "合并", "Benchmarked": "评测", "Published": "发布", "Mapped": "映射",
+}
+OBJECT_ZH = {
+    "synthetic fragments": "合成 fragments",
+    "viewer controls": "viewer 控件",
+    "safe session metadata": "安全会话元数据",
+    "encrypted publish path": "加密发布路径",
+    "multi-server handoff": "多服务器交接",
+    "demo graph labels": "demo 图谱标签",
+    "privacy scan output": "隐私扫描输出",
+    "timeline filters": "时间轴过滤器",
+}
+LIVE_CURRENT_ZH = {
+    "wiring project inheritance edges into the demo graph": "正在把项目继承边接入 demo 图谱",
+    "checking encrypted Pages boundary language": "正在检查加密 Pages 边界文案",
+    "reviewing the public landing preview": "正在审阅公开宣传页预览",
+    "running synthetic graph integrity checks": "正在运行合成图谱完整性检查",
+    "approving the release story": "正在批准发布叙事",
+}
+AGENT_ROLE_ZH = {
+    "implementation": "实现",
+    "research synthesis": "研究综合",
+    "editor sessions": "编辑器会话",
+    "release review": "发布审阅",
+    "scheduled jobs": "定时任务",
+}
+
+
+def bi(en: str, zh: str) -> dict:
+    return {"en": en, "zh": zh}
 def slug(value: str) -> str:
     value = value.lower().replace("&", "and")
     value = re.sub(r"[^a-z0-9]+", "-", value).strip("-")
@@ -134,16 +256,16 @@ def build_graph():
     notion_pages = ["Weekly Progress", "Release Notes", "Experiment Ledger", "Deployment Runbook"]
 
     for machine, primary, role in machines:
-        nodes.append(node(f"machine:{machine}", "machine", machine, primary=primary, role=role, weight=24))
+        nodes.append(node(f"machine:{machine}", "machine", machine, label_i18n=bi(machine, MACHINE_ZH[machine]), primary=primary, primary_i18n=bi(primary, MACHINE_PRIMARY_ZH[primary]), role=role, role_i18n=bi(role, ROLE_ZH.get(role, role)), weight=24))
     for agent_name, role in agents:
-        nodes.append(node(f"agent:{agent_name}", "agent", agent_name, tool=agent_name, role=role, weight=20))
+        nodes.append(node(f"agent:{agent_name}", "agent", agent_name, tool=agent_name, role=role, role_i18n=bi(role, AGENT_ROLE_ZH.get(role, role)), weight=20))
     for label, machine_labels, phase, summary, visibility in projects:
         pid = f"project:{slug(label)}"
-        nodes.append(node(pid, "project", label, machines=machine_labels, phase=phase, description=summary, visibility=visibility, weight=92))
+        nodes.append(node(pid, "project", label, label_i18n=bi(label, PROJECT_ZH[label]), machines=machine_labels, phase=phase, description=summary, description_i18n=bi(summary, PROJECT_SUMMARY_ZH[summary]), visibility=visibility, weight=92))
         for machine in machine_labels:
             add_edge(edges, seen_edges, pid, f"machine:{machine}", "on")
     for label, role, summary in servers:
-        nodes.append(node(f"server:{slug(label)}", "server", label, role=role, primary=summary, weight=34))
+        nodes.append(node(f"server:{slug(label)}", "server", label, label_i18n=bi(label, SERVER_ZH[label]), role=role, primary=summary, primary_i18n=bi(summary, SERVER_SUMMARY_ZH[summary]), weight=34))
     for label in datasets:
         nodes.append(node(f"dataset:{slug(label)}", "dataset", label, weight=34 + rng.randint(0, 14)))
     for label in models:
@@ -151,17 +273,17 @@ def build_graph():
     for label in files:
         nodes.append(node(f"file:{slug(label)}", "file", label, weight=24 + rng.randint(0, 10)))
     for label, summary in artifacts:
-        nodes.append(node(f"artifact:{slug(label)}", "artifact", label, primary=summary, weight=34))
+        nodes.append(node(f"artifact:{slug(label)}", "artifact", label, label_i18n=bi(label, ARTIFACT_ZH[label]), primary=summary, primary_i18n=bi(summary, ARTIFACT_SUMMARY_ZH[summary]), weight=34))
     for label, summary in boundaries:
-        nodes.append(node(f"boundary:{slug(label)}", "boundary", label, primary=summary, weight=40))
+        nodes.append(node(f"boundary:{slug(label)}", "boundary", label, label_i18n=bi(label, BOUNDARY_ZH[label]), primary=summary, primary_i18n=bi(summary, BOUNDARY_SUMMARY_ZH[summary]), weight=40))
     for label in wandb_runs:
         nodes.append(node(f"wandb:{slug(label)}", "wandb", label, weight=22 + rng.randint(0, 8)))
     for label in methods:
-        nodes.append(node(f"method:{slug(label)}", "method", label, weight=24 + rng.randint(0, 10)))
+        nodes.append(node(f"method:{slug(label)}", "method", label, label_i18n=bi(label, METHOD_ZH[label]), weight=24 + rng.randint(0, 10)))
     for label in tech:
         nodes.append(node(f"tech:{slug(label)}", "tech", label, weight=24 + rng.randint(0, 12)))
     for label in notion_pages:
-        nodes.append(node(f"notion:{slug(label)}", "notion", label, weight=22 + rng.randint(0, 8)))
+        nodes.append(node(f"notion:{slug(label)}", "notion", label, label_i18n=bi(label, NOTION_ZH[label]), weight=22 + rng.randint(0, 8)))
 
     project_relations = [
         ("Project Meridian Sync", "Project Aurora Loom", "inherits_from"),
@@ -238,21 +360,30 @@ def build_graph():
             task = task_cycle[(pidx + eidx) % len(task_cycle)]
             status = status_cycle[(pidx * 2 + eidx) % len(status_cycle)]
             entry_id = f"entry:{slug(project_label)}:{eidx + 1:02d}"
-            label = f"{verbs[(pidx + eidx) % len(verbs)]} {objects[(pidx * 2 + eidx) % len(objects)]} for {project_label.replace('Project ', '')}"
+            verb = verbs[(pidx + eidx) % len(verbs)]
+            obj = objects[(pidx * 2 + eidx) % len(objects)]
+            label = f"{verb} {obj} for {project_label.replace('Project ', '')}"
+            zh_label = f"{PROJECT_ZH[project_label]}：{VERB_ZH[verb]}{OBJECT_ZH[obj]}"
             nodes.append(node(
                 entry_id,
                 "entry",
                 label,
+                label_i18n=bi(label, zh_label),
                 date=date,
                 status=status,
                 task=task,
                 tool=agent_name,
                 machine=machine,
                 project=project_label,
+                project_i18n=bi(project_label, PROJECT_ZH[project_label]),
                 phase=phase,
                 visibility=visibility,
                 session=f"demo://{slug(project_label)}/session-{eidx + 1:03d}",
                 excerpt="Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+                excerpt_i18n=bi(
+                    "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
+                    "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。",
+                ),
                 weight=58 + rng.randint(0, 42),
             ))
             add_edge(edges, seen_edges, entry_id, project_id, "in")
@@ -277,15 +408,24 @@ def build_graph():
                 fact_id,
                 "fact",
                 f"Derived synthetic fact {fidx + 1} for {project_label.replace('Project ', '')}",
+                label_i18n=bi(
+                    f"Derived synthetic fact {fidx + 1} for {project_label.replace('Project ', '')}",
+                    f"{PROJECT_ZH[project_label]}：自动提炼事实 {fidx + 1}",
+                ),
                 date=f"2026-06-{18 + pidx + fidx:02d}",
                 status="logged",
                 task="调研",
                 tool=tool,
                 machine=machine,
                 project=project_label,
+                project_i18n=bi(project_label, PROJECT_ZH[project_label]),
                 derived=True,
                 memtype="session-summary",
                 excerpt="Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+                excerpt_i18n=bi(
+                    "Derived from fictional session metadata. No confidential conversation, personal path, hostname, address, or real work label appears here.",
+                    "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。",
+                ),
                 source=f"demo://{slug(project_label)}/derived-{fidx + 1:03d}",
                 weight=44 + rng.randint(0, 28),
             ))
@@ -308,12 +448,15 @@ def build_graph():
             live_id,
             "liveagent",
             f"{agent_name}@{machine}",
+            label_i18n=bi(f"{agent_name}@{machine}", f"{agent_name}@{MACHINE_ZH[machine]}"),
             agent=agent_name,
             machine=machine,
             project=project_label,
+            project_i18n=bi(project_label, PROJECT_ZH[project_label]),
             project_canonical=slug(project_label),
             status="working",
             current=current,
+            current_i18n=bi(current, LIVE_CURRENT_ZH[current]),
             heartbeat=GENERATED_AT,
             demo_live=True,
             tool=agent_name,
@@ -356,6 +499,10 @@ def build_graph():
             "projects": [p[0] for p in projects],
             "servers": [s[0] for s in servers],
             "privacy_note": "All labels, sessions, machines, projects, files, datasets, models, servers, and live work states are fictional.",
+            "privacy_note_i18n": bi(
+                "All labels, sessions, machines, projects, files, datasets, models, servers, and live work states are fictional.",
+                "所有标签、session、机器、项目、文件、数据集、模型、服务器和当前工作状态都是虚构的。",
+            ),
             "demo_features": [
                 "multi-server collaboration",
                 "currently working agents",

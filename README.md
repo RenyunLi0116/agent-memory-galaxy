@@ -1,5 +1,7 @@
 # Agent Memory Galaxy
 
+[English](README.md) | [中文](README.zh-CN.md)
+
 Your agents remember together. Privately.
 
 Agent Memory Galaxy turns scattered AI-agent work traces across machines into one private, inspectable memory graph. It collects reviewed `agent_memory.md` notes, optional safe session metadata, machine fragments, and live presence into `graph.json`, then renders the result in a static Galaxy Viewer.
@@ -123,7 +125,7 @@ https://renyunli0116.github.io/agent-memory-galaxy/
 | `standalone.html` | Local plaintext viewer | Local only, gitignored |
 | private hub/fork | Real fragments, presence, graph | Private repo/local machine |
 
-Enable Pages in GitHub with `Settings -> Pages -> Deploy from a branch -> main -> /docs`. No GitHub Action is required for the static public site.
+Enable Pages in GitHub with `Settings -> Pages -> Build and deployment -> Source -> GitHub Actions`. The repository includes `.github/workflows/pages.yml`, which publishes the static `docs/` site on every push to `main`.
 
 GitHub Pages is not an access-control layer. Treat `/galaxy/` as a public shell and rely on strong client-side encryption plus private handling of plaintext artifacts.
 

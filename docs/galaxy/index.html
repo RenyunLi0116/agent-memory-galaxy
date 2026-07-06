@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
@@ -136,13 +136,14 @@
 <div id="app">
   <canvas id="cv"></canvas>
   <header>
-    <h1>◢ Agent Memory Galaxy</h1>
-    <span id="stat" class="live">BOOTING…</span>
+    <h1>◢ ENCRYPTED VIEWER SHELL</h1>
+    <span id="stat" class="live">BOOTING...</span>
     <span id="live" style="color:#ff5566;font-weight:700;text-shadow:0 0 10px rgba(255,60,80,.7);font-size:11px;letter-spacing:1px"></span>
     <input id="search" placeholder="SEARCH ⏎">
     <div class="grow"></div>
     <button id="fit">RECENTER</button>
-        <button id="sq-trig" aria-haspopup="true" aria-expanded="false" title="切换视觉风格 STYLE"><span id="sq-cur">🌠 星空</span><span class="sq-caret">▾</span></button>
+        <button id="sq-trig" aria-haspopup="true" aria-expanded="false" title="STYLE"><span id="sq-cur">🌠 星空</span><span class="sq-caret">▾</span></button>
+    <button id="lang-trig" type="button" title="Language"><span id="lang-cur">EN</span></button>
     <div id="sq-menu" role="menu" aria-hidden="true">
       <button class="sq-card on" data-s="cosmos" role="menuitemradio" aria-checked="true">
         <span class="sq-sw sq-sw-cosmos"></span><span class="sq-nm">🌠 星空</span><small class="sq-en">COSMOS · 默认</small>
@@ -159,47 +160,73 @@
     </div>
   </header>
   <div id="side">
-    <div class="hd"><span>节点类型 NODE TYPES</span><span id="ttot"></span></div>
+    <div class="hd"><span id="typesHead">NODE TYPES</span><span id="ttot"></span></div>
     <div id="types" class="sec"></div>
-    <div class="hd"><span>任务类型 TASK</span></div>
+    <div class="hd"><span id="tasksHead">TASK TYPES</span></div>
     <div id="tasks" class="sec"></div>
     <div class="sec">
-      <div class="ctl" style="margin-bottom:7px">着色:
-        <label><input type="radio" name="cm" value="type" checked> 类型</label>
-        <label><input type="radio" name="cm" value="task"> 任务</label>
-        <label><input type="radio" name="cm" value="tool"> 工具</label>
+      <div class="ctl" style="margin-bottom:7px"><span id="colorHead">COLOR:</span>
+        <label><input type="radio" name="cm" value="type" checked> <span id="colorType">TYPE</span></label>
+        <label><input type="radio" name="cm" value="task"> <span id="colorTask">TASK</span></label>
+        <label><input type="radio" name="cm" value="tool"> <span id="colorTool">TOOL</span></label>
       </div>
-      <div class="row"><label>项目 PROJECT</label><select id="fProject"><option value="">ALL</option></select></div>
-      <div class="row"><label>机器 MACHINE</label><select id="fMachine"><option value="">ALL</option></select></div>
-      <div class="row"><label>状态 STATUS</label><select id="fStatus"><option value="">ALL</option>
+      <div class="row"><label id="projectLabel">PROJECT</label><select id="fProject"><option value="">ALL</option></select></div>
+      <div class="row"><label id="machineLabel">MACHINE</label><select id="fMachine"><option value="">ALL</option></select></div>
+      <div class="row"><label id="statusLabel">STATUS</label><select id="fStatus"><option value="">ALL</option>
         <option>done</option><option>doing</option><option>planned</option><option>logged</option></select></div>
-      <div class="row"><label>活跃 ACTIVITY</label><select id="fActivity"><option value="">全部</option>
-        <option value="active">🟢 近3天有记录</option><option value="live">🔴 正在工作</option></select></div>
-      <div class="row"><label>时间轴 <span id="tlLbl" style="color:var(--holo);text-transform:none"></span></label>
+      <div class="row"><label id="activityLabel">ACTIVITY</label><select id="fActivity"><option value="">ALL</option>
+        <option value="active">🟢 RECENT RECORDS</option><option value="live">🔴 WORKING NOW</option></select></div>
+      <div class="row"><label><span id="timelineLabel">TIMELINE</span> <span id="tlLbl" style="color:var(--holo);text-transform:none"></span></label>
         <div><input type="range" id="tlMin" min="0" max="100" value="0">
         <input type="range" id="tlMax" min="0" max="100" value="100"></div></div>
-      <div class="ctl"><label><input type="checkbox" id="cSpin" checked> 自转</label>
-        <label><input type="checkbox" id="cEdges" checked> 连线</label>
-        <label title="从各机 Claude/Codex/Cursor 原生会话自动提炼、无人工 agent_memory.md 的记忆"><input type="checkbox" id="cDerived"> 隐藏自动提炼</label></div>
+      <div class="ctl"><label><input type="checkbox" id="cSpin" checked> <span id="spinLabel">SPIN</span></label>
+        <label><input type="checkbox" id="cEdges" checked> <span id="edgesLabel">EDGES</span></label>
+        <label id="derivedWrap" title="Hide memories derived from native Claude/Codex/Cursor sessions."><input type="checkbox" id="cDerived"> <span id="derivedLabel">HIDE AUTO-DERIVED</span></label></div>
     </div>
   </div>
-  <div id="detail"><div class="dh"><span id="dtag" class="tag"></span><span style="font-size:10px;color:var(--mut);letter-spacing:1px">READOUT</span><button class="close" id="dClose">✕</button></div><div class="db" id="dBody"></div></div>
-  <div id="hint">拖拽旋转 · 滚轮缩放 · 点击读出 · 🟢近3天有记录 · 🔴正在工作</div>
-  <div id="empty">ENCRYPTED GRAPH REQUIRED</div>
+  <div id="detail"><div class="dh"><span id="dtag" class="tag"></span><span id="readoutLabel" style="font-size:10px;color:var(--mut);letter-spacing:1px">READOUT</span><button class="close" id="dClose">✕</button></div><div class="db" id="dBody"></div></div>
+  <div id="hint">Drag to rotate · Wheel to zoom · Click readout · 🟢 recent records · 🔴 working now</div>
+  <div id="empty">NO MATCH</div>
 </div>
 
 <script>
 "use strict";
+const LANGS=new Set(["en","zh"]);
+function readLang(){const q=new URLSearchParams(location.search).get('lang');
+  if(LANGS.has(q))return q;try{const v=localStorage.getItem('amg_lang');if(LANGS.has(v))return v;}catch(e){}
+  return 'en';}
+let LANG=readLang();
+const UI={
+  en:{booting:'BOOTING...',noData:'NO DATA',encrypted:'🔒 ENCRYPTED',unlockTitle:'◢ Memory Galaxy',unlockSub1:'Encrypted · enter a password to unlock locally',unlockSub2:'Encrypted · enter two passwords to unlock locally',password1:'Password 1',password2:'Password 2',password:'PASSWORD',unlock:'UNLOCK',decrypting:'DECRYPTING...',badPassword:'Wrong password. Try again.',lockFoot:'Passwords are used only in your browser for decryption. They are not uploaded or stored. Search engines and unauthorized visitors only see ciphertext.',search:'SEARCH ⏎',recenter:'RECENTER',styleTitle:'STYLE',types:'NODE TYPES',tasks:'TASK TYPES',color:'COLOR:',type:'TYPE',task:'TASK',tool:'TOOL',project:'PROJECT',machine:'MACHINE',status:'STATUS',activity:'ACTIVITY',all:'ALL',active:'🟢 RECENT RECORDS',live:'🔴 WORKING NOW',timeline:'TIMELINE',spin:'SPIN',edges:'EDGES',hideDerived:'HIDE AUTO-DERIVED',hideDerivedTitle:'Hide memories derived from native Claude/Codex/Cursor sessions.',readout:'READOUT',hint:'Drag to rotate · Wheel to zoom · Click readout · 🟢 recent records · 🔴 working now',noMatch:'NO MATCH',online:'ONLINE',nodes:'NODES',links:'LINKS',proj:'PROJ',mach:'MACH',agentsOnline:'agents online',noneDates:'(no dates)',working:'working now',autoDerived:'auto-derived',doing:'Doing',heartbeat:'Heartbeat',activeState:'active',staleState:'stale',session:'Session',source:'Source',primary:'Primary',memoryType:'Memory type',weight:'Weight',degree:'Links',related:'Related',justNow:'just now',minutesAgo:'minutes ago',hoursAgo:'hours ago',daysAgo:'days ago',languageNext:'中文'},
+  zh:{booting:'启动中...',noData:'无数据',encrypted:'🔒 已加密',unlockTitle:'◢ Memory Galaxy',unlockSub1:'已加密 · 输入密码在本地解锁',unlockSub2:'已加密 · 输入两个密码在本地解锁',password1:'密码 1',password2:'密码 2',password:'密码',unlock:'解锁',decrypting:'解密中...',badPassword:'密码错误，请重试',lockFoot:'密码只在你的浏览器里用于解密，不上传、不留存。搜索引擎与未授权访问者只能看到密文。',search:'搜索 ⏎',recenter:'回中',styleTitle:'视觉风格 STYLE',types:'节点类型 NODE TYPES',tasks:'任务类型 TASK',color:'着色:',type:'类型',task:'任务',tool:'工具',project:'项目 PROJECT',machine:'机器 MACHINE',status:'状态 STATUS',activity:'活跃 ACTIVITY',all:'全部',active:'🟢 近3天有记录',live:'🔴 正在工作',timeline:'时间轴',spin:'自转',edges:'连线',hideDerived:'隐藏自动提炼',hideDerivedTitle:'隐藏从 Claude/Codex/Cursor 原生会话自动提炼、无人工 agent_memory.md 的记忆。',readout:'读出 READOUT',hint:'拖拽旋转 · 滚轮缩放 · 点击读出 · 🟢近3天有记录 · 🔴正在工作',noMatch:'没有匹配',online:'在线',nodes:'节点',links:'连线',proj:'项目',mach:'机器',agentsOnline:'个 agent 在线',noneDates:'(无日期)',working:'正在工作',autoDerived:'自动提炼',doing:'正在做',heartbeat:'心跳',activeState:'活跃',staleState:'已超时',session:'Session',source:'来源',primary:'主要项目',memoryType:'记忆类型',weight:'体量',degree:'连接',related:'关联',justNow:'刚刚',minutesAgo:'分钟前',hoursAgo:'小时前',daysAgo:'天前',languageNext:'EN'}
+};
+function tr(k){return (UI[LANG]&&UI[LANG][k])||UI.en[k]||k;}
+const TYPE_LABELS={
+  en:{project:'Project',entry:'Work entry',fact:'Auto memory',agent:'Agent',dataset:'Dataset',server:'Server',model:'Model/Run',method:'Method',file:'File',wandb:'W&B',tech:'Tech',notion:'Notion',machine:'Machine',liveagent:'Working now',boundary:'Boundary',artifact:'Artifact'},
+  zh:{project:'项目',entry:'工作记录',fact:'自动记忆',agent:'Agent',dataset:'数据集',server:'服务器',model:'模型/Run',method:'方法/思路',file:'文件',wandb:'W&B',tech:'框架/技术',notion:'Notion',machine:'机器',liveagent:'正在工作',boundary:'边界',artifact:'产物'}
+};
+const TYPE_DESC={
+  en:{project:'Top-level unit that owns work memory',entry:'A reviewed work record from a session or day',fact:'Structured memory distilled from safe session metadata',agent:'The human or AI actor that performed work',dataset:'Dataset, training input, or shared asset',server:'Server or runtime node',model:'Model checkpoint or tracked run',method:'Technical method or workflow inside a project',file:'Code, config, or output file',wandb:'Experiment tracking run id',tech:'External framework or technology',notion:'Notion page or sync target',machine:'Machine where memory was recorded',liveagent:'Currently working agent with a fresh heartbeat',boundary:'Public, private, or encrypted boundary',artifact:'Build, encrypted, or published output'},
+  zh:{project:'研究项目 — 工作归属的顶层单位',entry:'一条工作记录(某次 session/某天)',fact:'自动提炼的结构化记忆事实卡',agent:'标注的执行者(人/AI)',dataset:'数据集/训练数据/共享资产',server:'服务器或运行节点',model:'训练出的模型 / run',method:'项目内技术思路或流程',file:'代码/配置/产物文件',wandb:'实验追踪 run id',tech:'外部框架/技术',notion:'Notion 页面/同步目标',machine:'记录所在机器',liveagent:'正在工作(红光)',boundary:'公开、私有或加密边界',artifact:'构建、加密或发布产物'}
+};
+const TASK_LABELS={
+  en:{'训练':'Training','数据':'Data','评测':'Evaluation','部署':'Deployment','调研':'Research','同步':'Sync','规划':'Planning','其他':'Other'},
+  zh:{'训练':'训练','数据':'数据','评测':'评测','部署':'部署','调研':'调研','同步':'同步','规划':'规划','其他':'其他'}
+};
+const EDGE_LABELS={
+  en:{depends_on:'depends on',inherits_from:'inherits from',exports_to:'exports to',working_on:'working on',handoff_to:'handoff to',keeps_private:'keeps private',encrypts:'encrypts',redacts:'redacts',publishes_to:'publishes to',publishes:'publishes',shared_on:'shared on',cached_on:'cached on',validates:'validates',serves:'serves',replicates_to:'replicates to'},
+  zh:{depends_on:'依赖',inherits_from:'继承',exports_to:'导出到',working_on:'正在做',handoff_to:'交接给',keeps_private:'保持私有',encrypts:'加密',redacts:'脱敏',publishes_to:'发布到',publishes:'发布',shared_on:'共享于',cached_on:'缓存于',validates:'验证',serves:'服务',replicates_to:'同步到'}
+};
+function typeLabel(t){return (TYPE_LABELS[LANG]&&TYPE_LABELS[LANG][t])||TYPE_LABELS.en[t]||t;}
+function typeDesc(t){return (TYPE_DESC[LANG]&&TYPE_DESC[LANG][t])||TYPE_DESC.en[t]||'';}
+function taskLabel(t){return (TASK_LABELS[LANG]&&TASK_LABELS[LANG][t])||t||'';}
+function edgeLabel(t){return (EDGE_LABELS[LANG]&&EDGE_LABELS[LANG][t])||t||'';}
+function i18nField(o,k){const v=o&&o[k+'_i18n'];if(v&&v[LANG])return v[LANG];return o?o[k]:'';}
+function nodeLabel(n){return i18nField(n,'label')||n.label||'';}
+function nodeValue(n,k){return i18nField(n,k)||n[k]||'';}
 const PALETTE={project:"#ff5d73",entry:"#4ea8ff",fact:"#2ee6c5",agent:"#ffb24d",dataset:"#b07bff",
   server:"#ff5fa2",model:"#2bf0a0",method:"#ff7bdf",file:"#8aa0c8",wandb:"#ffd84d",tech:"#33c6ff",notion:"#d9c2ff",machine:"#ffe14d",
   liveagent:"#ff3b4e",boundary:"#f5b642",artifact:"#7df3c4"};
-const TLAB={project:"项目",entry:"工作记录",fact:"自动记忆",agent:"Agent",dataset:"数据集",server:"服务器",
-  model:"模型/Run",method:"方法/思路",file:"文件",wandb:"W&B",tech:"框架/技术",notion:"Notion",liveagent:"正在工作",boundary:"边界",artifact:"产物"};
-const DESC={project:"研究项目 — 工作归属的顶层单位",entry:"一条工作记录(某次 session/某天)",
-  fact:"自动提炼的结构化记忆事实卡",agent:"标注的执行者(人/AI)",dataset:"数据集/训练数据/共享资产",
-  server:"服务器或运行节点",model:"训练出的模型 / run",method:"项目内技术思路或流程",
-  file:"代码/配置/产物文件",wandb:"实验追踪 run id",tech:"外部框架/技术",notion:"Notion 页面/同步目标",
-  machine:"记录所在机器",liveagent:"正在工作(红光)",boundary:"公开、私有或加密边界",artifact:"构建、加密或发布产物"};
 const LIVE_TTL=6*60*60*1000;   // 心跳新鲜期：6 小时
 const TASKC={"训练":"#ff8a3d","数据":"#3da5ff","评测":"#2be0a6","部署":"#9aa6c0","调研":"#c06bff","同步":"#ff6fae","规划":"#ffd24b","其他":"#6b7690"};
 const TOOLC={claude:"#c39bff",codex:"#10b981",cursor:"#38bdf8",human:"#ffd24b",agent:"#8aa0c8"};   // 产出工具配色
@@ -216,34 +243,57 @@ let filters={types:new Set(),project:"",machine:"",status:"",task:"",activity:""
 let dmin=0,dmax=0,hasDates=false;
 let liveCount=0,_pw=null,_encMode=false;   // 红光 live 统计 + 轮询用密码/加密模式
 
+function setText(id,key){const el=document.getElementById(id);if(el)el.textContent=tr(key);}
+function setFirstOption(id){const s=document.getElementById(id);if(s&&s.options.length)s.options[0].textContent=tr('all');}
+function projectDisplay(value){const n=N.find(x=>x.type==='project'&&x.label===value);return n?nodeLabel(n):value;}
+function machineDisplay(value){const n=N.find(x=>x.type==='machine'&&x.label===value);return n?nodeLabel(n):value;}
+function syncLangUrl(){try{const u=new URL(location.href);u.searchParams.set('lang',LANG);history.replaceState(null,'',u);}catch(e){}}
+function setLanguage(lang){if(!LANGS.has(lang)||lang===LANG)return;LANG=lang;try{localStorage.setItem('amg_lang',LANG);}catch(e){}syncLangUrl();applyLanguage();}
+function applyLanguage(){
+  document.documentElement.lang=LANG==='zh'?'zh-CN':'en';
+  document.title=LANG==='zh'?'Agent Memory Galaxy 演示':'Agent Memory Galaxy';
+  const stat=document.getElementById('stat');if(stat&&stat.textContent.includes('BOOTING'))stat.textContent=tr('booting');
+  const searchEl=document.getElementById('search');if(searchEl)searchEl.placeholder=tr('search');
+  const sq=document.getElementById('sq-trig');if(sq)sq.title=tr('styleTitle');
+  const langCur=document.getElementById('lang-cur');if(langCur)langCur.textContent=LANG==='zh'?'中文':'EN';
+  setText('fit','recenter');setText('typesHead','types');setText('tasksHead','tasks');setText('colorHead','color');
+  setText('colorType','type');setText('colorTask','task');setText('colorTool','tool');setText('projectLabel','project');setText('machineLabel','machine');
+  setText('statusLabel','status');setText('activityLabel','activity');setText('timelineLabel','timeline');setText('spinLabel','spin');setText('edgesLabel','edges');
+  setText('derivedLabel','hideDerived');setText('readoutLabel','readout');setText('hint','hint');setText('empty','noMatch');
+  const dw=document.getElementById('derivedWrap');if(dw)dw.title=tr('hideDerivedTitle');
+  setFirstOption('fProject');setFirstOption('fMachine');setFirstOption('fStatus');setFirstOption('fActivity');
+  const fa=document.getElementById('fActivity');if(fa&&fa.options.length>=3){fa.options[1].textContent=tr('active');fa.options[2].textContent=tr('live');}
+  if(RAW){buildUI([...new Set(N.map(n=>n.type))]);computeLive();if(sel)select(sel);}
+}
+
 async function load(){
   if(window.GRAPH){RAW=window.GRAPH;return go();}
   let r=null;try{const x=await fetch('graph.json',{cache:'no-store'});if(x.ok)r=await x.json();}catch(e){}
   if(r){RAW=r;return go();}
   let blob=null;try{const x=await fetch('graph.enc.json',{cache:'no-store'});if(x.ok)blob=await x.json();}catch(e){}
   if(blob)return showUnlock(blob);
-  document.getElementById('stat').textContent='NO ENCRYPTED GRAPH';
+  document.getElementById('stat').textContent=tr('noData');
 }
 const SEP='\u0000';   // 合并两密码的分隔符（NUL U+0000；与 encrypt.py SEP="\x00" 逐字节一致）
 function showUnlock(blob){
-  document.getElementById('stat').textContent='🔒 ENCRYPTED';
+  document.getElementById('stat').textContent=tr('encrypted');
   const dual=!!(blob.dual||blob.v>=2);   // v2/dual → 两个密码框；否则 v1 单框（旧行为）
   const ov=document.createElement('div');ov.id='lock';
-  ov.innerHTML=`<div class="lb"><div class="t">◢ Agent Memory Galaxy</div>
-    <div class="s">🔒 已加密 · ${dual?'输入两个密码在本地解锁':'输入密码在本地解锁'}</div>
-    ${dual?`<input id="lp1" type="password" placeholder="密码 1" autocomplete="off">
-    <input id="lp2" type="password" placeholder="密码 2" autocomplete="off" style="margin-top:9px">`
-    :`<input id="lp" type="password" placeholder="PASSWORD" autocomplete="current-password">`}
-    <button id="lg">UNLOCK</button><div id="le"></div>
-    <div class="f">密码只在你的浏览器里用于解密，不上传、不留存。<br>搜索引擎与未授权访问者只能看到密文。</div></div>`;
+  ov.innerHTML=`<div class="lb"><div class="t">${tr('unlockTitle')}</div>
+    <div class="s">${dual?tr('unlockSub2'):tr('unlockSub1')}</div>
+    ${dual?`<input id="lp1" type="password" placeholder="${tr('password1')}" autocomplete="off">
+    <input id="lp2" type="password" placeholder="${tr('password2')}" autocomplete="off" style="margin-top:9px">`
+    :`<input id="lp" type="password" placeholder="${tr('password')}" autocomplete="current-password">`}
+    <button id="lg">${tr('unlock')}</button><div id="le"></div>
+    <div class="f">${tr('lockFoot')}</div></div>`;
   document.body.appendChild(ov);
   const go2=ov.querySelector('#lg'),er=ov.querySelector('#le');
   const inputs=dual?[ov.querySelector('#lp1'),ov.querySelector('#lp2')]:[ov.querySelector('#lp')];
   const combinedOf=()=>dual?inputs[0].value+SEP+inputs[1].value:inputs[0].value;
-  const t=async()=>{er.textContent='';go2.disabled=true;go2.textContent='DECRYPTING…';
+  const t=async()=>{er.textContent='';go2.disabled=true;go2.textContent=tr('decrypting');
     const combined=combinedOf();
     try{RAW=await decrypt(blob,combined);_pw=combined;_encMode=true;ov.remove();go();}
-    catch(e){er.textContent='密码错误，请重试';go2.disabled=false;go2.textContent='UNLOCK';inputs[0].select();}};
+    catch(e){er.textContent=tr('badPassword');go2.disabled=false;go2.textContent=tr('unlock');inputs[0].select();}};
   go2.onclick=t;inputs.forEach(i=>i.onkeydown=e=>{if(e.key==='Enter')t();});setTimeout(()=>inputs[0].focus(),50);
 }
 async function decrypt(blob,pw){
@@ -277,7 +327,7 @@ function go(){
   buildUI(types);
   startPolling();
   const m=RAW.meta||{};
-  document.getElementById('stat').innerHTML=`ONLINE · <b>${N.length}</b> NODES · <b>${E.length}</b> LINKS · <b>${(m.projects||[]).length}</b> PROJ · <b>${(m.machines||[]).length}</b> MACH`;
+  document.getElementById('stat').innerHTML=`${tr('online')} · <b>${N.length}</b> ${tr('nodes')} · <b>${E.length}</b> ${tr('links')} · <b>${(m.projects||[]).length}</b> ${tr('proj')} · <b>${(m.machines||[]).length}</b> ${tr('mach')}`;
   document.getElementById('stat').className='';
   resize();applyFilter();loop();
 }
@@ -290,7 +340,7 @@ function computeLive(){
   // 只沿 working_on 从"新鲜 liveagent"传播到它正在做的项目（不经机器级联，避免整机染红）
   N.forEach(n=>{if(n.type==='project'){(adj[n.id]||[]).forEach(x=>{const o=byId[x.o];
     if(o&&isLiveAgent(o)&&x.e.type==='working_on')n._live=true;});}});
-  const el=document.getElementById('live');if(el)el.textContent=liveCount?`　◉ ${liveCount} agent 在线`:'';
+  const el=document.getElementById('live');if(el)el.textContent=liveCount?`　◉ ${liveCount} ${tr('agentsOnline')}`:'';
   if(filters.activity)applyFilter();   // 活跃筛选激活时，随心跳过期/上线自动刷新可见集
   return liveCount;
 }
@@ -303,15 +353,15 @@ function buildUI(types){
     const row=document.createElement('div');
     row.innerHTML=`<div class="tog${filters.types.has(t)?'':' off'}" data-t="${t}">
         <span class="dot" style="background:${PALETTE[t]||'#999'};color:${PALETTE[t]||'#999'}"></span>
-        <span class="nm">${TLAB[t]||t}</span><span class="cnt">${counts[t]||0}</span><span class="ex">▸</span></div>
-      <div class="desc">${DESC[t]||''}</div><div class="mem"></div>`;
+        <span class="nm">${typeLabel(t)}</span><span class="cnt">${counts[t]||0}</span><span class="ex">▸</span></div>
+      <div class="desc">${typeDesc(t)}</div><div class="mem"></div>`;
     const tg=row.querySelector('.tog'),mem=row.querySelector('.mem');
     tg.querySelector('.dot').onclick=e=>{e.stopPropagation();filters.types.has(t)?filters.types.delete(t):filters.types.add(t);tg.classList.toggle('off');applyFilter();};
     tg.onclick=()=>{ tg.classList.toggle('open');mem.classList.toggle('show');
       if(mem.classList.contains('show')&&!mem.dataset.f){mem.dataset.f=1;
         N.filter(n=>n.type===t).sort((a,b)=>(b.weight||0)-(a.weight||0)).slice(0,40).forEach(n=>{
-          const d=document.createElement('div');d.textContent=n.label+(n.primary?'  ·  '+n.primary:'');
-          d.title=n.label;d.onclick=()=>{ensureVisible(n);select(n);face(n);};mem.appendChild(d);});}};
+          const d=document.createElement('div');d.textContent=nodeLabel(n)+(nodeValue(n,'primary')?'  ·  '+nodeValue(n,'primary'):'');
+          d.title=nodeLabel(n);d.onclick=()=>{ensureVisible(n);select(n);face(n);};mem.appendChild(d);});}};
     cont.appendChild(row);
   });
   // 任务分型
@@ -319,18 +369,18 @@ function buildUI(types){
   const tk=document.getElementById('tasks');tk.innerHTML='';
   Object.keys(TASKC).filter(t=>tc[t]).sort((a,b)=>tc[b]-tc[a]).forEach(t=>{
     const d=document.createElement('div');d.className='tog';d.dataset.k=t;
-    d.innerHTML=`<span class="dot" style="background:${TASKC[t]};color:${TASKC[t]}"></span><span class="nm">${t}</span><span class="cnt">${tc[t]}</span>`;
+    d.innerHTML=`<span class="dot" style="background:${TASKC[t]};color:${TASKC[t]}"></span><span class="nm">${taskLabel(t)}</span><span class="cnt">${tc[t]}</span>`;
     d.onclick=()=>{filters.task=filters.task===t?'':t;[...tk.children].forEach(c=>c.style.opacity=(!filters.task||c.dataset.k===filters.task)?1:.3);applyFilter();};
     tk.appendChild(d);});
-  const fill=(id,v)=>{const s=document.getElementById(id);[...new Set(v)].filter(Boolean).sort().forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;s.appendChild(o);});};
-  fill('fProject',N.filter(n=>n.type==='project').map(n=>n.label));
-  fill('fMachine',N.filter(n=>n.type==='machine').map(n=>n.label));
+  const fill=(id,v,labeler=x=>x,current='')=>{const s=document.getElementById(id);s.innerHTML=`<option value="">${tr('all')}</option>`;[...new Set(v)].filter(Boolean).sort().forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=labeler(x);s.appendChild(o);});s.value=current||'';};
+  fill('fProject',N.filter(n=>n.type==='project').map(n=>n.label),projectDisplay,filters.project);
+  fill('fMachine',N.filter(n=>n.type==='machine').map(n=>n.label),machineDisplay,filters.machine);
   fProject.onchange=e=>{filters.project=e.target.value;applyFilter();};
   fMachine.onchange=e=>{filters.machine=e.target.value;applyFilter();};
   fStatus.onchange=e=>{filters.status=e.target.value;applyFilter();};
   fActivity.onchange=e=>{filters.activity=e.target.value;applyFilter();};
   const fmt=t=>new Date(t).toISOString().slice(0,10);
-  const tlu=()=>{if(!hasDates){document.getElementById('tlLbl').textContent='(无日期)';return;}
+  const tlu=()=>{if(!hasDates){document.getElementById('tlLbl').textContent=tr('noneDates');return;}
     const lo=+tlMin.value/100,hi=+tlMax.value/100;filters.tmin=dmin+(dmax-dmin)*Math.min(lo,hi);filters.tmax=dmin+(dmax-dmin)*Math.max(lo,hi);
     document.getElementById('tlLbl').textContent=`${fmt(filters.tmin)}→${fmt(filters.tmax)}`;applyFilter();};
   tlMin.oninput=tlu;tlMax.oninput=tlu;tlu();
@@ -404,7 +454,7 @@ function gShade(rec){return `${Math.round(44+rec*96)},${Math.round(150+rec*105)}
 // 共享语义层(红光live/绿呼吸active/金色references/筛选/详情)不随主题变，保证含义一致。
 const THEMES={};
 const _uSty=(location.hash.match(/style=(\w+)/)||location.search.match(/style=(\w+)/)||[])[1];
-let styleKey=_uSty||localStorage.getItem('amg_style')||'cosmos';
+let styleKey=_uSty||localStorage.getItem('amg_style')||'jarvis';
 function TH(){return THEMES[styleKey]||THEMES.cosmos;}
 function applyThemeCss(){const c=(TH().css)||{};const rs=document.documentElement.style;
   for(const[k,v]of Object.entries(c))rs.setProperty('--'+k,v);}
@@ -472,7 +522,7 @@ function reticle(n,strong){const x=n._sx,y=n._sy,R=n._r+(strong?14:9),a=tick*0.0
   if(strong){ctx.strokeStyle=hx('#ffc24b',0.35);ctx.beginPath();ctx.arc(x,y,R+5+3*Math.sin(tick*0.1),0,6.2832);ctx.stroke();
     ctx.strokeStyle=hx('#ffc24b',0.5);ctx.lineWidth=1;[[-1,0],[1,0],[0,-1],[0,1]].forEach(([dx,dy])=>{ctx.beginPath();ctx.moveTo(x+dx*(R-3),y+dy*(R-3));ctx.lineTo(x+dx*(R+6),y+dy*(R+6));ctx.stroke();});}
 }
-function callout(n){const x=n._sx,y=n._sy;const lab=n.label||'',sub=(TLAB[n.type]||n.type)+(n.task?' · '+n.task:'')+(n.primary?' · '+n.primary:'');
+function callout(n){const x=n._sx,y=n._sy;const lab=nodeLabel(n)||'',sub=typeLabel(n.type)+(n.task?' · '+taskLabel(n.task):'')+(nodeValue(n,'primary')?' · '+nodeValue(n,'primary'):'');
   ctx.font='12px ui-monospace';const w=Math.max(ctx.measureText(lab).width,ctx.measureText(sub).width)+16;
   const lx=x+n._r+14, ly=y-22, up= lx+w>W-16; const bx=up?x-n._r-14-w:lx;
   ctx.strokeStyle=hx('#38e1ff',0.7);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(bx+(up?w:0),ly+14);ctx.lineTo(bx+(up?w:0)+(up?-6:6),ly+14);ctx.stroke();
@@ -632,35 +682,35 @@ function pick(mx,my){const r=cv.getBoundingClientRect();mx-=r.left;my-=r.top;let
 
 function select(p){sel=p;const d=document.getElementById('detail'),b=document.getElementById('dBody'),tg=document.getElementById('dtag');
   if(!p){d.classList.remove('show');return;}
-  const c=col(p);tg.style.background=c;tg.textContent=TLAB[p.type]||p.type;
-  let h=`<h2>${esc(p.label)}${p._live?' <span style="color:#ff5566">🔴 正在工作</span>':''}${p.derived?' <span style="color:#8aa0c8;font-size:11px;font-weight:normal">🔹自动提炼</span>':''}</h2><div class="kv">`;
+  const c=col(p);tg.style.background=c;tg.textContent=typeLabel(p.type);
+  let h=`<h2>${esc(nodeLabel(p))}${p._live?' <span style="color:#ff5566">🔴 '+tr('working')+'</span>':''}${p.derived?' <span style="color:#8aa0c8;font-size:11px;font-weight:normal">🔹'+tr('autoDerived')+'</span>':''}</h2><div class="kv">`;
   const kv=[];
   if(p.type==='liveagent'){
-    if(p.current)kv.push(['正在做',p.current]);
-    if(p.heartbeat)kv.push(['心跳',relTime(p.heartbeat)+(isLiveAgent(p)?'（活跃）':'（已超时）')]);
+    if(p.current)kv.push([tr('doing'),nodeValue(p,'current')]);
+    if(p.heartbeat)kv.push([tr('heartbeat'),relTime(p.heartbeat)+(isLiveAgent(p)?' ('+tr('activeState')+')':' ('+tr('staleState')+')')]);
   }
-  if(p.tool)kv.push(['工具',p.tool]);if(p.task)kv.push(['任务',p.task]);if(p.status)kv.push(['状态',p.status]);if(p.date)kv.push(['日期',p.date]);
-  if(p.session)kv.push(['Session',p.session]);if(p.project)kv.push(['项目',p.project]);
-  if(p.derived)kv.push(['来源',(p.tool||'')+' 原生会话自动提炼'+(p.n_sessions?'（'+p.n_sessions+' session）':'')]);
-  if(p.primary)kv.push(['主要项目',p.primary]);if(p.machine)kv.push(['机器',p.machine]);
-  if(p.memtype)kv.push(['记忆类型',p.memtype]);kv.push(['体量',p.weight||0]);kv.push(['连接',p.degree||0]);
+  if(p.tool)kv.push([tr('tool'),p.tool]);if(p.task)kv.push([tr('task'),taskLabel(p.task)]);if(p.status)kv.push([tr('status'),p.status]);if(p.date)kv.push(['Date',p.date]);
+  if(p.session)kv.push([tr('session'),p.session]);if(p.project)kv.push([tr('project'),projectDisplay(p.project)]);
+  if(p.derived)kv.push([tr('source'),LANG==='zh'?(p.tool||'')+' 原生会话自动提炼'+(p.n_sessions?'（'+p.n_sessions+' session）':''):'Auto-derived from '+(p.tool||'native')+' sessions'+(p.n_sessions?' ('+p.n_sessions+' sessions)':'')]);
+  if(p.primary)kv.push([tr('primary'),nodeValue(p,'primary')]);if(p.machine)kv.push([tr('machine'),machineDisplay(p.machine)]);
+  if(p.memtype)kv.push([tr('memoryType'),p.memtype]);kv.push([tr('weight'),p.weight||0]);kv.push([tr('degree'),p.degree||0]);
   kv.forEach(([k,v])=>h+=`<b>${k}</b><span>${esc(v)}</span>`);h+=`</div>`;
-  if(p.description)h+=`<div class="excerpt">${esc(p.description)}</div>`;
-  if(p.excerpt)h+=`<div class="excerpt">${esc(p.excerpt)}</div>`;
-  const nb=adj[p.id]||[];if(nb.length){h+=`<h4>关联 ${nb.length}</h4>`;const seen=new Set();
+  if(nodeValue(p,'description'))h+=`<div class="excerpt">${esc(nodeValue(p,'description'))}</div>`;
+  if(nodeValue(p,'excerpt'))h+=`<div class="excerpt">${esc(nodeValue(p,'excerpt'))}</div>`;
+  const nb=adj[p.id]||[];if(nb.length){h+=`<h4>${tr('related')} ${nb.length}</h4>`;const seen=new Set();
     nb.slice(0,80).forEach(x=>{if(seen.has(x.o))return;seen.add(x.o);const o=byId[x.o];if(!o)return;
-      h+=`<span class="nb" data-id="${esc(o.id)}"><span class="dot" style="background:${PALETTE[o.type]||'#999'};color:${PALETTE[o.type]||'#999'}"></span>${esc(trim(o.label,20))} <span style="color:var(--mut);font-size:10px">${x.e.type}</span></span>`;});}
+      h+=`<span class="nb" data-id="${esc(o.id)}"><span class="dot" style="background:${PALETTE[o.type]||'#999'};color:${PALETTE[o.type]||'#999'}"></span>${esc(trim(nodeLabel(o),20))} <span style="color:var(--mut);font-size:10px">${edgeLabel(x.e.type)}</span></span>`;});}
   if(p.source)h+=`<div class="src">↪ ${esc(p.source)}</div>`;
   b.innerHTML=h;d.classList.add('show');
   b.querySelectorAll('.nb').forEach(el=>el.onclick=()=>{const o=byId[el.dataset.id];if(o){ensureVisible(o);select(o);face(o);}});
 }
 function relTime(iso){const t=Date.parse(iso);if(isNaN(t))return iso||'?';const m=(Date.now()-t)/60000;
-  if(m<1)return '刚刚';if(m<60)return `${m|0} 分钟前`;if(m<1440)return `${m/60|0} 小时前`;return `${m/1440|0} 天前`;}
+  if(m<1)return tr('justNow');if(m<60)return LANG==='zh'?`${m|0} ${tr('minutesAgo')}`:`${m|0} ${tr('minutesAgo')}`;if(m<1440)return LANG==='zh'?`${m/60|0} ${tr('hoursAgo')}`:`${m/60|0} ${tr('hoursAgo')}`;return LANG==='zh'?`${m/1440|0} ${tr('daysAgo')}`:`${m/1440|0} ${tr('daysAgo')}`;}
 function esc(s){return(s+'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 function trim(s,n){s=s||'';return s.length>n?s.slice(0,n-1)+'…':s;}
 function face(n){yaw=-Math.atan2(n.x,n.z+1e-6);pitch=Math.atan2(n.y,Math.hypot(n.x,n.z)+1e-6)*.6;zoom=Math.max(zoom,1.5);}
 function doSearch(q){if(!q)return;q=q.toLowerCase();
-  let hit=N.find(n=>(n.label||'').toLowerCase().includes(q))||N.find(n=>(n.excerpt||'').toLowerCase().includes(q)||(n.description||'').toLowerCase().includes(q));
+  let hit=N.find(n=>(nodeLabel(n)||'').toLowerCase().includes(q)||(n.label||'').toLowerCase().includes(q))||N.find(n=>(nodeValue(n,'excerpt')||n.excerpt||'').toLowerCase().includes(q)||(nodeValue(n,'description')||n.description||'').toLowerCase().includes(q));
   if(hit){ensureVisible(hit);select(hit);face(hit);}}
 function resize(){const r=cv.getBoundingClientRect();DPR=window.devicePixelRatio||1;W=r.width;H=r.height;cx=W/2;cy=H/2;cv.width=W*DPR;cv.height=H*DPR;
   if(TH().initBg)TH().initBg();}
@@ -779,7 +829,7 @@ let _ionP=[],_ionArcs=[],_ionPock=[];
 const _ionOrbits={project:3,machine:3,dataset:2,model:2,server:2,agent:2,tech:2,notion:2,method:2,wandb:2,fact:2,entry:1,file:0};
 function _ionPhase(n){               // 每节点一次性哈希出 相位/倾角/扁率/方向，缓存在节点上（FNV-1a）
   if(n._ionPh===undefined){
-    let h=2166136261;const s=''+(n.id||n.label||'');
+    let h=2166136261;const s=''+(n.id||nodeLabel(n)||n.label||'');
     for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}
     n._ionPh=(h%628)/100;                     // 0..2π 公转相位
     n._ionT1=((h>>>7)%628)/100;               // 轨道基准倾角
@@ -1038,8 +1088,11 @@ sqTrig.onclick=e=>{e.stopPropagation();_sqOpen(!sqMenu.classList.contains('show'
 sqCards.forEach(b=>b.onclick=e=>{e.stopPropagation();setStyle(b.dataset.s);_styleSync(styleKey);_sqOpen(false);});
 document.addEventListener('click',e=>{if(!sqTrig.contains(e.target)&&!sqMenu.contains(e.target))_sqOpen(false);});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sqMenu.classList.contains('show'))_sqOpen(false);});
-_styleSync(styleKey);   // 初始状态来自 styleKey（hash/localStorage/默认 cosmos），修正 HTML 里写死的 cosmos 高亮
+const langTrig=document.getElementById('lang-trig');
+if(langTrig)langTrig.onclick=()=>setLanguage(LANG==='zh'?'en':'zh');
+_styleSync(styleKey);   // 初始状态来自 styleKey（hash/localStorage/默认值），修正 HTML 里写死的高亮
 applyThemeCss();
+applyLanguage();
 setup();load();
 </script>
 </body>

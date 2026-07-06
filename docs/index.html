@@ -33,26 +33,27 @@
       <h1 data-i18n="heroTitle">Your agents remember together. Privately.</h1>
       <p class="lead" data-i18n="heroLead">Turn scattered agent traces across machines into one private, inspectable memory graph. Collect reviewed notes, safe session metadata, machine fragments, and live presence, then explore the result in a static Galaxy Viewer.</p>
       <div class="actions">
-        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos&lang=en" data-i18n="openDemo">Open synthetic demo</button>
+        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open synthetic demo</button>
         <a class="btn" href="#install" data-i18n="installSkill">Install as skill</a>
         <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
       </div>
       <div class="hero-stat-grid">
-        <div class="hero-stat"><b>137</b><span data-i18n="syntheticNodes">synthetic nodes</span></div>
-        <div class="hero-stat"><b>466</b><span data-i18n="syntheticLinks">synthetic links</span></div>
+        <div class="hero-stat"><b>442</b><span data-i18n="syntheticNodes">synthetic nodes</span></div>
+        <div class="hero-stat"><b>1888</b><span data-i18n="syntheticLinks">synthetic links</span></div>
         <div class="hero-stat"><b>6</b><span data-i18n="fictionalProjects">fictional projects</span></div>
         <div class="hero-stat"><b>5</b><span data-i18n="fictionalMachines">fictional machines</span></div>
       </div>
     </div>
 
-<div class="galaxy-card" id="hero-demo" data-demo-src="demo/?style=cosmos&lang=en" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
+<div class="galaxy-card" id="hero-demo" data-demo-src="demo/?style=cosmos" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
   <div class="framebar">
     <span class="lights"><i></i><i></i><i></i></span>
     <span class="mono" data-i18n="previewTitle">synthetic graph preview</span>
-    <span class="status mono" data-preview-status data-nodes="137" data-edges="466" data-machines="5">137 nodes / 466 links / 5 machines</span>
+    <span class="status mono" data-preview-status data-nodes="442" data-edges="1888" data-machines="5">442 nodes / 1888 links / 5 machines</span>
   </div>
 
   <div class="mini-galaxy-preview" data-mini-preview aria-hidden="true">
+    <canvas class="mini-canvas" data-mini-canvas></canvas>
     <svg class="mini-map" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet">
       <defs>
         <filter id="mini-glow" x="-120%" y="-120%" width="340%" height="340%">
@@ -216,7 +217,7 @@ python3 -m http.server 8765 --directory docs</code></pre>
     <div class="modal-head">
       <strong>Agent Memory Galaxy</strong>
       <span class="muted" data-i18n="modalMuted">Synthetic demo. Drag, zoom, filter, and inspect nodes.</span>
-      <a class="btn" href="demo/?style=cosmos&lang=en" data-demo-link data-i18n="openFullDemo">Open full demo</a>
+      <a class="btn" href="demo/?style=cosmos" data-demo-link data-i18n="openFullDemo">Open full demo</a>
       <button class="modal-close" type="button" data-modal-close data-i18n="close">Close</button>
     </div>
     <iframe title="Expanded Agent Memory Galaxy synthetic demo" src="about:blank"></iframe>

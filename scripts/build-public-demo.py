@@ -7,11 +7,18 @@ import os
 import random
 import re
 import shutil
+from datetime import datetime, timedelta
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEMO = os.path.join(ROOT, "docs", "demo")
 VIEWER = os.path.join(ROOT, "viewer", "index.html")
 GENERATED_AT = "2026-07-06T00:00:00Z"
+GEN_DATE = datetime.strptime(GENERATED_AT[:10], "%Y-%m-%d")
+
+
+def day_offset(days_back: int) -> str:
+    """Date string N days before GENERATED_AT, so demo activity stays fresh."""
+    return (GEN_DATE - timedelta(days=days_back)).strftime("%Y-%m-%d")
 
 FORBIDDEN_PATTERNS = [
     r"[A-Z]:\\",
@@ -214,6 +221,12 @@ def build_graph():
         "RiverWalk-MockLogs",
         "LabBench-Events-128",
         "MiniDepot-Trajectories",
+        "HarborScan-Synth-512",
+        "AtlasRelay-Frames-64",
+        "PrismTrace-Tokens-2M",
+        "MeridianGrid-Tiles-96",
+        "AuroraLoom-Sketches-300",
+        "SolsticePose-Clips-77",
     ]
     models = [
         "demo-vlm-small-v0",
@@ -221,6 +234,11 @@ def build_graph():
         "harbor-reranker-v2",
         "meridian-merge-probe",
         "solstice-eval-head",
+        "prism-distill-encoder",
+        "atlas-relay-router-v1",
+        "loom-layout-gan-008",
+        "bench-scorer-tiny",
+        "cache-probe-v3",
     ]
     files = [
         "collector_config_example.json",
@@ -236,6 +254,20 @@ def build_graph():
         "encrypt_publish.py",
         "session_distiller.py",
     ]
+    # 扩展合成文件面：stem × kind 组合出“尘埃层”小文件（全部虚构命名）
+    file_stems = [
+        "collector", "merge", "viewer", "timeline", "presence", "fragment",
+        "schema", "redaction", "manifest", "snapshot", "heartbeat", "publish",
+        "distill", "galaxy", "legend", "palette", "orbit", "nebula", "beacon",
+        "lattice", "relay", "prism", "harbor", "atlas",
+    ]
+    file_kinds = [
+        ("config", "json"), ("report", "md"), ("notes", "md"), ("pipeline", "py"),
+        ("checks", "py"), ("probe", "py"), ("layout", "html"), ("story", "md"),
+        ("index", "json"), ("metrics", "csv"),
+    ]
+    extra_files = [f"{stem}_{kind}.{ext}" for stem in file_stems for kind, ext in file_kinds]
+    files = files + extra_files[: 138 - len(files)]
     artifacts = [
         ("local plaintext graph", "private artifact, gitignored"),
         ("standalone local viewer", "private single-file viewer, gitignored"),
@@ -255,35 +287,38 @@ def build_graph():
     tech = ["Canvas 3D", "AES-GCM", "PBKDF2", "Git", "GitHub Pages", "Claude Code Plugin", "Codex Skill", "Graph JSON"]
     notion_pages = ["Weekly Progress", "Release Notes", "Experiment Ledger", "Deployment Runbook"]
 
+    # 长尾 weight：对标私有图实测分布(min 1/中位 9/p90 2670/max 128956)，
+    # 经 viewer radiusOf=2.4+26*sqrt(w)/wmax 归一化后形成「尘埃(entry/fact/file) → 中层实体 → 枢纽(machine/server/project)」星系层级。
+    project_weights = [6000, 4600, 3800, 3100, 2600, 2100]
     for machine, primary, role in machines:
-        nodes.append(node(f"machine:{machine}", "machine", machine, label_i18n=bi(machine, MACHINE_ZH[machine]), primary=primary, primary_i18n=bi(primary, MACHINE_PRIMARY_ZH[primary]), role=role, role_i18n=bi(role, ROLE_ZH.get(role, role)), weight=24))
+        nodes.append(node(f"machine:{machine}", "machine", machine, label_i18n=bi(machine, MACHINE_ZH[machine]), primary=primary, primary_i18n=bi(primary, MACHINE_PRIMARY_ZH[primary]), role=role, role_i18n=bi(role, ROLE_ZH.get(role, role)), weight=300 + rng.randint(0, 1200)))
     for agent_name, role in agents:
-        nodes.append(node(f"agent:{agent_name}", "agent", agent_name, tool=agent_name, role=role, role_i18n=bi(role, AGENT_ROLE_ZH.get(role, role)), weight=20))
-    for label, machine_labels, phase, summary, visibility in projects:
+        nodes.append(node(f"agent:{agent_name}", "agent", agent_name, tool=agent_name, role=role, role_i18n=bi(role, AGENT_ROLE_ZH.get(role, role)), weight=140 + rng.randint(0, 180)))
+    for pidx, (label, machine_labels, phase, summary, visibility) in enumerate(projects):
         pid = f"project:{slug(label)}"
-        nodes.append(node(pid, "project", label, label_i18n=bi(label, PROJECT_ZH[label]), machines=machine_labels, phase=phase, description=summary, description_i18n=bi(summary, PROJECT_SUMMARY_ZH[summary]), visibility=visibility, weight=92))
+        nodes.append(node(pid, "project", label, label_i18n=bi(label, PROJECT_ZH[label]), machines=machine_labels, phase=phase, description=summary, description_i18n=bi(summary, PROJECT_SUMMARY_ZH[summary]), visibility=visibility, weight=project_weights[pidx % len(project_weights)]))
         for machine in machine_labels:
             add_edge(edges, seen_edges, pid, f"machine:{machine}", "on")
     for label, role, summary in servers:
-        nodes.append(node(f"server:{slug(label)}", "server", label, label_i18n=bi(label, SERVER_ZH[label]), role=role, primary=summary, primary_i18n=bi(summary, SERVER_SUMMARY_ZH[summary]), weight=34))
+        nodes.append(node(f"server:{slug(label)}", "server", label, label_i18n=bi(label, SERVER_ZH[label]), role=role, primary=summary, primary_i18n=bi(summary, SERVER_SUMMARY_ZH[summary]), weight=300 + rng.randint(0, 1200)))
     for label in datasets:
-        nodes.append(node(f"dataset:{slug(label)}", "dataset", label, weight=34 + rng.randint(0, 14)))
+        nodes.append(node(f"dataset:{slug(label)}", "dataset", label, weight=50 + rng.randint(0, 350)))
     for label in models:
-        nodes.append(node(f"model:{slug(label)}", "model", label, weight=32 + rng.randint(0, 12)))
+        nodes.append(node(f"model:{slug(label)}", "model", label, weight=50 + rng.randint(0, 350)))
     for label in files:
-        nodes.append(node(f"file:{slug(label)}", "file", label, weight=24 + rng.randint(0, 10)))
+        nodes.append(node(f"file:{slug(label)}", "file", label, weight=1 + min(19, int(rng.expovariate(1 / 5)))))
     for label, summary in artifacts:
-        nodes.append(node(f"artifact:{slug(label)}", "artifact", label, label_i18n=bi(label, ARTIFACT_ZH[label]), primary=summary, primary_i18n=bi(summary, ARTIFACT_SUMMARY_ZH[summary]), weight=34))
+        nodes.append(node(f"artifact:{slug(label)}", "artifact", label, label_i18n=bi(label, ARTIFACT_ZH[label]), primary=summary, primary_i18n=bi(summary, ARTIFACT_SUMMARY_ZH[summary]), weight=40 + rng.randint(0, 80)))
     for label, summary in boundaries:
-        nodes.append(node(f"boundary:{slug(label)}", "boundary", label, label_i18n=bi(label, BOUNDARY_ZH[label]), primary=summary, primary_i18n=bi(summary, BOUNDARY_SUMMARY_ZH[summary]), weight=40))
+        nodes.append(node(f"boundary:{slug(label)}", "boundary", label, label_i18n=bi(label, BOUNDARY_ZH[label]), primary=summary, primary_i18n=bi(summary, BOUNDARY_SUMMARY_ZH[summary]), weight=40 + rng.randint(0, 80)))
     for label in wandb_runs:
-        nodes.append(node(f"wandb:{slug(label)}", "wandb", label, weight=22 + rng.randint(0, 8)))
+        nodes.append(node(f"wandb:{slug(label)}", "wandb", label, weight=20 + rng.randint(0, 40)))
     for label in methods:
-        nodes.append(node(f"method:{slug(label)}", "method", label, label_i18n=bi(label, METHOD_ZH[label]), weight=24 + rng.randint(0, 10)))
+        nodes.append(node(f"method:{slug(label)}", "method", label, label_i18n=bi(label, METHOD_ZH[label]), weight=5 + rng.randint(0, 75)))
     for label in tech:
-        nodes.append(node(f"tech:{slug(label)}", "tech", label, weight=24 + rng.randint(0, 12)))
+        nodes.append(node(f"tech:{slug(label)}", "tech", label, weight=5 + rng.randint(0, 75)))
     for label in notion_pages:
-        nodes.append(node(f"notion:{slug(label)}", "notion", label, label_i18n=bi(label, NOTION_ZH[label]), weight=22 + rng.randint(0, 8)))
+        nodes.append(node(f"notion:{slug(label)}", "notion", label, label_i18n=bi(label, NOTION_ZH[label]), weight=20 + rng.randint(0, 40)))
 
     project_relations = [
         ("Project Meridian Sync", "Project Aurora Loom", "inherits_from"),
@@ -294,6 +329,13 @@ def build_graph():
         ("Project Atlas Relay", "Project Aurora Loom", "exports_to"),
         ("Project Harbor Lens", "Project Atlas Relay", "references"),
         ("Project Solstice Bench", "Project Meridian Sync", "references"),
+        # 金色骨架加密：references 链/星织在高 weight 项目枢纽之间（Aurora/Meridian 为双中心）
+        ("Project Harbor Lens", "Project Aurora Loom", "references"),
+        ("Project Prism Cache", "Project Aurora Loom", "references"),
+        ("Project Solstice Bench", "Project Aurora Loom", "references"),
+        ("Project Atlas Relay", "Project Meridian Sync", "references"),
+        ("Project Aurora Loom", "Project Meridian Sync", "references"),
+        ("Project Atlas Relay", "Project Solstice Bench", "references"),
     ]
     for a, b, typ in project_relations:
         add_edge(edges, seen_edges, f"project:{slug(a)}", f"project:{slug(b)}", typ)
@@ -351,10 +393,16 @@ def build_graph():
     wandb_ids = [f"wandb:{slug(x)}" for x in wandb_runs]
     server_ids = [f"server:{slug(x[0])}" for x in servers]
 
+    ENTRIES_PER_PROJECT = 28
+    RECENT_PER_PROJECT = 2   # 每项目最后 2 条 entry 落在 GENERATED_AT 前 0-2 天 → 最近 3 天各 4 条，点亮绿呼吸层
     for pidx, (project_label, project_machines, phase, summary, visibility) in enumerate(projects):
         project_id = f"project:{slug(project_label)}"
-        for eidx in range(6):
-            date = f"2026-06-{10 + pidx * 2 + eidx:02d}"
+        for eidx in range(ENTRIES_PER_PROJECT):
+            if eidx >= ENTRIES_PER_PROJECT - RECENT_PER_PROJECT:
+                days_back = (pidx * RECENT_PER_PROJECT + (eidx - (ENTRIES_PER_PROJECT - RECENT_PER_PROJECT))) % 3
+            else:
+                days_back = rng.randint(3, 44)   # 其余覆盖 GENERATED_AT 前约 45 天
+            date = day_offset(days_back)
             machine = project_machines[eidx % len(project_machines)]
             agent_name = agents[(pidx + eidx) % len(agents)][0]
             task = task_cycle[(pidx + eidx) % len(task_cycle)]
@@ -384,23 +432,25 @@ def build_graph():
                     "Synthetic entry: a fictional work-memory summary with fake machines, assets, and release checks only.",
                     "合成记录：仅包含虚构机器、资产与发布检查的工作记忆摘要。",
                 ),
-                weight=58 + rng.randint(0, 42),
+                weight=1 + min(39, int(rng.expovariate(1 / 8))),
             ))
             add_edge(edges, seen_edges, entry_id, project_id, "in")
             add_edge(edges, seen_edges, entry_id, f"machine:{machine}", "located")
             add_edge(edges, seen_edges, f"agent:{agent_name}", entry_id, "did")
             add_edge(edges, seen_edges, entry_id, dataset_ids[(pidx + eidx) % len(dataset_ids)], "uses")
-            add_edge(edges, seen_edges, entry_id, file_ids[(pidx * 2 + eidx) % len(file_ids)], "touches")
+            add_edge(edges, seen_edges, entry_id, file_ids[(pidx * ENTRIES_PER_PROJECT + eidx) % len(file_ids)], "touches")
             add_edge(edges, seen_edges, entry_id, tech_ids[(pidx + eidx) % len(tech_ids)], "uses")
             add_edge(edges, seen_edges, entry_id, method_ids[(pidx + eidx) % len(method_ids)], "uses")
             if eidx % 2 == 0:
                 add_edge(edges, seen_edges, entry_id, model_ids[(pidx + eidx) % len(model_ids)], "trains")
                 add_edge(edges, seen_edges, entry_id, wandb_ids[(pidx + eidx) % len(wandb_ids)], "tracks")
+            else:
+                add_edge(edges, seen_edges, entry_id, file_ids[(pidx * ENTRIES_PER_PROJECT + eidx * 3 + 1) % len(file_ids)], "touches")
             if eidx % 3 == 0:
                 add_edge(edges, seen_edges, entry_id, notion_ids[(pidx + eidx) % len(notion_ids)], "syncs")
                 add_edge(edges, seen_edges, entry_id, server_ids[(pidx + eidx) % len(server_ids)], "on")
 
-        for fidx in range(3):
+        for fidx in range(9):
             fact_id = f"fact:{slug(project_label)}:{fidx + 1:02d}"
             machine = project_machines[(fidx + 1) % len(project_machines)]
             tool = agents[(pidx + fidx + 1) % len(agents)][0]
@@ -412,7 +462,7 @@ def build_graph():
                     f"Derived synthetic fact {fidx + 1} for {project_label.replace('Project ', '')}",
                     f"{PROJECT_ZH[project_label]}：自动提炼事实 {fidx + 1}",
                 ),
-                date=f"2026-06-{18 + pidx + fidx:02d}",
+                date=day_offset(rng.randint(1, 30)),
                 status="logged",
                 task="调研",
                 tool=tool,
@@ -427,7 +477,7 @@ def build_graph():
                     "从虚构会话元数据提炼而来；不包含机密对话、个人路径、主机名、地址或真实工作标签。",
                 ),
                 source=f"demo://{slug(project_label)}/derived-{fidx + 1:03d}",
-                weight=44 + rng.randint(0, 28),
+                weight=1 + min(29, int(rng.expovariate(1 / 7))),
             ))
             add_edge(edges, seen_edges, fact_id, project_id, "in")
             add_edge(edges, seen_edges, fact_id, f"machine:{machine}", "located")

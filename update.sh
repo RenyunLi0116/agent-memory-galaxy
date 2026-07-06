@@ -60,6 +60,15 @@ else
 fi
 mkdir -p docs/galaxy
 cp viewer/index.html docs/galaxy/index.html
+# 重放品牌改写（裸 cp 会冲掉）：docs/galaxy 是加密 shell，标题/顶栏与通用 viewer 区分
+python3 - <<'PYEOF'
+import io
+p = 'docs/galaxy/index.html'
+s = io.open(p, encoding='utf-8').read()
+s = s.replace('<title>Agent Memory Galaxy</title>', '<title>Encrypted Viewer Shell | Agent Memory Galaxy</title>')
+s = s.replace('<h1>◢ Agent Memory Galaxy</h1>', '<h1>◢ ENCRYPTED VIEWER SHELL</h1>')
+io.open(p, 'w', encoding='utf-8').write(s)
+PYEOF
 
 echo "[3/5] 重建本地完整单文件 standalone.html（含明文，仅本地私有查看）"
 python3 build_artifact.py --out standalone.html --standalone

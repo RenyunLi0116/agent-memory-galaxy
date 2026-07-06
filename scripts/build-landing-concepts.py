@@ -840,6 +840,147 @@ CSS += r"""
   .expand-galaxy { left: 12px; right: 12px; text-align: center; }
 }
 
+/* Animated public-safe galaxy thumbnail. This intentionally stays lighter than the full viewer. */
+.mini-galaxy-preview {
+  position: absolute;
+  inset: 38px 0 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 46%, rgba(255, 216, 145, .20), transparent 28%),
+    radial-gradient(ellipse at 50% 46%, rgba(110, 142, 255, .20), transparent 52%),
+    radial-gradient(circle at 50% 42%, rgba(5, 14, 34, .95), rgba(1, 2, 10, .99) 70%);
+}
+.mini-galaxy-preview::before {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  background:
+    linear-gradient(90deg, rgba(138,180,255,.07) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(138,180,255,.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  transform: perspective(780px) rotateX(58deg) translateY(14%);
+  opacity: .56;
+}
+.mini-galaxy-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 48%, transparent 34%, rgba(1,4,12,.45) 82%);
+  pointer-events: none;
+}
+.mini-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.mini-orbit {
+  fill: none;
+  stroke: rgba(138,180,255,.16);
+  stroke-width: 1;
+  stroke-dasharray: 6 14;
+  animation: mini-orbit-drift 24s linear infinite;
+}
+.mini-orbit.gold { stroke: rgba(255,207,107,.30); animation-duration: 18s; animation-direction: reverse; }
+.mini-edge {
+  fill: none;
+  stroke: rgba(95,152,230,.36);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-dasharray: 8 18;
+  animation: mini-flow 4.8s linear infinite;
+  filter: url(#mini-glow);
+  transition: stroke .22s ease, stroke-width .22s ease, opacity .22s ease;
+}
+.mini-edge.warm { stroke: rgba(255,188,118,.78); stroke-width: 2.4; }
+.mini-edge.live { stroke: rgba(255,64,82,.72); stroke-width: 2; animation-duration: 2.2s; }
+.mini-edge.secure { stroke: rgba(125,243,196,.68); stroke-width: 1.8; }
+.mini-edge.active { stroke-width: 3.2; opacity: 1; }
+.mini-dust {
+  fill: rgba(211,222,255,.42);
+  animation: mini-twinkle 3.8s ease-in-out infinite;
+}
+.mini-dust:nth-of-type(2n) { animation-delay: -1.1s; opacity: .5; }
+.mini-dust:nth-of-type(3n) { animation-delay: -2.4s; opacity: .36; }
+.mini-star .halo { opacity: .34; filter: url(#mini-glow); }
+.mini-star .core { filter: url(#mini-glow); animation: mini-pulse 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.mini-star.project .core { fill: #ff5d73; }
+.mini-star.server .core { fill: #ff5fa2; }
+.mini-star.agent .core { fill: #ff3b4e; animation-duration: 1.55s; }
+.mini-star.boundary .core { fill: #f5b642; }
+.mini-star.artifact .core { fill: #7df3c4; }
+.mini-star .spike { stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; opacity: .72; filter: url(#mini-glow); }
+.mini-star.project, .mini-star.agent { color: #ff7282; }
+.mini-star.server { color: #ff6faa; }
+.mini-star.boundary { color: #f5b642; }
+.mini-star.artifact { color: #7df3c4; }
+.mini-star .lock { fill: none; stroke: #ffcf6b; stroke-width: 1.3; opacity: 0; transition: opacity .22s ease; }
+.mini-star.active .halo { opacity: .82; }
+.mini-star.active .lock { opacity: .95; }
+.mini-scan {
+  fill: none;
+  stroke: rgba(56,225,255,.50);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-dasharray: 18 28;
+  filter: url(#mini-glow);
+  animation: mini-scan 5.8s linear infinite;
+}
+.mini-coreline {
+  fill: none;
+  stroke: rgba(255,220,165,.28);
+  stroke-width: 20;
+  stroke-linecap: round;
+  filter: url(#mini-soft-glow);
+}
+.mini-side,
+.mini-readout { z-index: 3; }
+.mini-side span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.mini-side span::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 9px currentColor;
+  flex: none;
+}
+.mini-side [data-mini-type="project"] { color: #ff7282; }
+.mini-side [data-mini-type="server"] { color: #ff6faa; }
+.mini-side [data-mini-type="agent"] { color: #ff3b4e; }
+.mini-side [data-mini-type="boundary"] { color: #f5b642; }
+.mini-side [data-mini-type="artifact"] { color: #7df3c4; }
+.mini-readout span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+@keyframes mini-flow { to { stroke-dashoffset: -104; } }
+@keyframes mini-pulse { 50% { transform: scale(1.18); opacity: .72; } }
+@keyframes mini-twinkle { 50% { opacity: .88; } }
+@keyframes mini-scan { to { stroke-dashoffset: -184; } }
+@keyframes mini-orbit-drift { to { stroke-dashoffset: -160; } }
+@media (prefers-reduced-motion: reduce) {
+  .mini-edge, .mini-scan, .mini-orbit, .mini-dust, .mini-star .core { animation: none !important; }
+}
+@container (max-width: 560px) {
+  .framebar .status { display: none; }
+  .mini-readout { display: none; }
+  .mini-side { width: 138px; font-size: 9px; }
+}
+@container (max-width: 420px) {
+  .mini-side { display: none; }
+  .expand-galaxy { left: 12px; right: 12px; text-align: center; }
+}
+
 
 @media (max-width: 760px) {
   .nav-links { display: flex; margin-left: auto; gap: 8px; }
@@ -859,7 +1000,7 @@ JS = r"""
     en: {
       navConcepts: 'Design archive', navDemo: 'Demo', navPrivacy: 'Privacy', navInstall: 'Install',
       previewTitle: 'synthetic graph preview', previewNote: 'Compressed public preview. Open the full demo for search, filters, zoom, and readouts.',
-      expandGalaxy: 'Expand galaxy', miniSideTitle: 'NODE TYPES', miniReadoutTitle: 'ONLINE HUD', miniReadout: 'multi-server handoff / live agents / encrypted boundary',
+      expandGalaxy: 'Expand galaxy', miniSideTitle: 'NODE TYPES', miniProject: 'Project', miniServer: 'Server', miniAgent: 'Agent', miniBoundary: 'Boundary', miniArtifact: 'Artifact', miniReadoutTitle: 'ONLINE HUD', miniReadout: 'multi-server handoff / live agents / encrypted boundary',
       modalMuted: 'Synthetic demo. Drag, zoom, filter, and inspect nodes.', openFullDemo: 'Open full demo', close: 'Close', copied: 'Copied', copyFailed: 'Copy failed',
       status: function (n, e, m) { return n + ' nodes / ' + e + ' links / ' + m + ' machines'; },
       heroKicker: 'PUBLIC FRAMEWORK / PRIVATE MEMORY', heroTitle: 'Your agents remember together. Privately.',
@@ -882,7 +1023,7 @@ JS = r"""
     zh: {
       navConcepts: '设计存档', navDemo: '演示', navPrivacy: '隐私', navInstall: '安装',
       previewTitle: '合成图谱预览', previewNote: '压缩公开预览。打开完整 demo 后可搜索、过滤、缩放和查看读出面板。',
-      expandGalaxy: '展开图谱', miniSideTitle: '节点类型', miniReadoutTitle: '在线 HUD', miniReadout: '多服务器交接 / 在线 agent / 加密边界',
+      expandGalaxy: '展开图谱', miniSideTitle: '节点类型', miniProject: '项目', miniServer: '机器', miniAgent: 'Agent', miniBoundary: '边界', miniArtifact: '产物', miniReadoutTitle: '在线 HUD', miniReadout: '多服务器交接 / 在线 agent / 加密边界',
       modalMuted: '合成 demo。可拖拽、缩放、过滤并点击节点读出。', openFullDemo: '打开完整 demo', close: '关闭', copied: '已复制', copyFailed: '复制失败',
       status: function (n, e, m) { return n + ' 节点 / ' + e + ' 连线 / ' + m + ' 机器'; },
       heroKicker: '公开框架 / 私有记忆', heroTitle: '让你的 agents 一起记住工作。并保持私有。',
@@ -914,7 +1055,7 @@ JS = r"""
   function t(key) { return (dict[lang] && dict[lang][key]) || dict.en[key] || key; }
   function demoUrl(src) {
     var url = new URL(src || 'demo/', location.href);
-    if (!url.searchParams.get('style')) url.searchParams.set('style', 'jarvis');
+    if (!url.searchParams.get('style')) url.searchParams.set('style', 'cosmos');
     url.searchParams.set('lang', lang);
     return url.pathname + url.search + url.hash;
   }
@@ -939,6 +1080,29 @@ JS = r"""
     document.querySelectorAll('[data-preview-status]').forEach(function (el) { el.textContent = t('status')(el.dataset.nodes, el.dataset.edges, el.dataset.machines); });
     document.querySelectorAll('[data-lang-choice]').forEach(function (btn) { btn.classList.toggle('active', btn.getAttribute('data-lang-choice') === lang); });
     syncDemoLinks();
+  }
+
+
+  function hydrateMiniPreview() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('[data-mini-preview]').forEach(function (preview) {
+      if (preview.dataset.hydrated) return;
+      preview.dataset.hydrated = '1';
+      var nodes = Array.prototype.slice.call(preview.querySelectorAll('[data-mini-node]'));
+      var edges = Array.prototype.slice.call(preview.querySelectorAll('[data-mini-edge]'));
+      if (!nodes.length) return;
+      var active = 0;
+      function setActive() {
+        nodes.forEach(function (node, idx) { node.classList.toggle('active', idx === active); });
+        edges.forEach(function (edge) {
+          var pair = (edge.getAttribute('data-pair') || '').split('-').map(function (x) { return parseInt(x, 10); });
+          edge.classList.toggle('active', pair.indexOf(active) !== -1);
+        });
+        active = (active + 1) % nodes.length;
+      }
+      setActive();
+      window.setInterval(setActive, 1400);
+    });
   }
 
   function openModal(src) {
@@ -1004,6 +1168,7 @@ JS = r"""
     });
   });
   applyLang(lang);
+  hydrateMiniPreview();
 }());
 """
 
@@ -1033,7 +1198,7 @@ def modal_markup(prefix: str) -> str:
     <div class="modal-head">
       <strong>Agent Memory Galaxy</strong>
       <span class="muted" data-i18n="modalMuted">Synthetic demo. Drag, zoom, filter, and inspect nodes.</span>
-      <a class="btn" href="{prefix}demo/?style=jarvis&lang=en" data-demo-link data-i18n="openFullDemo">Open full demo</a>
+      <a class="btn" href="{prefix}demo/?style=cosmos&lang=en" data-demo-link data-i18n="openFullDemo">Open full demo</a>
       <button class="modal-close" type="button" data-modal-close data-i18n="close">Close</button>
     </div>
     <iframe title="Expanded Agent Memory Galaxy synthetic demo" src="about:blank"></iframe>
@@ -1042,8 +1207,79 @@ def modal_markup(prefix: str) -> str:
 """
 
 
+
+MINI_PREVIEW_NODES = [
+    (0, "project", 384, 252, 12),
+    (1, "project", 505, 178, 10),
+    (2, "server", 232, 180, 8),
+    (3, "server", 586, 338, 8),
+    (4, "agent", 330, 354, 7),
+    (5, "agent", 468, 302, 7),
+    (6, "boundary", 190, 342, 9),
+    (7, "artifact", 632, 220, 9),
+]
+MINI_PREVIEW_LINKS = [
+    (0, 1, "warm"),
+    (0, 2, ""),
+    (0, 4, "live"),
+    (0, 5, "live"),
+    (1, 7, "secure"),
+    (2, 6, "secure"),
+    (3, 5, ""),
+    (4, 6, "warm"),
+    (5, 7, "secure"),
+    (1, 3, ""),
+]
+MINI_DUST = [(120,130,1.4),(152,398,1.1),(286,114,1.2),(368,422,1.4),(430,126,1.1),(690,150,1.5),(706,386,1.1),(88,276,1.0),(548,92,1.0),(610,420,1.2),(254,444,1.0),(742,264,1.2)]
+
+
+def mini_preview_markup(stats: dict) -> str:
+    nodes_by_id = {idx: (kind, x, y, r) for idx, kind, x, y, r in MINI_PREVIEW_NODES}
+    dust = "\n".join(f'<circle class="mini-dust" cx="{x}" cy="{y}" r="{r}" />' for x, y, r in MINI_DUST)
+    links = []
+    for source, target, tone in MINI_PREVIEW_LINKS:
+        _, x1, y1, _ = nodes_by_id[source]
+        _, x2, y2, _ = nodes_by_id[target]
+        cls = f"mini-edge {tone}".strip()
+        links.append(f'<line class="{cls}" data-mini-edge data-pair="{source}-{target}" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" />')
+    node_markup = []
+    for idx, kind, x, y, r in MINI_PREVIEW_NODES:
+        spike = ""
+        if kind in {"project", "boundary"}:
+            spike = f'<path class="spike" d="M {-r*2.2:.1f} 0 H {r*2.2:.1f} M 0 {-r*2.2:.1f} V {r*2.2:.1f} M {-r*1.55:.1f} {-r*1.55:.1f} L {r*1.55:.1f} {r*1.55:.1f} M {-r*1.55:.1f} {r*1.55:.1f} L {r*1.55:.1f} {-r*1.55:.1f}" />'
+        elif kind in {"server", "agent", "artifact"}:
+            spike = f'<path class="spike" d="M {-r*1.7:.1f} 0 H {r*1.7:.1f} M 0 {-r*1.7:.1f} V {r*1.7:.1f}" />'
+        node_markup.append(f"""<g class="mini-star {kind}" data-mini-node data-index="{idx}" transform="translate({x} {y})">
+        <circle class="halo" r="{r * 3}" fill="currentColor" />
+        {spike}
+        <circle class="core" r="{r}" />
+        <circle class="lock" r="{r + 8}" />
+      </g>""")
+    return f"""
+  <div class="mini-galaxy-preview" data-mini-preview aria-hidden="true">
+    <svg class="mini-map" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="mini-glow" x="-120%" y="-120%" width="340%" height="340%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="mini-soft-glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="8" /></filter>
+      </defs>
+      <ellipse class="mini-orbit gold" cx="400" cy="260" rx="244" ry="126" />
+      <ellipse class="mini-orbit" cx="400" cy="260" rx="310" ry="166" transform="rotate(-17 400 260)" />
+      <path class="mini-coreline" d="M 148 332 C 248 198 350 154 472 204 S 620 356 704 210" />
+      <g class="mini-dust-layer">{dust}</g>
+      <g class="mini-links">{"".join(links)}</g>
+      <path class="mini-scan" d="M 146 394 C 264 222 406 146 570 206 C 650 236 702 286 724 342" />
+      <g class="mini-nodes">{"".join(node_markup)}</g>
+    </svg>
+    <div class="mini-side"><b data-i18n="miniSideTitle">NODE TYPES</b><span data-mini-type="project" data-i18n="miniProject">Project</span><span data-mini-type="server" data-i18n="miniServer">Server</span><span data-mini-type="agent" data-i18n="miniAgent">Agent</span><span data-mini-type="boundary" data-i18n="miniBoundary">Boundary</span><span data-mini-type="artifact" data-i18n="miniArtifact">Artifact</span></div>
+    <div class="mini-readout"><b data-i18n="miniReadoutTitle">ONLINE HUD</b><span data-i18n="miniReadout">multi-server handoff / live agents / encrypted boundary</span></div>
+  </div>"""
+
+
 def galaxy_card(prefix: str, stats: dict, compact: bool = False, element_id: str = "preview") -> str:
-    demo = f"{prefix}demo/?style=jarvis&lang=en"
+    demo = f"{prefix}demo/?style=cosmos&lang=en"
     compact_class = " compact" if compact else ""
     return f"""
 <div class="galaxy-card{compact_class}" id="{element_id}" data-demo-src="{demo}" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
@@ -1052,16 +1288,7 @@ def galaxy_card(prefix: str, stats: dict, compact: bool = False, element_id: str
     <span class="mono" data-i18n="previewTitle">synthetic graph preview</span>
     <span class="status mono" data-preview-status data-nodes="{stats['nodes']}" data-edges="{stats['edges']}" data-machines="{stats['machines']}">{stats['nodes']} nodes / {stats['edges']} links / {stats['machines']} machines</span>
   </div>
-  <div class="mini-galaxy-preview" aria-hidden="true">
-    <span class="mini-grid"></span>
-    <span class="mini-ring ring-a"></span>
-    <span class="mini-ring ring-b"></span>
-    <span class="mini-link link-a"></span><span class="mini-link link-b"></span><span class="mini-link link-c"></span><span class="mini-link link-d"></span><span class="mini-link link-e"></span>
-    <span class="mini-node project n1"></span><span class="mini-node project n2"></span><span class="mini-node server n3"></span><span class="mini-node server n4"></span>
-    <span class="mini-node agent n5"></span><span class="mini-node agent n6"></span><span class="mini-node boundary n7"></span><span class="mini-node artifact n8"></span>
-    <div class="mini-side"><b data-i18n="miniSideTitle">NODE TYPES</b><span>project</span><span>server</span><span>liveagent</span><span>boundary</span></div>
-    <div class="mini-readout"><b data-i18n="miniReadoutTitle">ONLINE HUD</b><span data-i18n="miniReadout">multi-server handoff / live agents / encrypted boundary</span></div>
-  </div>
+{mini_preview_markup(stats)}
   <p class="preview-note" data-i18n="previewNote">Compressed public preview. Open the full demo for search, filters, zoom, and readouts.</p>
   <button class="expand-galaxy" type="button" data-expand-galaxy data-i18n="expandGalaxy">Expand galaxy</button>
 </div>
@@ -1115,7 +1342,7 @@ def concept_html(concept: dict, stats: dict) -> str:
       <h1>{esc(concept['title'])}</h1>
       <p class="lead">{esc(concept['lead'])}</p>
       <div class="actions">
-        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="../demo/?style=jarvis&lang=en">{esc(concept['primary'])}</button>
+        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="../demo/?style=cosmos&lang=en">{esc(concept['primary'])}</button>
         <a class="btn" href="#install">{esc(concept['secondary'])}</a>
         <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
       </div>
@@ -1224,7 +1451,7 @@ def gallery_html(prefix: str, concept_prefix: str, stats: dict, out_title: str) 
     <p class="lead">Each concept keeps the same public-safe product story: installable skill, synthetic live demo, private memory boundary, and an expandable interactive galaxy preview.</p>
     <div class="actions">
       <a class="btn primary" href="{concept_prefix}bento-proof.html">Open recommended concept</a>
-      <button class="btn" type="button" data-expand-galaxy data-demo-src="{prefix}demo/?style=jarvis&lang=en">Expand synthetic galaxy</button>
+      <button class="btn" type="button" data-expand-galaxy data-demo-src="{prefix}demo/?style=cosmos&lang=en">Expand synthetic galaxy</button>
       <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
     </div>
     <div class="proof-row">
@@ -1270,7 +1497,7 @@ def landing_html(stats: dict) -> str:
       <h1 data-i18n="heroTitle">Your agents remember together. Privately.</h1>
       <p class="lead" data-i18n="heroLead">Turn scattered agent traces across machines into one private, inspectable memory graph. Collect reviewed notes, safe session metadata, machine fragments, and live presence, then explore the result in a static Galaxy Viewer.</p>
       <div class="actions">
-        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=jarvis&lang=en" data-i18n="openDemo">Open synthetic demo</button>
+        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos&lang=en" data-i18n="openDemo">Open synthetic demo</button>
         <a class="btn" href="#install" data-i18n="installSkill">Install as skill</a>
         <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
       </div>

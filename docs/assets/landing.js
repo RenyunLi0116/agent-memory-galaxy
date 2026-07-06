@@ -7,7 +7,7 @@
     en: {
       navConcepts: 'Design archive', navDemo: 'Demo', navPrivacy: 'Privacy', navInstall: 'Install',
       previewTitle: 'synthetic graph preview', previewNote: 'Compressed public preview. Open the full demo for search, filters, zoom, and readouts.',
-      expandGalaxy: 'Expand galaxy', miniSideTitle: 'NODE TYPES', miniReadoutTitle: 'ONLINE HUD', miniReadout: 'multi-server handoff / live agents / encrypted boundary',
+      expandGalaxy: 'Expand galaxy', miniSideTitle: 'NODE TYPES', miniProject: 'Project', miniServer: 'Server', miniAgent: 'Agent', miniBoundary: 'Boundary', miniArtifact: 'Artifact', miniReadoutTitle: 'ONLINE HUD', miniReadout: 'multi-server handoff / live agents / encrypted boundary',
       modalMuted: 'Synthetic demo. Drag, zoom, filter, and inspect nodes.', openFullDemo: 'Open full demo', close: 'Close', copied: 'Copied', copyFailed: 'Copy failed',
       status: function (n, e, m) { return n + ' nodes / ' + e + ' links / ' + m + ' machines'; },
       heroKicker: 'PUBLIC FRAMEWORK / PRIVATE MEMORY', heroTitle: 'Your agents remember together. Privately.',
@@ -30,7 +30,7 @@
     zh: {
       navConcepts: '设计存档', navDemo: '演示', navPrivacy: '隐私', navInstall: '安装',
       previewTitle: '合成图谱预览', previewNote: '压缩公开预览。打开完整 demo 后可搜索、过滤、缩放和查看读出面板。',
-      expandGalaxy: '展开图谱', miniSideTitle: '节点类型', miniReadoutTitle: '在线 HUD', miniReadout: '多服务器交接 / 在线 agent / 加密边界',
+      expandGalaxy: '展开图谱', miniSideTitle: '节点类型', miniProject: '项目', miniServer: '机器', miniAgent: 'Agent', miniBoundary: '边界', miniArtifact: '产物', miniReadoutTitle: '在线 HUD', miniReadout: '多服务器交接 / 在线 agent / 加密边界',
       modalMuted: '合成 demo。可拖拽、缩放、过滤并点击节点读出。', openFullDemo: '打开完整 demo', close: '关闭', copied: '已复制', copyFailed: '复制失败',
       status: function (n, e, m) { return n + ' 节点 / ' + e + ' 连线 / ' + m + ' 机器'; },
       heroKicker: '公开框架 / 私有记忆', heroTitle: '让你的 agents 一起记住工作。并保持私有。',
@@ -62,7 +62,7 @@
   function t(key) { return (dict[lang] && dict[lang][key]) || dict.en[key] || key; }
   function demoUrl(src) {
     var url = new URL(src || 'demo/', location.href);
-    if (!url.searchParams.get('style')) url.searchParams.set('style', 'jarvis');
+    if (!url.searchParams.get('style')) url.searchParams.set('style', 'cosmos');
     url.searchParams.set('lang', lang);
     return url.pathname + url.search + url.hash;
   }
@@ -87,6 +87,29 @@
     document.querySelectorAll('[data-preview-status]').forEach(function (el) { el.textContent = t('status')(el.dataset.nodes, el.dataset.edges, el.dataset.machines); });
     document.querySelectorAll('[data-lang-choice]').forEach(function (btn) { btn.classList.toggle('active', btn.getAttribute('data-lang-choice') === lang); });
     syncDemoLinks();
+  }
+
+
+  function hydrateMiniPreview() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('[data-mini-preview]').forEach(function (preview) {
+      if (preview.dataset.hydrated) return;
+      preview.dataset.hydrated = '1';
+      var nodes = Array.prototype.slice.call(preview.querySelectorAll('[data-mini-node]'));
+      var edges = Array.prototype.slice.call(preview.querySelectorAll('[data-mini-edge]'));
+      if (!nodes.length) return;
+      var active = 0;
+      function setActive() {
+        nodes.forEach(function (node, idx) { node.classList.toggle('active', idx === active); });
+        edges.forEach(function (edge) {
+          var pair = (edge.getAttribute('data-pair') || '').split('-').map(function (x) { return parseInt(x, 10); });
+          edge.classList.toggle('active', pair.indexOf(active) !== -1);
+        });
+        active = (active + 1) % nodes.length;
+      }
+      setActive();
+      window.setInterval(setActive, 1400);
+    });
   }
 
   function openModal(src) {
@@ -152,4 +175,5 @@
     });
   });
   applyLang(lang);
+  hydrateMiniPreview();
 }());

@@ -38,7 +38,7 @@ python3 scripts/build-landing-concepts.py
 python3 -m http.server 8765 --directory docs
 ```
 
-Open `http://127.0.0.1:8765/` for the promo page and `http://127.0.0.1:8765/demo/` for the synthetic interactive demo. The demo graph is fictional, sanitized, and safe to publish.
+Open `http://127.0.0.1:8765/` for the promo page and `http://127.0.0.1:8765/demo/?style=cosmos&lang=en` for the synthetic interactive demo. The demo graph is fictional, sanitized, and safe to publish.
 
 ### B. Single-Machine Private Preview
 
@@ -118,7 +118,7 @@ https://renyunli0116.github.io/agent-memory-galaxy/
 | URL/path | Purpose | Data policy |
 |---|---|---|
 | `/agent-memory-galaxy/` | Public promo landing | No real data |
-| `/agent-memory-galaxy/demo/` | Synthetic interactive demo | Fake graph only |
+| `/agent-memory-galaxy/demo/?style=cosmos&lang=en` | Synthetic interactive demo | Fake graph only |
 | `/agent-memory-galaxy/concepts/` | Design exploration archive | Public, secondary |
 | `/agent-memory-galaxy/galaxy/` | Optional encrypted viewer shell | Publicly reachable shell, no plaintext graph |
 | `/agent-memory-galaxy/galaxy/graph.enc.json` | Optional encrypted graph blob | Ciphertext only |

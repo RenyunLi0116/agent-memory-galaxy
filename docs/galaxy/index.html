@@ -214,8 +214,8 @@ const TASK_LABELS={
   zh:{'训练':'训练','数据':'数据','评测':'评测','部署':'部署','调研':'调研','同步':'同步','规划':'规划','其他':'其他'}
 };
 const EDGE_LABELS={
-  en:{depends_on:'depends on',inherits_from:'inherits from',exports_to:'exports to',working_on:'working on',handoff_to:'handoff to',keeps_private:'keeps private',encrypts:'encrypts',redacts:'redacts',publishes_to:'publishes to',publishes:'publishes',shared_on:'shared on',cached_on:'cached on',validates:'validates',serves:'serves',replicates_to:'replicates to'},
-  zh:{depends_on:'依赖',inherits_from:'继承',exports_to:'导出到',working_on:'正在做',handoff_to:'交接给',keeps_private:'保持私有',encrypts:'加密',redacts:'脱敏',publishes_to:'发布到',publishes:'发布',shared_on:'共享于',cached_on:'缓存于',validates:'验证',serves:'服务',replicates_to:'同步到'}
+  en:{in:'in project',located:'located on',did:'did',uses:'uses',touches:'touches',trains:'trains',tracks:'tracks',syncs:'syncs',on:'on',explores:'explores',references:'references',link:'links',depends_on:'depends on',inherits_from:'inherits from',exports_to:'exports to',working_on:'working on',handoff_to:'handoff to',keeps_private:'keeps private',encrypts:'encrypts',redacts:'redacts',publishes_to:'publishes to',publishes:'publishes',shared_on:'shared on',cached_on:'cached on',validates:'validates',serves:'serves',replicates_to:'replicates to',exposes:'exposes'},
+  zh:{in:'归属项目',located:'位于',did:'执行',uses:'使用',touches:'触及',trains:'训练',tracks:'追踪',syncs:'同步',on:'位于',explores:'探索',references:'引用',link:'连接',depends_on:'依赖',inherits_from:'继承',exports_to:'导出到',working_on:'正在做',handoff_to:'交接给',keeps_private:'保持私有',encrypts:'加密',redacts:'脱敏',publishes_to:'发布到',publishes:'发布',shared_on:'共享于',cached_on:'缓存于',validates:'验证',serves:'服务',replicates_to:'同步到',exposes:'暴露'}
 };
 function typeLabel(t){return (TYPE_LABELS[LANG]&&TYPE_LABELS[LANG][t])||TYPE_LABELS.en[t]||t;}
 function typeDesc(t){return (TYPE_DESC[LANG]&&TYPE_DESC[LANG][t])||TYPE_DESC.en[t]||'';}
@@ -454,7 +454,8 @@ function gShade(rec){return `${Math.round(44+rec*96)},${Math.round(150+rec*105)}
 // 共享语义层(红光live/绿呼吸active/金色references/筛选/详情)不随主题变，保证含义一致。
 const THEMES={};
 const _uSty=(location.hash.match(/style=(\w+)/)||location.search.match(/style=(\w+)/)||[])[1];
-let styleKey=_uSty||localStorage.getItem('amg_style')||'jarvis';
+function storedStyle(){try{return localStorage.getItem('amg_style')||'';}catch(e){return '';}}
+let styleKey=_uSty||storedStyle()||'cosmos';
 function TH(){return THEMES[styleKey]||THEMES.cosmos;}
 function applyThemeCss(){const c=(TH().css)||{};const rs=document.documentElement.style;
   for(const[k,v]of Object.entries(c))rs.setProperty('--'+k,v);}
@@ -951,7 +952,8 @@ function _gxG(){return (Math.random()+Math.random()+Math.random()+Math.random()-
 const _gxSpk={project:{k:6,L:3.2,rot:Math.PI/6,ring:1},machine:{k:4,L:2.9,rot:Math.PI/4},
   agent:{k:4,L:1.5,rot:0},dataset:{k:4,L:1.5,rot:0},server:{k:4,L:1.5,rot:0},model:{k:4,L:1.5,rot:0},
   method:{k:4,L:1.5,rot:0},tech:{k:4,L:1.5,rot:0},wandb:{k:4,L:1.4,rot:0},notion:{k:4,L:1.4,rot:0},
-  fact:{k:4,L:1.4,rot:0},liveagent:{k:4,L:1.8,rot:Math.PI/4}};
+  fact:{k:4,L:1.4,rot:0},artifact:{k:4,L:1.55,rot:Math.PI/4},boundary:{k:6,L:1.85,rot:0,ring:1},
+  liveagent:{k:4,L:1.8,rot:Math.PI/4}};
 function _gxSpike(x,y,ang,len,w){   // 锥形衍射芒：底宽 2w → 尖端，三角填充自然渐细
   const dx=Math.cos(ang),dy=Math.sin(ang);
   ctx.beginPath();ctx.moveTo(x-dy*w,y+dx*w);ctx.lineTo(x+dx*len,y+dy*len);ctx.lineTo(x+dy*w,y-dx*w);

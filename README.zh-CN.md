@@ -38,7 +38,7 @@ python3 scripts/build-landing-concepts.py
 python3 -m http.server 8765 --directory docs
 ```
 
-打开 `http://127.0.0.1:8765/` 查看宣传页，打开 `http://127.0.0.1:8765/demo/?lang=zh` 查看中文合成 demo。demo 图谱是虚构、脱敏、可公开发布的。
+打开 `http://127.0.0.1:8765/` 查看宣传页，打开 `http://127.0.0.1:8765/demo/?style=cosmos&lang=zh` 查看中文合成 demo。demo 图谱是虚构、脱敏、可公开发布的。
 
 ### B. 单机私有预览
 
@@ -117,8 +117,8 @@ https://renyunli0116.github.io/agent-memory-galaxy/
 |---|---|---|
 | `/agent-memory-galaxy/` | 公开宣传页 | 没有真实数据 |
 | `/agent-memory-galaxy/?lang=zh` | 中文宣传页 | 没有真实数据 |
-| `/agent-memory-galaxy/demo/?lang=zh` | 中文合成交互 demo | 仅虚构图谱 |
-| `/agent-memory-galaxy/demo/?lang=en` | 英文合成交互 demo | 仅虚构图谱 |
+| `/agent-memory-galaxy/demo/?style=cosmos&lang=zh` | 中文合成交互 demo | 仅虚构图谱 |
+| `/agent-memory-galaxy/demo/?style=cosmos&lang=en` | 英文合成交互 demo | 仅虚构图谱 |
 | `/agent-memory-galaxy/concepts/` | 设计探索存档 | 公开、次级页面 |
 | `/agent-memory-galaxy/galaxy/` | 可选加密 viewer shell | 公开可访问 shell，不含明文图谱 |
 | `/agent-memory-galaxy/galaxy/graph.enc.json` | 可选加密图谱 blob | 仅密文 |

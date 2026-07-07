@@ -7,11 +7,11 @@
     en: {
       navConcepts: 'Design archive', navDemo: 'Demo', navPrivacy: 'Privacy', navInstall: 'Install',
       previewTitle: 'demo graph preview', previewNote: 'Compressed preview. Open the full demo for search, filters, zoom, and node details.',
-      expandGalaxy: 'Expand galaxy', miniSideTitle: 'NODE TYPES', miniProject: 'Project', miniServer: 'Server', miniAgent: 'Agent', miniBoundary: 'Boundary', miniArtifact: 'Artifact', miniReadoutTitle: 'ONLINE HUD', miniReadout: 'multi-server handoff / live agents / encrypted boundary',
+      expandGalaxy: 'Expand galaxy', miniSideTitle: 'NODE TYPES', miniProject: 'Project', miniServer: 'Server', miniAgent: 'Agent', miniBoundary: 'Boundary', miniArtifact: 'Artifact', miniReadoutTitle: 'PRESENCE LAYER', miniReadout: 'multi-user hub / agent status / encrypted boundary',
       modalMuted: 'Demo galaxy. Drag, zoom, filter, and inspect nodes.', openFullDemo: 'Open full demo', close: 'Close', copied: 'Copied', copyFailed: 'Copy failed',
       status: function (n, e, m) { return n + ' nodes / ' + e + ' links / ' + m + ' machines'; },
-      heroKicker: 'FOR RESEARCHERS RUNNING MANY AGENTS', heroTitle: 'Which agent did that?',
-      heroDef: 'Agent Memory Galaxy is a Claude Code skill that merges every machine’s agent_memory.md into one private, searchable map — a single static HTML page.',
+      heroKicker: 'FOR RESEARCHERS AND TEAMS RUNNING MANY AGENTS', heroTitle: 'Which agent did that?',
+      heroDef: 'See what every teammate’s agents shipped today: a Claude Code skill that merges every machine’s agent_memory.md into one private, searchable map — a single static HTML page.',
       heroLead: 'Claude on your laptop, a trainer on the GPU node, Codex on CI. By 11 pm none of them knows what the others did.',
       openDemo: 'Open the demo', installSkill: 'Install as skill',
       demoNote: 'Demo uses fictional data.',
@@ -27,18 +27,37 @@
       installHeading: 'Install with two Claude Code commands.', installBody: 'The repo ships a Claude Code plugin. The skill sets up a private hub, pulls in each machine, merges their memory into one graph, and runs a privacy review before anything is published.',
       pluginInstall: 'Plugin/skill install', copyMarketplace: 'Copy marketplace command', copyInstall: 'Copy install command', localDemo: 'Try the demo locally', copyDemo: 'Copy demo commands',
       workflowHeading: 'Collect, distill, merge, encrypt, view.',
-      privacyHeading: 'Public framework. Private memory.', privacyBody: 'Your agent_memory.md and fragments never leave your machines unless you explicitly publish — and publishing ships ciphertext only. Nothing phones home. GitHub Pages carries the framework and this demo; real memory stays on your machines or in a private hub.',
+      privacyHeading: 'Public framework. Private memory.', privacyBody: 'Working solo, your agent_memory.md and fragments never leave your machine — nothing phones home. GitHub Pages carries only the open framework and this demo.',
+      privacyTeam: 'On a team, distilled fragments — safe session metadata, never raw conversations — sync as plaintext inside your private GitHub repo, readable only by the collaborators you add. The only thing that ever leaves that repo is a public Pages deploy, and that ships AES-256-GCM ciphertext, unlocked in the browser.',
       privacyMore: 'Full privacy model, roles, and URL map — see the README.',
       footerPrivacy: 'Demo data fictional. Real memory private.',
+      skipIntro: 'Skip intro', stageHint: 'Interactive demo — drag, zoom, click a node.', stillTitle: 'one graph, settled',
       beforeTag: 'WITHOUT SHARED MEMORY', afterTag: 'WITH AGENT MEMORY GALAXY',
       beforeCaption: 'Five machines, zero shared context. Every window remembers a different slice of the day, and it all evaporates when the terminal closes.',
-      afterCaption: 'One day of work across five machines, as one graph. Click any node for who, when, which files, and why.',
+      afterCaption: 'One day of work across five machines, resolved into one graph — the same interactive map you can open at the top of the page.',
       chaosNote1: 'who changed dataloader.py?', chaosNote4: 'was this fix already merged?',
-      painHeading: 'Three ways the day falls apart.', painBody: 'Run agents on more than one machine and you already know all three.',
-      pain1Title: 'Nobody remembers who did what', pain1Body: 'Each agent leaves its trail in a different scrollback on a different machine. By the next morning, “why did this change?” has no answer.',
-      pain2Title: 'Duplicate work, hours apart', pain2Body: 'Two agents chase the same bug on two machines. Neither knows a fix already exists, so the same afternoon gets spent twice.',
-      pain3Title: 'No handoff between agents', pain3Body: 'Agents cannot see each other, so there is no handoff: configs get overwritten, runs get orphaned, and context dies with the session.',
-      statBandTitle: 'The synthetic demo, by the numbers', statNodes: 'nodes', statLinks: 'links', statEntries: 'memory entries', statProjects: 'projects', statMachines: 'machines', statLive: 'simulated agents active',
+      whyHeading: 'Why teams pick it', whyBody: 'One private graph of everything your agents remember — built to be trusted, cheap to run, and readable at a glance by the whole team.',
+      p1Title: 'Your whole team’s memory, one graph', p1How: 'Every teammate’s machines push fragments into one private hub; filter and color by user to see who did what, on which machine.', p1Badge: 'New this week',
+      p2Title: 'Plaintext stays local or in your private hub', p2How: 'Plaintext lives on your machines, or in a private repo only your collaborators can read; only a public Pages deploy is encrypted — client-side AES-256-GCM with PBKDF2 and a dual password, and nothing phones home.',
+      p3Title: 'Works with the coding agents you already run', p3How: 'Native today for Claude Code, Codex, and Cursor. agent_memory.md is plain markdown, so any tool that writes it joins the graph too.',
+      p4Title: 'The memory layer barely adds tokens', p4How: 'The graph is built by zero-dependency Python — heuristics by default, LLM optional and off. Indexing your agents’ work doesn’t burn tokens.',
+      p5Title: 'It refreshes itself and lights up live work', p5How: 'A cron job rebuilds the graph on a schedule; auto-presence detects working agents and pulses them red — no manual heartbeat.',
+      p6Title: 'A live map for team leads', p6How: 'See who’s on which machine and project at a glance — red means working now, gold lines mean cross-project references.',
+      audHeading: 'One map, two jobs.', audBody: 'The same graph answers a different question depending on who is looking at it.',
+      audResTag: 'FOR RESEARCHERS', audResTitle: 'Stop losing track of your own agents',
+      r1: 'Who changed what — every entry carries the agent, machine, files, and the reason, so “why did this change?” always has an answer.',
+      r2: 'No duplicate afternoons — spot a fix that already landed on another machine before you chase the same bug again.',
+      r3: 'Real handoff — the next session, and the next agent, start from what already happened instead of a cold terminal.',
+      audPmTag: 'FOR TEAM LEADS & PM', audPmTitle: 'Monitor the whole team from one map',
+      audPmLead: 'Open the page and read the whole team in seconds — who is on which machine and project, and what is live right now.',
+      tcTitle: 'team-orbit · live view', tcStatus: '3 users · 5 machines · 6 projects', tcAll: 'All', tcWorking: 'working', tcIdle: 'idle',
+      tcTask1: 'merging a fragment dedupe fix', tcTask2: 'sweeping a learning-rate schedule', tcTask3: 'queuing an eval run', tcTask4: 'prism cache notes, wrapped up',
+      tcLegendRed: 'working now', tcLegendGold: 'shared across projects', tcLegendUser: 'colour = teammate', tcDemo: 'Illustrative demo — a sample team, not live data.',
+      tcBridge: 'The live product renders this same team data as an interactive galaxy — the demo opens that map, not a list like this.',
+      ghHeading: 'All you need is a GitHub account.', ghBody: 'No server to run, no database, no SaaS to sign up for — just a git repo and the Python standard library. Collaborate by adding a teammate as a GitHub collaborator and pushing.',
+      ghNoServer: 'No server', ghNoDb: 'No database', ghNoSaas: 'No SaaS signup', ghNoKey: 'No API key',
+      ghFoot: 'You’ll need git and python3 on the machine — most dev machines already have both.',
+      statBandTitle: 'The demo graph, by the numbers', statNodes: 'nodes', statLinks: 'links', statEntries: 'memory entries', statProjects: 'projects', statMachines: 'machines', statLive: 'simulated agents active',
       statHonest: 'The numbers above come straight from the demo’s graph.json. Every project, machine, agent, and file in it is fictional — no real memory is published here.',
       howHeading: 'From scattered traces to one galaxy.', howBody: 'Plain files and static HTML — here’s how one day of agent work becomes one graph.',
       tl1Tag: 'STEP 01 · IN EVERY PROJECT', tl1Title: 'Agents write memory as they work', tl1Body: 'Each project keeps an agent_memory.md: what changed, why, and which files. Agents read it when a session starts and append after meaningful changes.',
@@ -51,11 +70,11 @@
     zh: {
       navConcepts: '设计存档（英文）', navDemo: '演示', navPrivacy: '隐私', navInstall: '安装',
       previewTitle: '演示图谱预览', previewNote: '压缩预览。打开完整 demo 可搜索、过滤、缩放、查看节点详情。',
-      expandGalaxy: '展开图谱', miniSideTitle: '节点类型', miniProject: '项目', miniServer: '机器', miniAgent: 'Agent', miniBoundary: '边界', miniArtifact: '产物', miniReadoutTitle: '在线 HUD', miniReadout: '多服务器交接 / 在线 agent / 加密边界',
+      expandGalaxy: '展开图谱', miniSideTitle: '节点类型', miniProject: '项目', miniServer: '机器', miniAgent: 'Agent', miniBoundary: '边界', miniArtifact: '产物', miniReadoutTitle: '存在感图层', miniReadout: '多 user 私有 hub / agent 状态 / 加密边界',
       modalMuted: '演示图谱：可拖拽、缩放、过滤，点击节点查看详情。', openFullDemo: '打开完整 demo', close: '关闭', copied: '已复制', copyFailed: '复制失败',
       status: function (n, e, m) { return n + ' 节点 / ' + e + ' 连线 / ' + m + ' 机器'; },
-      heroKicker: '写给同时跑一堆 agent 的研究者', heroTitle: '昨天是哪个 agent 改的？',
-      heroDef: 'Agent Memory Galaxy 是一个 Claude Code skill：把每台机器的 agent_memory.md 汇成一张私有、可搜索的图——就一个静态 HTML 页面。',
+      heroKicker: '写给同时跑一堆 agent 的研究者和团队', heroTitle: '昨天是哪个 agent 改的？',
+      heroDef: '一眼看清全队的 agent 今天都产出了什么：一个 Claude Code skill，把每台机器的 agent_memory.md 汇成一张私有、可搜索的图——就一个静态 HTML 页面。',
       heroLead: '笔记本上的 Claude、GPU 节点上的训练 agent、CI 上的 Codex。到晚上 11 点，谁也不知道别人干了什么。',
       openDemo: '打开在线演示', installSkill: '安装为 skill',
       demoNote: '演示为虚构数据。',
@@ -71,17 +90,36 @@
       installHeading: '敲两条命令，装进 Claude Code。', installBody: '公开仓库自带 Claude Code 插件。装好后，skill 会帮你搭私有聚合端、接入每台机器、把记忆合并成一张图，公开前还会先做隐私审查。',
       pluginInstall: 'Plugin/skill 安装', copyMarketplace: '复制 marketplace 命令', copyInstall: '复制 install 命令', localDemo: '本地先跑 demo', copyDemo: '复制 demo 命令',
       workflowHeading: '采集、提炼、合并、加密、查看。',
-      privacyHeading: '公开框架，私有记忆。', privacyBody: '你的 agent_memory.md 和 fragments 不会离开你的机器，没有任何联网上报；只有你显式发布时，出门的也只有密文。GitHub Pages 上只有框架和演示页面，真实记忆留在你的机器或私有 hub。',
+      privacyHeading: '公开框架，私有记忆。', privacyBody: '独自使用时，你的 agent_memory.md 和 fragments 不会离开你的机器，也没有任何联网上报；GitHub Pages 上只有公开框架和这个演示。',
+      privacyTeam: '在团队里，提炼出的 fragment（只含安全的会话元数据，绝不含原始对话）会以明文形式同步进你的私有 GitHub 仓库，只有你添加的协作者能读到。真正会离开这个仓库的，只有公开的 Pages 部署，而它携带的只有 AES-256-GCM 密文，在浏览器端解锁。',
       privacyMore: '完整的隐私模型、角色分工与 URL 对照表见 README。',
       footerPrivacy: '演示数据均为虚构，真实记忆保持私有。',
+      skipIntro: '跳过', stageHint: '可交互 demo——拖拽、缩放、点击节点。', stillTitle: '一张图，已汇合',
       beforeTag: '没有共享记忆的一天', afterTag: '接入 Agent Memory Galaxy 之后',
       beforeCaption: '五台机器，零共享上下文。每个窗口只记得这一天的一个切片，终端一关就全部蒸发。',
-      afterCaption: '五台机器一天的工作，汇成一张图。点开任意节点：谁、何时、改了哪些文件、为什么。',
+      afterCaption: '五台机器一天的工作，汇成一张图——就是页面顶部你能打开的那张可交互地图。',
       chaosNote1: 'dataloader.py 是谁改的？', chaosNote4: '这个 fix 是不是已经改过一次了？',
-      painHeading: '多 agent 的一天，是这样失控的。', painBody: '只要你在多台机器上同时用 agent，这三个场景你一定都见过。',
-      pain1Title: '记不得谁做了什么', pain1Body: '每个 agent 的痕迹散落在不同机器的终端历史里。到第二天早上，「这里为什么改了」已经没有答案。',
-      pain2Title: '前后脚的重复劳动', pain2Body: '两个 agent 在两台机器上先后追同一个 bug，谁也不知道修复早已存在——同一个下午白白花了两遍。',
-      pain3Title: 'agent 之间没有交接', pain3Body: 'agent 看不见彼此，也就没有交接：配置被互相覆盖、实验没人认领、上下文随 session 一起消失。',
+      whyHeading: '团队为什么选它', whyBody: '把 agent 记住的一切汇成一张私有图——可信、省钱、一眼看懂，整个团队都能用。',
+      p1Title: '全队的记忆，汇成同一张图', p1How: '每个成员的机器把 fragment 推进同一个私有 hub；可按 user 筛选、着色，看清谁在哪台机器做了什么。', p1Badge: '本周上线',
+      p2Title: '明文只留在本地或你的私有 hub', p2How: '明文只留在你的机器，或只有协作者能读的私有仓库里；只有公开的 Pages 部署才加密——客户端 AES-256-GCM（PBKDF2、双密码），且没有任何联网上报。',
+      p3Title: '兼容你已经在用的编码 agent', p3How: '今天已原生支持 Claude Code、Codex、Cursor。agent_memory.md 是纯 markdown，任何会写它的工具也都能进图。',
+      p4Title: '这层记忆几乎不额外烧 token', p4How: '图谱由零依赖的 Python 标准库构建——默认启发式，LLM 可选且默认关闭。给 agent 的工作建索引本身不烧 token。',
+      p5Title: '自动刷新，自动点亮在线工作', p5How: 'cron 定时重建图谱；auto-presence 自动检测正在工作的 agent 并亮起红色脉冲，无需手动心跳。',
+      p6Title: '给负责人的一张实时地图', p6How: '一眼看清谁在哪台机器、哪个项目——红色代表正在工作，金线代表跨项目引用。',
+      audHeading: '一张图，两种用法。', audBody: '同一张图，谁来看，回答的就是谁最关心的问题。',
+      audResTag: '写给研究者', audResTitle: '别再跟丢自己的 agent',
+      r1: '谁改了什么——每条记录都带着 agent、机器、文件和原因，「这里为什么改了」永远有答案。',
+      r2: '不再重复劳动——在你追同一个 bug 之前，就能看到修复早已落在另一台机器上。',
+      r3: '真正的交接——下一个会话、下一个 agent，都从已经发生的事接着做，而不是面对一个空终端。',
+      audPmTag: '写给负责人 / PM', audPmTitle: '一张图俯瞰全队进展',
+      audPmLead: '打开页面，几秒就能读完整个团队——谁在哪台机器、哪个项目，此刻什么正在跑。',
+      tcTitle: 'team-orbit · 实时视图', tcStatus: '3 位成员 · 5 台机器 · 6 个项目', tcAll: '全部', tcWorking: '工作中', tcIdle: '空闲',
+      tcTask1: '正在合并 fragment 去重的修复', tcTask2: '正在扫学习率调度', tcTask3: '排队跑一次 eval', tcTask4: 'prism cache 的笔记，已收尾',
+      tcLegendRed: '正在工作', tcLegendGold: '跨项目共享', tcLegendUser: '颜色 = 成员', tcDemo: '示意 demo——示例团队，非实时数据。',
+      tcBridge: '真实产品把同一份团队数据渲染成一张可交互的星图——演示打开的是那张图，而不是这样一份列表。',
+      ghHeading: '有个 GitHub 账号就够了。', ghBody: '不用跑服务器、不用数据库、不用注册 SaaS——一个 git 仓库加 Python 标准库即可。协作就是把成员加为 GitHub collaborator，然后 push。',
+      ghNoServer: '无需服务器', ghNoDb: '无需数据库', ghNoSaas: '无需注册 SaaS', ghNoKey: '无需 API key',
+      ghFoot: '机器上要有 git 和 python3——开发机通常本来就装了。',
       statBandTitle: '演示数据规模一览', statNodes: '个节点', statLinks: '条连线', statEntries: '条记忆', statProjects: '个项目', statMachines: '台机器', statLive: '个模拟 agent 在工作',
       statHonest: '以上数字直接取自 demo 的 graph.json；里面的项目、机器、agent 和文件均为虚构，这里不发布任何真实工作记忆。',
       howHeading: '从零散痕迹，到一张星图。', howBody: '纯文件加静态 HTML——一天的 agent 工作，是这样变成一张图的。',
@@ -664,7 +702,25 @@
       }
     });
   });
+  /* Intro reveal is orchestrated by the head script (self-contained, always completes).
+     Here we only progressively enhance it with a Skip control that fast-forwards the
+     in-place reveal to its settled state. No skip button, or JS off => the head script
+     still finishes the reveal on its own. */
+  function wireIntroSkip() {
+    var d = document.documentElement;
+    var btn = document.querySelector('[data-intro-skip]');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      d.classList.add('intro-go', 'intro-fast');
+      setTimeout(function () {
+        if (typeof d.__amgIntroEnd === 'function') d.__amgIntroEnd();
+        else d.classList.remove('intro-run', 'intro-go', 'intro-fast');
+      }, 240);
+    });
+  }
+
   applyLang(lang);
   startMiniGalaxy();
   hydrateMiniPreview();
+  wireIntroSkip();
 }());

@@ -1019,7 +1019,16 @@ CSS += r"""
 
 /* zh typography: no orphan glyphs in display text, no shouting latin in zh labels */
 html[lang="zh-CN"] h1, html[lang="zh-CN"] h2, html[lang="zh-CN"] h3,
-html[lang="zh-CN"] .hero-def, html[lang="zh-CN"] .evidence-lead { word-break: keep-all; line-break: strict; }
+html[lang="zh-CN"] .hero-def, html[lang="zh-CN"] .evidence-lead,
+html[lang="zh-CN"] .aud-lead { word-break: keep-all; line-break: strict; }
+/* zh body text: keep-all avoids single-glyph orphans / mid-word breaks
+   (verified: no CJK run here exceeds the narrowest 390px container). */
+html[lang="zh-CN"] .hero-scene, html[lang="zh-CN"] .section-head p,
+html[lang="zh-CN"] .pillar-how, html[lang="zh-CN"] .aud-list li,
+html[lang="zh-CN"] .privacy-team, html[lang="zh-CN"] .gh-body,
+html[lang="zh-CN"] .tl-item p, html[lang="zh-CN"] .stat-honest,
+html[lang="zh-CN"] .contrast-caption,
+html[lang="zh-CN"] .mini-readout span { word-break: keep-all; line-break: strict; }
 html[lang="zh-CN"] .kicker,
 html[lang="zh-CN"] .contrast-tag,
 html[lang="zh-CN"] .mini-label,
@@ -1068,7 +1077,7 @@ html[lang="zh-CN"] .tl-step { text-transform: none; }
   color: var(--accent); font-size: 38px; font-weight: 800;
   text-shadow: 0 0 20px rgba(242, 184, 75, .7);
 }
-.contrast-grid .galaxy-card { flex: 1; height: auto; min-height: 420px; }
+.contrast-grid .galaxy-still { flex: 1; height: auto; min-height: 420px; }
 
 .chaos-board {
   position: relative; flex: 1; min-height: 420px; overflow: hidden;
@@ -1234,7 +1243,8 @@ html[lang="zh-CN"] .tl-step { text-transform: none; }
 .evidence-aside .evidence-sub { margin: 0 0 18px; color: var(--muted); font-size: 15px; max-width: 46ch; }
 .evidence-aside .actions { margin-top: 0; }
 
-.privacy-more { margin: 4px 0 0; font-size: 15px; }
+.privacy-team { margin: 16px 0 0; color: var(--muted); font-size: 15px; line-height: 1.6; max-width: 760px; }
+.privacy-more { margin: 12px 0 0; font-size: 15px; }
 .privacy-more a {
   color: var(--accent);
   text-decoration: none;
@@ -1279,7 +1289,7 @@ html[lang="zh-CN"] .tl-step { text-transform: none; }
   .stat-band-grid { grid-template-columns: repeat(3, 1fr); gap: 14px 10px; }
   .stat-cell b { font-size: 22px; }
   .chaos-board { min-height: 380px; }
-  .contrast-grid .galaxy-card { min-height: 380px; }
+  .contrast-grid .galaxy-still { min-height: 380px; }
   .contrast-arrow { min-height: 26px; font-size: 30px; }
   .timeline { gap: 20px; }
   .timeline { padding-left: 32px; }
@@ -1302,7 +1312,360 @@ html[lang="zh-CN"] .tl-step { text-transform: none; }
   .chaos-term code.q { font-size: 13px; }
   .chaos-q { font-size: 34px; }
   .pain-fig { display: none; }
-  .contrast-grid .galaxy-card { min-height: 330px; }
+  .contrast-grid .galaxy-still { min-height: 330px; }
+}
+"""
+
+CSS += r"""
+/* === Landing round-5: value-prop pillars, dual audience, GitHub callout === */
+.pillars .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.pillar {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  padding: 22px 22px 24px;
+  transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.pillar:hover {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  transform: translateY(-2px);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, .28);
+}
+.pillar-ico {
+  display: grid; place-items: center;
+  width: 46px; height: 46px; margin-bottom: 16px;
+  border-radius: 12px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--line));
+}
+.pillar-ico svg { width: 24px; height: 24px; display: block; }
+.pillar h3 { margin: 0 0 8px; font-size: 19px; line-height: 1.25; }
+.pillar-how { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.58; }
+.pillar-tag {
+  position: absolute; top: 16px; right: 16px;
+  color: var(--accent-2);
+  font: 800 9.5px/1 "JetBrains Mono", "Cascadia Code", monospace;
+  letter-spacing: .09em; text-transform: uppercase;
+  border: 1px solid color-mix(in srgb, var(--accent-2) 44%, var(--line));
+  border-radius: 999px; padding: 5px 8px;
+  background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+}
+html[lang="zh-CN"] .pillar-tag { text-transform: none; letter-spacing: .02em; }
+
+.audiences .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.audience {
+  min-width: 0;
+  display: flex; flex-direction: column; gap: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 26px 26px 24px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+}
+.audience.pm {
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 56%),
+    color-mix(in srgb, var(--surface) 92%, transparent);
+}
+.audience-tag {
+  display: inline-flex; align-items: center; gap: 9px;
+  color: var(--muted);
+  font: 800 11px/1.3 "JetBrains Mono", "Cascadia Code", monospace;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.audience-tag::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: currentColor; flex: none; }
+.audience.res .audience-tag { color: var(--accent-3); }
+.audience.pm .audience-tag { color: var(--accent); }
+.audience.pm .audience-tag::before { box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 70%, transparent); }
+html[lang="zh-CN"] .audience-tag { text-transform: none; letter-spacing: .02em; }
+.audience h3 { margin: 0; font-size: 23px; line-height: 1.2; }
+.aud-list { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 13px; }
+.aud-list li {
+  position: relative; padding-left: 24px;
+  color: var(--muted); font-size: 14.5px; line-height: 1.55;
+}
+.aud-list li::before {
+  content: ""; position: absolute; left: 2px; top: 7px;
+  width: 8px; height: 8px; border-radius: 2px; transform: rotate(45deg);
+  background: var(--accent-3);
+}
+.audience.pm .aud-list li::before { background: var(--accent); }
+.aud-legend {
+  margin-top: auto; padding-top: 16px;
+  border-top: 1px dashed var(--line);
+  display: flex; flex-wrap: wrap; gap: 9px 18px;
+}
+.aud-legend .leg { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12.5px; }
+.aud-legend .sw { flex: none; display: inline-flex; }
+.aud-legend .sw.dot { width: 10px; height: 10px; border-radius: 50%; }
+.aud-legend .sw.dot.red { background: var(--danger); box-shadow: 0 0 9px color-mix(in srgb, var(--danger) 70%, transparent); }
+.aud-legend .sw.line { width: 22px; height: 2px; border-radius: 2px; background: var(--accent); align-self: center; }
+.aud-legend .sw.users { gap: 2px; }
+.aud-legend .sw.users span { width: 7px; height: 12px; border-radius: 2px; display: block; }
+
+.gh-band {
+  margin: 6px 0 4px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: 14px;
+  padding: 52px 28px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% -20%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%),
+    color-mix(in srgb, var(--surface) 90%, transparent);
+}
+.gh-band h2 { margin: 0 auto; max-width: 17ch; font-size: clamp(30px, 4.6vw, 56px); line-height: 1.04; }
+.gh-band .gh-body { margin: 16px auto 0; max-width: 62ch; color: var(--muted); font-size: 16px; line-height: 1.6; }
+.gh-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 24px 0 0; }
+.gh-chips span {
+  display: inline-flex; align-items: center;
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 8px 13px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  font: 700 12.5px/1 "JetBrains Mono", "Cascadia Code", monospace;
+}
+.gh-chips span::before { content: "\2715"; color: var(--danger); font-weight: 800; margin-right: 8px; }
+.gh-foot {
+  margin: 22px auto 0; max-width: 66ch;
+  color: var(--muted);
+  font: 600 12.5px/1.6 "JetBrains Mono", "Cascadia Code", monospace;
+}
+
+@media (max-width: 1080px) {
+  .pillars .pillar-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 900px) {
+  .audiences .audience-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .pillars .pillar-grid { grid-template-columns: 1fr; }
+  .pillar { padding: 18px; }
+  .audience { padding: 20px; }
+  .gh-band { padding: 38px 18px; }
+  .gh-foot { font-size: 12px; }
+}
+"""
+
+CSS += r"""
+/* === Team monitoring console (ported from bid B) — static illustration inside the
+   PM/team-lead audience column; NOT the canvas galaxy (galaxy_card stays the single
+   interactive surface). Member colours match docs/demo team.json (ada/kael/mira). === */
+.audience.pm .aud-lead { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+.audience.pm .team-console { margin-top: 4px; }
+
+.team-console {
+  overflow: hidden; border-radius: 10px;
+  border: 1px solid rgba(148, 178, 255, .24);
+  background: linear-gradient(165deg, rgba(12, 18, 40, .94), rgba(5, 8, 20, .97));
+  box-shadow: 0 24px 60px rgba(1, 4, 16, .45), inset 0 0 30px rgba(88, 128, 255, .06);
+  font-family: "JetBrains Mono", "Cascadia Code", monospace;
+}
+.tc-bar {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px;
+  min-height: 37px; padding: 7px 12px;
+  border-bottom: 1px solid rgba(120, 150, 255, .16);
+  background: rgba(7, 11, 26, .85); color: #cdd8ff; font-size: 11.5px;
+}
+.tc-bar .lights { display: inline-flex; gap: 6px; flex: none; }
+.tc-bar .lights i { width: 9px; height: 9px; border-radius: 50%; background: #2f3652; }
+.tc-title { font-weight: 700; color: #dbe4ff; white-space: nowrap; }
+.tc-status { margin-left: auto; color: #8ea6e8; white-space: nowrap; }
+.tc-body { padding: 13px 13px 14px; }
+.tc-filter { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.tc-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid rgba(150, 175, 255, .2); border-radius: 999px;
+  padding: 4px 10px; color: #b9c6ee; font-size: 11.5px; background: rgba(20, 28, 54, .55);
+}
+.tc-chip.active { border-color: rgba(242, 184, 75, .6); color: #ffe6b0; background: rgba(242, 184, 75, .1); }
+.tc-chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--u, #8ea6e8); flex: none; }
+.tc-rows { display: grid; gap: 7px; }
+.tc-row {
+  display: grid; grid-template-columns: 11px minmax(0, 1fr) auto; gap: 11px; align-items: center;
+  padding: 9px 11px; border: 1px solid rgba(120, 150, 255, .12); border-radius: 7px;
+  background: rgba(12, 18, 40, .5);
+}
+.tc-row .u {
+  width: 10px; height: 10px; border-radius: 50%; flex: none;
+  background: var(--u, #8ea6e8);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--u, #8ea6e8) 70%, transparent);
+}
+.tc-main { min-width: 0; }
+.tc-main .n { color: #e6ecff; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tc-main .d { color: #8fa0cc; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tc-st { font-size: 10.5px; letter-spacing: .05em; color: #7f8fbc; white-space: nowrap; }
+.tc-row.live { border-color: rgba(240, 111, 121, .38); background: rgba(30, 16, 24, .45); }
+.tc-row.live .tc-st { color: #ff9199; }
+.tc-row.live .tc-st::before {
+  content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--danger); margin-right: 6px; vertical-align: baseline;
+  box-shadow: 0 0 8px rgba(240, 111, 121, .85);
+  animation: tcPulse 1.9s ease-in-out infinite;
+}
+@keyframes tcPulse { 0%, 100% { opacity: 1; } 50% { opacity: .32; } }
+.tc-legend {
+  margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(120, 150, 255, .16);
+  display: flex; flex-wrap: wrap; gap: 8px 16px; color: #8291bd; font-size: 11px;
+}
+.tc-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.tc-legend b { color: #b9c6ee; font-weight: 600; }
+.tc-legend i.lg { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.tc-legend i.lg.red { background: var(--danger); box-shadow: 0 0 7px rgba(240, 111, 121, .7); }
+.tc-legend i.lg.gold { background: var(--accent); box-shadow: 0 0 7px rgba(242, 184, 75, .7); }
+.tc-legend i.lg.user { background: conic-gradient(#7dd3fc, #f0abfc, #fde68a, #7dd3fc); }
+.tc-demo { margin: 10px 0 0; color: #6f7ba6; font-size: 10.5px; }
+.audience.pm .tc-bridge { margin: 12px 2px 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tc-row.live .tc-st::before { animation: none; }
+}
+@media (max-width: 760px) {
+  .tc-status { font-size: 10.5px; }
+  .tc-row { grid-template-columns: 11px minmax(0, 1fr) auto; gap: 9px; }
+}
+"""
+
+CSS += r"""
+/* === Round-6 V2: demo-first hero (interactive galaxy in the fold) + in-place reveal ===
+   The one interactive galaxy_card moves into the hero so the demo is the first thing on
+   screen, immediately interactive, with no blocking splash. On load it does a single
+   in-place "unveil" (galaxy settles first, copy staggers in). The before/after keeps its
+   punch via a decorative, non-interactive .galaxy-still twin. */
+.landing-v2 .hero-intro.hero-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.94fr) minmax(430px, 1.06fr);
+  gap: 44px;
+  align-items: center;
+  min-height: calc(100vh - 58px);
+  padding: 40px 0 30px;
+}
+.hero-split .hero-copy { min-width: 0; }
+.landing-v2 .hero-split h1 { font-size: clamp(40px, 4.7vw, 72px); margin: 14px 0 16px; }
+.landing-v2 .hero-split .hero-def { max-width: 42ch; font-size: 18.5px; }
+.landing-v2 .hero-split .hero-scene { max-width: 46ch; margin-top: 12px; font-size: 15.5px; }
+.landing-v2 .hero-split .hero-spec { margin-top: 22px; }
+
+.hero-split .hero-stage {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stage-frame { position: relative; width: 100%; min-width: 0; }
+.stage-frame .galaxy-card { height: clamp(380px, 42vw, 560px); }
+.stage-hint {
+  position: absolute;
+  left: 0; right: 0; bottom: -26px;
+  text-align: center;
+  color: var(--muted);
+  font: 600 12px/1.4 "JetBrains Mono", "Cascadia Code", monospace;
+  pointer-events: none;
+}
+
+/* Skip control: a small, non-blocking fixed pill, only present while the reveal runs. */
+.intro-skip {
+  position: fixed;
+  top: 70px;
+  right: 18px;
+  z-index: 60;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 15px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  color: var(--muted);
+  font: 700 12px/1 "JetBrains Mono", "Cascadia Code", monospace;
+  letter-spacing: .02em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .3);
+}
+.intro-skip::before {
+  content: "";
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 9px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.intro-skip:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
+html.intro-run .intro-skip { display: inline-flex; }
+
+/* In-place reveal. Base (no class) is the SETTLED state, so no-JS, reduced-motion,
+   repeat visits, and ?intro=skip all show the finished hero with zero motion. */
+html.intro-run .hero-split .stage-frame { opacity: 0; transform: scale(.955) translateY(10px); }
+html.intro-run .hero-split .hero-copy > * { opacity: 0; transform: translateY(12px); }
+html.intro-run.intro-go .hero-split .stage-frame {
+  opacity: 1; transform: none;
+  transition: opacity 1.1s ease, transform 1.4s cubic-bezier(.19, .72, .22, 1);
+}
+html.intro-run.intro-go .hero-split .hero-copy > * {
+  opacity: 1; transform: none;
+  transition: opacity .68s ease, transform .68s cubic-bezier(.2, .7, .2, 1);
+}
+html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(1) { transition-delay: .46s; }
+html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(2) { transition-delay: .58s; }
+html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(3) { transition-delay: .70s; }
+html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(4) { transition-delay: .82s; }
+html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(5) { transition-delay: .93s; }
+html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(6) { transition-delay: 1.02s; }
+html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(7) { transition-delay: 1.10s; }
+/* Skip => fast-forward everything to settled. */
+html.intro-fast .hero-split .stage-frame,
+html.intro-fast .hero-split .hero-copy > * {
+  transition-duration: .2s !important;
+  transition-delay: 0s !important;
+}
+
+/* Decorative before/after still: mirrors the galaxy_card frame but is inert. */
+.galaxy-still {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+  min-height: 420px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #060814;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, .24);
+}
+.contrast-actions { margin-top: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Honesty: never animate the hero for reduced-motion visitors. Base state is settled,
+     so this is a belt-and-braces guard on top of the head script never adding intro-run. */
+  html.intro-run .hero-split .stage-frame,
+  html.intro-run .hero-split .hero-copy > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .intro-skip { display: none !important; }
+}
+
+/* Mobile: single column, galaxy pulled up right under the definition so the demo (or at
+   least the "Open the demo" CTA beside it) is in the phone's first screen. */
+@media (max-width: 900px) {
+  .landing-v2 .hero-intro.hero-split {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: auto;
+    gap: 14px;
+    padding: 32px 0 20px;
+  }
+  .hero-split .hero-copy { display: contents; }
+  .hero-split .kicker     { order: 1; }
+  .hero-split h1          { order: 2; }
+  .hero-split .hero-def   { order: 3; }
+  .hero-split .hero-stage { order: 4; margin: 2px 0 20px; }
+  .hero-split .actions    { order: 5; }
+  .hero-split .demo-note  { order: 6; }
+  .hero-split .hero-spec  { order: 7; }
+  .hero-split .hero-scene { order: 8; }
+  .stage-frame .galaxy-card { height: clamp(320px, 76vw, 400px); }
+  .landing-v2 .hero-split .hero-def { max-width: none; }
+  .landing-v2 .hero-split .hero-scene { max-width: none; }
 }
 """
 
@@ -1317,11 +1680,11 @@ JS = r"""
     en: {
       navConcepts: 'Design archive', navDemo: 'Demo', navPrivacy: 'Privacy', navInstall: 'Install',
       previewTitle: 'demo graph preview', previewNote: 'Compressed preview. Open the full demo for search, filters, zoom, and node details.',
-      expandGalaxy: 'Expand galaxy', miniSideTitle: 'NODE TYPES', miniProject: 'Project', miniServer: 'Server', miniAgent: 'Agent', miniBoundary: 'Boundary', miniArtifact: 'Artifact', miniReadoutTitle: 'ONLINE HUD', miniReadout: 'multi-server handoff / live agents / encrypted boundary',
+      expandGalaxy: 'Expand galaxy', miniSideTitle: 'NODE TYPES', miniProject: 'Project', miniServer: 'Server', miniAgent: 'Agent', miniBoundary: 'Boundary', miniArtifact: 'Artifact', miniReadoutTitle: 'PRESENCE LAYER', miniReadout: 'multi-user hub / agent status / encrypted boundary',
       modalMuted: 'Demo galaxy. Drag, zoom, filter, and inspect nodes.', openFullDemo: 'Open full demo', close: 'Close', copied: 'Copied', copyFailed: 'Copy failed',
       status: function (n, e, m) { return n + ' nodes / ' + e + ' links / ' + m + ' machines'; },
-      heroKicker: 'FOR RESEARCHERS RUNNING MANY AGENTS', heroTitle: 'Which agent did that?',
-      heroDef: 'Agent Memory Galaxy is a Claude Code skill that merges every machine’s agent_memory.md into one private, searchable map — a single static HTML page.',
+      heroKicker: 'FOR RESEARCHERS AND TEAMS RUNNING MANY AGENTS', heroTitle: 'Which agent did that?',
+      heroDef: 'See what every teammate’s agents shipped today: a Claude Code skill that merges every machine’s agent_memory.md into one private, searchable map — a single static HTML page.',
       heroLead: 'Claude on your laptop, a trainer on the GPU node, Codex on CI. By 11 pm none of them knows what the others did.',
       openDemo: 'Open the demo', installSkill: 'Install as skill',
       demoNote: 'Demo uses fictional data.',
@@ -1337,18 +1700,37 @@ JS = r"""
       installHeading: 'Install with two Claude Code commands.', installBody: 'The repo ships a Claude Code plugin. The skill sets up a private hub, pulls in each machine, merges their memory into one graph, and runs a privacy review before anything is published.',
       pluginInstall: 'Plugin/skill install', copyMarketplace: 'Copy marketplace command', copyInstall: 'Copy install command', localDemo: 'Try the demo locally', copyDemo: 'Copy demo commands',
       workflowHeading: 'Collect, distill, merge, encrypt, view.',
-      privacyHeading: 'Public framework. Private memory.', privacyBody: 'Your agent_memory.md and fragments never leave your machines unless you explicitly publish — and publishing ships ciphertext only. Nothing phones home. GitHub Pages carries the framework and this demo; real memory stays on your machines or in a private hub.',
+      privacyHeading: 'Public framework. Private memory.', privacyBody: 'Working solo, your agent_memory.md and fragments never leave your machine — nothing phones home. GitHub Pages carries only the open framework and this demo.',
+      privacyTeam: 'On a team, distilled fragments — safe session metadata, never raw conversations — sync as plaintext inside your private GitHub repo, readable only by the collaborators you add. The only thing that ever leaves that repo is a public Pages deploy, and that ships AES-256-GCM ciphertext, unlocked in the browser.',
       privacyMore: 'Full privacy model, roles, and URL map — see the README.',
       footerPrivacy: 'Demo data fictional. Real memory private.',
+      skipIntro: 'Skip intro', stageHint: 'Interactive demo — drag, zoom, click a node.', stillTitle: 'one graph, settled',
       beforeTag: 'WITHOUT SHARED MEMORY', afterTag: 'WITH AGENT MEMORY GALAXY',
       beforeCaption: 'Five machines, zero shared context. Every window remembers a different slice of the day, and it all evaporates when the terminal closes.',
-      afterCaption: 'One day of work across five machines, as one graph. Click any node for who, when, which files, and why.',
+      afterCaption: 'One day of work across five machines, resolved into one graph — the same interactive map you can open at the top of the page.',
       chaosNote1: 'who changed dataloader.py?', chaosNote4: 'was this fix already merged?',
-      painHeading: 'Three ways the day falls apart.', painBody: 'Run agents on more than one machine and you already know all three.',
-      pain1Title: 'Nobody remembers who did what', pain1Body: 'Each agent leaves its trail in a different scrollback on a different machine. By the next morning, “why did this change?” has no answer.',
-      pain2Title: 'Duplicate work, hours apart', pain2Body: 'Two agents chase the same bug on two machines. Neither knows a fix already exists, so the same afternoon gets spent twice.',
-      pain3Title: 'No handoff between agents', pain3Body: 'Agents cannot see each other, so there is no handoff: configs get overwritten, runs get orphaned, and context dies with the session.',
-      statBandTitle: 'The synthetic demo, by the numbers', statNodes: 'nodes', statLinks: 'links', statEntries: 'memory entries', statProjects: 'projects', statMachines: 'machines', statLive: 'simulated agents active',
+      whyHeading: 'Why teams pick it', whyBody: 'One private graph of everything your agents remember — built to be trusted, cheap to run, and readable at a glance by the whole team.',
+      p1Title: 'Your whole team’s memory, one graph', p1How: 'Every teammate’s machines push fragments into one private hub; filter and color by user to see who did what, on which machine.', p1Badge: 'New this week',
+      p2Title: 'Plaintext stays local or in your private hub', p2How: 'Plaintext lives on your machines, or in a private repo only your collaborators can read; only a public Pages deploy is encrypted — client-side AES-256-GCM with PBKDF2 and a dual password, and nothing phones home.',
+      p3Title: 'Works with the coding agents you already run', p3How: 'Native today for Claude Code, Codex, and Cursor. agent_memory.md is plain markdown, so any tool that writes it joins the graph too.',
+      p4Title: 'The memory layer barely adds tokens', p4How: 'The graph is built by zero-dependency Python — heuristics by default, LLM optional and off. Indexing your agents’ work doesn’t burn tokens.',
+      p5Title: 'It refreshes itself and lights up live work', p5How: 'A cron job rebuilds the graph on a schedule; auto-presence detects working agents and pulses them red — no manual heartbeat.',
+      p6Title: 'A live map for team leads', p6How: 'See who’s on which machine and project at a glance — red means working now, gold lines mean cross-project references.',
+      audHeading: 'One map, two jobs.', audBody: 'The same graph answers a different question depending on who is looking at it.',
+      audResTag: 'FOR RESEARCHERS', audResTitle: 'Stop losing track of your own agents',
+      r1: 'Who changed what — every entry carries the agent, machine, files, and the reason, so “why did this change?” always has an answer.',
+      r2: 'No duplicate afternoons — spot a fix that already landed on another machine before you chase the same bug again.',
+      r3: 'Real handoff — the next session, and the next agent, start from what already happened instead of a cold terminal.',
+      audPmTag: 'FOR TEAM LEADS & PM', audPmTitle: 'Monitor the whole team from one map',
+      audPmLead: 'Open the page and read the whole team in seconds — who is on which machine and project, and what is live right now.',
+      tcTitle: 'team-orbit · live view', tcStatus: '3 users · 5 machines · 6 projects', tcAll: 'All', tcWorking: 'working', tcIdle: 'idle',
+      tcTask1: 'merging a fragment dedupe fix', tcTask2: 'sweeping a learning-rate schedule', tcTask3: 'queuing an eval run', tcTask4: 'prism cache notes, wrapped up',
+      tcLegendRed: 'working now', tcLegendGold: 'shared across projects', tcLegendUser: 'colour = teammate', tcDemo: 'Illustrative demo — a sample team, not live data.',
+      tcBridge: 'The live product renders this same team data as an interactive galaxy — the demo opens that map, not a list like this.',
+      ghHeading: 'All you need is a GitHub account.', ghBody: 'No server to run, no database, no SaaS to sign up for — just a git repo and the Python standard library. Collaborate by adding a teammate as a GitHub collaborator and pushing.',
+      ghNoServer: 'No server', ghNoDb: 'No database', ghNoSaas: 'No SaaS signup', ghNoKey: 'No API key',
+      ghFoot: 'You’ll need git and python3 on the machine — most dev machines already have both.',
+      statBandTitle: 'The demo graph, by the numbers', statNodes: 'nodes', statLinks: 'links', statEntries: 'memory entries', statProjects: 'projects', statMachines: 'machines', statLive: 'simulated agents active',
       statHonest: 'The numbers above come straight from the demo’s graph.json. Every project, machine, agent, and file in it is fictional — no real memory is published here.',
       howHeading: 'From scattered traces to one galaxy.', howBody: 'Plain files and static HTML — here’s how one day of agent work becomes one graph.',
       tl1Tag: 'STEP 01 · IN EVERY PROJECT', tl1Title: 'Agents write memory as they work', tl1Body: 'Each project keeps an agent_memory.md: what changed, why, and which files. Agents read it when a session starts and append after meaningful changes.',
@@ -1361,11 +1743,11 @@ JS = r"""
     zh: {
       navConcepts: '设计存档（英文）', navDemo: '演示', navPrivacy: '隐私', navInstall: '安装',
       previewTitle: '演示图谱预览', previewNote: '压缩预览。打开完整 demo 可搜索、过滤、缩放、查看节点详情。',
-      expandGalaxy: '展开图谱', miniSideTitle: '节点类型', miniProject: '项目', miniServer: '机器', miniAgent: 'Agent', miniBoundary: '边界', miniArtifact: '产物', miniReadoutTitle: '在线 HUD', miniReadout: '多服务器交接 / 在线 agent / 加密边界',
+      expandGalaxy: '展开图谱', miniSideTitle: '节点类型', miniProject: '项目', miniServer: '机器', miniAgent: 'Agent', miniBoundary: '边界', miniArtifact: '产物', miniReadoutTitle: '存在感图层', miniReadout: '多 user 私有 hub / agent 状态 / 加密边界',
       modalMuted: '演示图谱：可拖拽、缩放、过滤，点击节点查看详情。', openFullDemo: '打开完整 demo', close: '关闭', copied: '已复制', copyFailed: '复制失败',
       status: function (n, e, m) { return n + ' 节点 / ' + e + ' 连线 / ' + m + ' 机器'; },
-      heroKicker: '写给同时跑一堆 agent 的研究者', heroTitle: '昨天是哪个 agent 改的？',
-      heroDef: 'Agent Memory Galaxy 是一个 Claude Code skill：把每台机器的 agent_memory.md 汇成一张私有、可搜索的图——就一个静态 HTML 页面。',
+      heroKicker: '写给同时跑一堆 agent 的研究者和团队', heroTitle: '昨天是哪个 agent 改的？',
+      heroDef: '一眼看清全队的 agent 今天都产出了什么：一个 Claude Code skill，把每台机器的 agent_memory.md 汇成一张私有、可搜索的图——就一个静态 HTML 页面。',
       heroLead: '笔记本上的 Claude、GPU 节点上的训练 agent、CI 上的 Codex。到晚上 11 点，谁也不知道别人干了什么。',
       openDemo: '打开在线演示', installSkill: '安装为 skill',
       demoNote: '演示为虚构数据。',
@@ -1381,17 +1763,36 @@ JS = r"""
       installHeading: '敲两条命令，装进 Claude Code。', installBody: '公开仓库自带 Claude Code 插件。装好后，skill 会帮你搭私有聚合端、接入每台机器、把记忆合并成一张图，公开前还会先做隐私审查。',
       pluginInstall: 'Plugin/skill 安装', copyMarketplace: '复制 marketplace 命令', copyInstall: '复制 install 命令', localDemo: '本地先跑 demo', copyDemo: '复制 demo 命令',
       workflowHeading: '采集、提炼、合并、加密、查看。',
-      privacyHeading: '公开框架，私有记忆。', privacyBody: '你的 agent_memory.md 和 fragments 不会离开你的机器，没有任何联网上报；只有你显式发布时，出门的也只有密文。GitHub Pages 上只有框架和演示页面，真实记忆留在你的机器或私有 hub。',
+      privacyHeading: '公开框架，私有记忆。', privacyBody: '独自使用时，你的 agent_memory.md 和 fragments 不会离开你的机器，也没有任何联网上报；GitHub Pages 上只有公开框架和这个演示。',
+      privacyTeam: '在团队里，提炼出的 fragment（只含安全的会话元数据，绝不含原始对话）会以明文形式同步进你的私有 GitHub 仓库，只有你添加的协作者能读到。真正会离开这个仓库的，只有公开的 Pages 部署，而它携带的只有 AES-256-GCM 密文，在浏览器端解锁。',
       privacyMore: '完整的隐私模型、角色分工与 URL 对照表见 README。',
       footerPrivacy: '演示数据均为虚构，真实记忆保持私有。',
+      skipIntro: '跳过', stageHint: '可交互 demo——拖拽、缩放、点击节点。', stillTitle: '一张图，已汇合',
       beforeTag: '没有共享记忆的一天', afterTag: '接入 Agent Memory Galaxy 之后',
       beforeCaption: '五台机器，零共享上下文。每个窗口只记得这一天的一个切片，终端一关就全部蒸发。',
-      afterCaption: '五台机器一天的工作，汇成一张图。点开任意节点：谁、何时、改了哪些文件、为什么。',
+      afterCaption: '五台机器一天的工作，汇成一张图——就是页面顶部你能打开的那张可交互地图。',
       chaosNote1: 'dataloader.py 是谁改的？', chaosNote4: '这个 fix 是不是已经改过一次了？',
-      painHeading: '多 agent 的一天，是这样失控的。', painBody: '只要你在多台机器上同时用 agent，这三个场景你一定都见过。',
-      pain1Title: '记不得谁做了什么', pain1Body: '每个 agent 的痕迹散落在不同机器的终端历史里。到第二天早上，「这里为什么改了」已经没有答案。',
-      pain2Title: '前后脚的重复劳动', pain2Body: '两个 agent 在两台机器上先后追同一个 bug，谁也不知道修复早已存在——同一个下午白白花了两遍。',
-      pain3Title: 'agent 之间没有交接', pain3Body: 'agent 看不见彼此，也就没有交接：配置被互相覆盖、实验没人认领、上下文随 session 一起消失。',
+      whyHeading: '团队为什么选它', whyBody: '把 agent 记住的一切汇成一张私有图——可信、省钱、一眼看懂，整个团队都能用。',
+      p1Title: '全队的记忆，汇成同一张图', p1How: '每个成员的机器把 fragment 推进同一个私有 hub；可按 user 筛选、着色，看清谁在哪台机器做了什么。', p1Badge: '本周上线',
+      p2Title: '明文只留在本地或你的私有 hub', p2How: '明文只留在你的机器，或只有协作者能读的私有仓库里；只有公开的 Pages 部署才加密——客户端 AES-256-GCM（PBKDF2、双密码），且没有任何联网上报。',
+      p3Title: '兼容你已经在用的编码 agent', p3How: '今天已原生支持 Claude Code、Codex、Cursor。agent_memory.md 是纯 markdown，任何会写它的工具也都能进图。',
+      p4Title: '这层记忆几乎不额外烧 token', p4How: '图谱由零依赖的 Python 标准库构建——默认启发式，LLM 可选且默认关闭。给 agent 的工作建索引本身不烧 token。',
+      p5Title: '自动刷新，自动点亮在线工作', p5How: 'cron 定时重建图谱；auto-presence 自动检测正在工作的 agent 并亮起红色脉冲，无需手动心跳。',
+      p6Title: '给负责人的一张实时地图', p6How: '一眼看清谁在哪台机器、哪个项目——红色代表正在工作，金线代表跨项目引用。',
+      audHeading: '一张图，两种用法。', audBody: '同一张图，谁来看，回答的就是谁最关心的问题。',
+      audResTag: '写给研究者', audResTitle: '别再跟丢自己的 agent',
+      r1: '谁改了什么——每条记录都带着 agent、机器、文件和原因，「这里为什么改了」永远有答案。',
+      r2: '不再重复劳动——在你追同一个 bug 之前，就能看到修复早已落在另一台机器上。',
+      r3: '真正的交接——下一个会话、下一个 agent，都从已经发生的事接着做，而不是面对一个空终端。',
+      audPmTag: '写给负责人 / PM', audPmTitle: '一张图俯瞰全队进展',
+      audPmLead: '打开页面，几秒就能读完整个团队——谁在哪台机器、哪个项目，此刻什么正在跑。',
+      tcTitle: 'team-orbit · 实时视图', tcStatus: '3 位成员 · 5 台机器 · 6 个项目', tcAll: '全部', tcWorking: '工作中', tcIdle: '空闲',
+      tcTask1: '正在合并 fragment 去重的修复', tcTask2: '正在扫学习率调度', tcTask3: '排队跑一次 eval', tcTask4: 'prism cache 的笔记，已收尾',
+      tcLegendRed: '正在工作', tcLegendGold: '跨项目共享', tcLegendUser: '颜色 = 成员', tcDemo: '示意 demo——示例团队，非实时数据。',
+      tcBridge: '真实产品把同一份团队数据渲染成一张可交互的星图——演示打开的是那张图，而不是这样一份列表。',
+      ghHeading: '有个 GitHub 账号就够了。', ghBody: '不用跑服务器、不用数据库、不用注册 SaaS——一个 git 仓库加 Python 标准库即可。协作就是把成员加为 GitHub collaborator，然后 push。',
+      ghNoServer: '无需服务器', ghNoDb: '无需数据库', ghNoSaas: '无需注册 SaaS', ghNoKey: '无需 API key',
+      ghFoot: '机器上要有 git 和 python3——开发机通常本来就装了。',
       statBandTitle: '演示数据规模一览', statNodes: '个节点', statLinks: '条连线', statEntries: '条记忆', statProjects: '个项目', statMachines: '台机器', statLive: '个模拟 agent 在工作',
       statHonest: '以上数字直接取自 demo 的 graph.json；里面的项目、机器、agent 和文件均为虚构，这里不发布任何真实工作记忆。',
       howHeading: '从零散痕迹，到一张星图。', howBody: '纯文件加静态 HTML——一天的 agent 工作，是这样变成一张图的。',
@@ -1974,9 +2375,27 @@ JS = r"""
       }
     });
   });
+  /* Intro reveal is orchestrated by the head script (self-contained, always completes).
+     Here we only progressively enhance it with a Skip control that fast-forwards the
+     in-place reveal to its settled state. No skip button, or JS off => the head script
+     still finishes the reveal on its own. */
+  function wireIntroSkip() {
+    var d = document.documentElement;
+    var btn = document.querySelector('[data-intro-skip]');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      d.classList.add('intro-go', 'intro-fast');
+      setTimeout(function () {
+        if (typeof d.__amgIntroEnd === 'function') d.__amgIntroEnd();
+        else d.classList.remove('intro-run', 'intro-go', 'intro-fast');
+      }, 240);
+    });
+  }
+
   applyLang(lang);
   startMiniGalaxy();
   hydrateMiniPreview();
+  wireIntroSkip();
 }());
 """
 
@@ -2044,7 +2463,12 @@ MINI_PREVIEW_LINKS = [
 MINI_DUST = [(120,130,1.4),(152,398,1.1),(286,114,1.2),(368,422,1.4),(430,126,1.1),(690,150,1.5),(706,386,1.1),(88,276,1.0),(548,92,1.0),(610,420,1.2),(254,444,1.0),(742,264,1.2)]
 
 
-def mini_preview_markup(stats: dict) -> str:
+def mini_preview_markup(stats: dict, still: bool = False) -> str:
+    """Star-map preview. Default = the single interactive surface (canvas + data-mini-preview,
+    hydrated by landing.js into the cinematic galaxy, click opens the demo modal).
+    still=True = a decorative, non-interactive CSS-only twin (no canvas, no data-mini-preview,
+    no click target) used for the before/after panel once the live demo moved into the hero.
+    The still reuses the hero SVG's filter defs by id, so it omits its own <defs>."""
     nodes_by_id = {idx: (kind, x, y, r) for idx, kind, x, y, r in MINI_PREVIEW_NODES}
     dust = "\n".join(f'<circle class="mini-dust" cx="{x}" cy="{y}" r="{r}" />' for x, y, r in MINI_DUST)
     links = []
@@ -2052,7 +2476,8 @@ def mini_preview_markup(stats: dict) -> str:
         _, x1, y1, _ = nodes_by_id[source]
         _, x2, y2, _ = nodes_by_id[target]
         cls = f"mini-edge {tone}".strip()
-        links.append(f'<line class="{cls}" data-mini-edge data-pair="{source}-{target}" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" />')
+        edge_attr = "" if still else " data-mini-edge"
+        links.append(f'<line class="{cls}"{edge_attr} data-pair="{source}-{target}" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" />')
     node_markup = []
     for idx, kind, x, y, r in MINI_PREVIEW_NODES:
         spike = ""
@@ -2060,23 +2485,28 @@ def mini_preview_markup(stats: dict) -> str:
             spike = f'<path class="spike" d="M {-r*2.2:.1f} 0 H {r*2.2:.1f} M 0 {-r*2.2:.1f} V {r*2.2:.1f} M {-r*1.55:.1f} {-r*1.55:.1f} L {r*1.55:.1f} {r*1.55:.1f} M {-r*1.55:.1f} {r*1.55:.1f} L {r*1.55:.1f} {-r*1.55:.1f}" />'
         elif kind in {"server", "agent", "artifact"}:
             spike = f'<path class="spike" d="M {-r*1.7:.1f} 0 H {r*1.7:.1f} M 0 {-r*1.7:.1f} V {r*1.7:.1f}" />'
-        node_markup.append(f"""<g class="mini-star {kind}" data-mini-node data-index="{idx}" transform="translate({x} {y})">
+        node_attr = "" if still else " data-mini-node"
+        node_markup.append(f"""<g class="mini-star {kind}"{node_attr} data-index="{idx}" transform="translate({x} {y})">
         <circle class="halo" r="{r * 3}" fill="currentColor" />
         {spike}
         <circle class="core" r="{r}" />
         <circle class="lock" r="{r + 8}" />
       </g>""")
-    return f"""
-  <div class="mini-galaxy-preview" data-mini-preview aria-hidden="true">
-    <canvas class="mini-canvas" data-mini-canvas></canvas>
-    <svg class="mini-map" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet">
+    # The interactive twin owns the canvas, the data-mini-preview hook, and the shared
+    # filter defs; the still is inert markup that borrows those defs from the DOM.
+    canvas = "" if still else '\n    <canvas class="mini-canvas" data-mini-canvas></canvas>'
+    hook = "" if still else " data-mini-preview"
+    defs = "" if still else """
       <defs>
         <filter id="mini-glow" x="-120%" y="-120%" width="340%" height="340%">
           <feGaussianBlur stdDeviation="3" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
         <filter id="mini-soft-glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="8" /></filter>
-      </defs>
+      </defs>"""
+    return f"""
+  <div class="mini-galaxy-preview"{hook} aria-hidden="true">{canvas}
+    <svg class="mini-map" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet">{defs}
       <ellipse class="mini-orbit gold" cx="400" cy="260" rx="244" ry="126" />
       <ellipse class="mini-orbit" cx="400" cy="260" rx="310" ry="166" transform="rotate(-17 400 260)" />
       <path class="mini-coreline" d="M 148 332 C 248 198 350 154 472 204 S 620 356 704 210" />
@@ -2086,7 +2516,7 @@ def mini_preview_markup(stats: dict) -> str:
       <g class="mini-nodes">{"".join(node_markup)}</g>
     </svg>
     <div class="mini-side"><b data-i18n="miniSideTitle">NODE TYPES</b><span data-mini-type="project" data-i18n="miniProject">Project</span><span data-mini-type="server" data-i18n="miniServer">Server</span><span data-mini-type="agent" data-i18n="miniAgent">Agent</span><span data-mini-type="boundary" data-i18n="miniBoundary">Boundary</span><span data-mini-type="artifact" data-i18n="miniArtifact">Artifact</span></div>
-    <div class="mini-readout"><b data-i18n="miniReadoutTitle">ONLINE HUD</b><span data-i18n="miniReadout">multi-server handoff / live agents / encrypted boundary</span></div>
+    <div class="mini-readout"><b data-i18n="miniReadoutTitle">PRESENCE LAYER</b><span data-i18n="miniReadout">multi-user hub / agent status / encrypted boundary</span></div>
   </div>"""
 
 
@@ -2103,6 +2533,22 @@ def galaxy_card(prefix: str, stats: dict, compact: bool = False, element_id: str
 {mini_preview_markup(stats)}
   <p class="preview-note" data-i18n="previewNote">Compressed public preview. Open the full demo for search, filters, zoom, and readouts.</p>
   <button class="expand-galaxy" type="button" data-expand-galaxy data-i18n="expandGalaxy">Expand galaxy</button>
+</div>
+"""
+
+
+def galaxy_still_markup(stats: dict) -> str:
+    """Decorative before/after still. NOT a galaxy_card and NOT interactive: no data-demo-src,
+    no role=button, no canvas, no data-mini-preview. The one interactive galaxy lives in the
+    hero; this is the CSS-only 'settled graph' twin for the WITHOUT/WITH contrast."""
+    return f"""
+<div class="galaxy-still" aria-hidden="true">
+  <div class="framebar">
+    <span class="lights"><i></i><i></i><i></i></span>
+    <span class="mono" data-i18n="stillTitle">one graph, settled</span>
+    <span class="status mono" data-preview-status data-nodes="{stats['nodes']}" data-edges="{stats['edges']}" data-machines="{stats['machines']}">{stats['nodes']} nodes / {stats['edges']} links / {stats['machines']} machines</span>
+  </div>
+{mini_preview_markup(stats, still=True)}
 </div>
 """
 
@@ -2381,6 +2827,78 @@ PAIN_FIGS = {
 }
 
 
+_ICO = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">')
+PILLAR_ICONS = {
+    # multi-user team memory as one connected graph
+    "team": _ICO + '<circle cx="12" cy="12" r="2.6"/><circle cx="5" cy="5" r="1.7"/>'
+            '<circle cx="19" cy="6" r="1.7"/><circle cx="6" cy="19" r="1.7"/><circle cx="18" cy="18" r="1.7"/>'
+            '<path d="M6.6 6.6 10 10M17.2 7.2 14 10M7.2 17.4 10.2 14M16.8 16.8 13.8 14"/></svg>',
+    # client-side encryption / privacy padlock
+    "lock": _ICO + '<rect x="5" y="10.5" width="14" height="9" rx="2.2"/>'
+            '<path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="14.4" r="1.15"/>'
+            '<path d="M12 15.4v1.8"/></svg>',
+    # two source tools merging into one target — works with any coding agent
+    "plug": _ICO + '<rect x="3.2" y="4" width="6" height="5.6" rx="1.4"/>'
+            '<rect x="3.2" y="14.4" width="6" height="5.6" rx="1.4"/>'
+            '<rect x="14.8" y="9.2" width="6" height="5.6" rx="1.4"/>'
+            '<path d="M9.2 6.8H12a2 2 0 0 1 2 2v1.6h0.8M9.2 17.2H12a2 2 0 0 0 2-2v-1.6h0.8"/></svg>',
+    # lightning — light, near-zero token overhead
+    "bolt": _ICO + '<path d="M13 2.5 5.5 13.2H11l-1 8.3L18.5 10H13z"/></svg>',
+    # circular refresh — automatic cron + presence
+    "auto": _ICO + '<path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3"/><path d="M13.8 6.7H17.3V3.2"/>'
+            '<path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3"/><path d="M10.2 17.3H6.7V20.8"/></svg>',
+    # monitor with trend line — dashboard for team leads
+    "dash": _ICO + '<rect x="3.3" y="4.4" width="17.4" height="12" rx="2.2"/>'
+            '<path d="M6.6 12.2 9.4 9.4l2.4 2.4 4-4.6"/><path d="M9.2 20h5.6M12 16.4V20"/></svg>',
+}
+
+
+def team_console_markup() -> str:
+    """Static, illustrative team-lead console (ported from bid B). NOT the canvas
+    galaxy (galaxy_card stays the single interactive surface). Users/colours match
+    the synthetic demo (ada/kael/mira in team.json.example and docs/demo/graph.json).
+    Carries an explicit non-live / illustrative disclaimer."""
+    rows = [
+        ("live", "#7dd3fc", "Ada &middot; demo-workstation-a", "tcTask1", "merging a fragment dedupe fix", "tcWorking", "working"),
+        ("live", "#f0abfc", "Kael &middot; demo-gpu-node-c", "tcTask2", "sweeping a learning-rate schedule", "tcWorking", "working"),
+        ("live", "#fde68a", "Mira &middot; demo-ci-runner-d", "tcTask3", "queuing an eval run", "tcWorking", "working"),
+        ("", "#7dd3fc", "Ada &middot; demo-laptop-b", "tcTask4", "prism cache notes, wrapped up", "tcIdle", "idle"),
+    ]
+    row_html = "".join(
+        f'<div class="tc-row {live}" style="--u:{color}">'
+        f'<span class="u"></span>'
+        f'<div class="tc-main"><div class="n">{who}</div>'
+        f'<div class="d" data-i18n="{task_key}">{task_txt}</div></div>'
+        f'<span class="tc-st" data-i18n="{st_key}">{st_txt}</span>'
+        "</div>"
+        for live, color, who, task_key, task_txt, st_key, st_txt in rows
+    )
+    return f"""
+        <div class="team-console" aria-label="Illustrative team-monitoring console with sample data">
+          <div class="tc-bar">
+            <span class="lights"><i></i><i></i><i></i></span>
+            <span class="tc-title" data-i18n="tcTitle">team-orbit &middot; live view</span>
+            <span class="tc-status" data-i18n="tcStatus">3 users &middot; 5 machines &middot; 6 projects</span>
+          </div>
+          <div class="tc-body">
+            <div class="tc-filter" aria-hidden="true">
+              <span class="tc-chip active" data-i18n="tcAll">All</span>
+              <span class="tc-chip"><i style="--u:#7dd3fc"></i>Ada</span>
+              <span class="tc-chip"><i style="--u:#f0abfc"></i>Kael</span>
+              <span class="tc-chip"><i style="--u:#fde68a"></i>Mira</span>
+            </div>
+            <div class="tc-rows">{row_html}</div>
+            <div class="tc-legend" aria-hidden="true">
+              <span><i class="lg red"></i><b data-i18n="tcLegendRed">working now</b></span>
+              <span><i class="lg gold"></i><b data-i18n="tcLegendGold">shared across projects</b></span>
+              <span><i class="lg user"></i><b data-i18n="tcLegendUser">colour = teammate</b></span>
+            </div>
+            <p class="tc-demo" data-i18n="tcDemo">Illustrative demo &mdash; a sample team, not live data.</p>
+          </div>
+        </div>"""
+
+
 def landing_html(stats: dict) -> str:
     return f"""<!doctype html>
 <html lang="en">
@@ -2390,26 +2908,103 @@ def landing_html(stats: dict) -> str:
 <meta name="description" content="Agent Memory Galaxy is a Claude Code skill that merges every machine's agent_memory.md into one private, searchable map — a single static HTML page.">
 <title>Agent Memory Galaxy</title>
 <link rel="stylesheet" href="assets/landing.css">
+<script>
+/* Demo-first hero: decide the one-time in-place reveal BEFORE first paint so the settled
+   state never flashes. This is self-contained — the reveal starts and always completes
+   even if landing.js never loads, so content is never blocked. landing.js only adds the
+   Skip button on top. Honest defaults: reduced-motion, repeat visits (sessionStorage), and
+   ?intro=skip present the finished hero immediately; ?intro=play forces it for capture. */
+(function () {{
+  try {{
+    var d = document.documentElement;
+    var mq = window.matchMedia;
+    var reduce = !!(mq && mq('(prefers-reduced-motion: reduce)').matches);
+    var qs = location.search || '';
+    var forceSkip = /[?&]intro=skip/.test(qs);
+    var forcePlay = /[?&]intro=play/.test(qs);
+    var played = false;
+    try {{ played = sessionStorage.getItem('amg_intro_v6') === '1'; }} catch (e) {{}}
+    var shouldPlay = !reduce && (forcePlay || (!played && !forceSkip));
+    if (!forcePlay) {{ try {{ sessionStorage.setItem('amg_intro_v6', '1'); }} catch (e) {{}} }}
+    if (!shouldPlay) return;
+    d.classList.add('intro-run');
+    var go = function () {{ d.classList.add('intro-go'); }};
+    d.__amgIntroEnd = function () {{ d.classList.remove('intro-run', 'intro-go', 'intro-fast'); }};
+    if (window.requestAnimationFrame) requestAnimationFrame(function () {{ requestAnimationFrame(go); }});
+    else setTimeout(go, 32);
+    setTimeout(d.__amgIntroEnd, 2600);
+  }} catch (e) {{}}
+}})();
+</script>
 </head>
 <body class="theme-bento landing-v2">
 {nav("", "concepts/index.html", archive=False)}
 <main class="page">
-  <header class="hero-intro">
-    <div class="kicker" data-i18n="heroKicker">FOR RESEARCHERS RUNNING MANY AGENTS</div>
-    <h1 data-i18n="heroTitle">Which agent did that?</h1>
-    <p class="lead hero-def" data-i18n="heroDef">Agent Memory Galaxy is a Claude Code skill that merges every machine&rsquo;s agent_memory.md into one private, searchable map &mdash; a single static HTML page.</p>
-    <p class="lead hero-scene" data-i18n="heroLead">Claude on your laptop, a trainer on the GPU node, Codex on CI. By 11 pm none of them knows what the others did.</p>
-    <div class="actions">
-      <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open the demo</button>
-      <a class="btn" href="#install" data-i18n="installSkill">Install as skill</a>
-      <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
+  <header class="hero-intro hero-split">
+    <button class="intro-skip" type="button" data-intro-skip data-i18n="skipIntro" aria-label="Skip the intro animation">Skip intro</button>
+    <div class="hero-copy">
+      <div class="kicker" data-i18n="heroKicker">FOR RESEARCHERS AND TEAMS RUNNING MANY AGENTS</div>
+      <h1 data-i18n="heroTitle">Which agent did that?</h1>
+      <p class="lead hero-def" data-i18n="heroDef">See what every teammate&rsquo;s agents shipped today: a Claude Code skill that merges every machine&rsquo;s agent_memory.md into one private, searchable map &mdash; a single static HTML page.</p>
+      <p class="lead hero-scene" data-i18n="heroLead">Claude on your laptop, a trainer on the GPU node, Codex on CI. By 11 pm none of them knows what the others did.</p>
+      <div class="actions">
+        <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open the demo</button>
+        <a class="btn" href="#install" data-i18n="installSkill">Install as skill</a>
+        <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
+      </div>
+      <p class="demo-note" data-i18n="demoNote">Demo uses fictional data.</p>
+      <div class="hero-spec">
+        <span class="spec-num" data-i18n="heroSpec">0 daemons &middot; 1 static HTML file &middot; 2 commands</span>
+        <span class="spec-privacy" data-i18n="heroSpecPrivacy">Private by default &mdash; publishing ships ciphertext only.</span>
+      </div>
     </div>
-    <p class="demo-note" data-i18n="demoNote">Demo uses fictional data.</p>
-    <div class="hero-spec">
-      <span class="spec-num" data-i18n="heroSpec">0 daemons &middot; 1 static HTML file &middot; 2 commands</span>
-      <span class="spec-privacy" data-i18n="heroSpecPrivacy">Private by default &mdash; publishing ships ciphertext only.</span>
+    <div class="hero-stage">
+      <div class="stage-frame">
+{galaxy_card("", stats, element_id="after-galaxy")}
+        <span class="stage-hint" data-i18n="stageHint">Interactive demo &mdash; drag, zoom, click a node.</span>
+      </div>
     </div>
   </header>
+
+  <section class="section pillars" id="why">
+    <div class="section-head">
+      <h2 data-i18n="whyHeading">Why teams pick it</h2>
+      <p data-i18n="whyBody">One private graph of everything your agents remember &mdash; built to be trusted, cheap to run, and readable at a glance by the whole team.</p>
+    </div>
+    <div class="pillar-grid">
+      <article class="pillar">
+        <span class="pillar-tag" data-i18n="p1Badge">New this week</span>
+        <span class="pillar-ico">{PILLAR_ICONS['team']}</span>
+        <h3 data-i18n="p1Title">Your whole team&rsquo;s memory, one graph</h3>
+        <p class="pillar-how" data-i18n="p1How">Every teammate&rsquo;s machines push fragments into one private hub; filter and color by user to see who did what, on which machine.</p>
+      </article>
+      <article class="pillar">
+        <span class="pillar-ico">{PILLAR_ICONS['lock']}</span>
+        <h3 data-i18n="p2Title">Plaintext stays local or in your private hub</h3>
+        <p class="pillar-how" data-i18n="p2How">Plaintext lives on your machines, or in a private repo only your collaborators can read; only a public Pages deploy is encrypted &mdash; client-side AES-256-GCM with PBKDF2 and a dual password, and nothing phones home.</p>
+      </article>
+      <article class="pillar">
+        <span class="pillar-ico">{PILLAR_ICONS['plug']}</span>
+        <h3 data-i18n="p3Title">Works with the coding agents you already run</h3>
+        <p class="pillar-how" data-i18n="p3How">Native today for Claude Code, Codex, and Cursor. agent_memory.md is plain markdown, so any tool that writes it joins the graph too.</p>
+      </article>
+      <article class="pillar">
+        <span class="pillar-ico">{PILLAR_ICONS['bolt']}</span>
+        <h3 data-i18n="p4Title">The memory layer barely adds tokens</h3>
+        <p class="pillar-how" data-i18n="p4How">The graph is built by zero-dependency Python &mdash; heuristics by default, LLM optional and off. Indexing your agents&rsquo; work doesn&rsquo;t burn tokens.</p>
+      </article>
+      <article class="pillar">
+        <span class="pillar-ico">{PILLAR_ICONS['auto']}</span>
+        <h3 data-i18n="p5Title">It refreshes itself and lights up live work</h3>
+        <p class="pillar-how" data-i18n="p5How">A cron job rebuilds the graph on a schedule; auto-presence detects working agents and pulses them red &mdash; no manual heartbeat.</p>
+      </article>
+      <article class="pillar">
+        <span class="pillar-ico">{PILLAR_ICONS['dash']}</span>
+        <h3 data-i18n="p6Title">A live map for team leads</h3>
+        <p class="pillar-how" data-i18n="p6How">See who&rsquo;s on which machine and project at a glance &mdash; red means working now, gold lines mean cross-project references.</p>
+      </article>
+    </div>
+  </section>
 
   <section class="contrast" id="contrast" aria-label="Before and after: scattered agents vs one shared memory galaxy">
     <div class="contrast-grid">
@@ -2421,37 +3016,50 @@ def landing_html(stats: dict) -> str:
       <div class="contrast-arrow" aria-hidden="true"><span>&#8594;</span></div>
       <div class="contrast-side">
         <div class="contrast-tag gold"><span data-i18n="afterTag">WITH AGENT MEMORY GALAXY</span></div>
-{galaxy_card("", stats, element_id="after-galaxy")}
-        <p class="contrast-caption" data-i18n="afterCaption">One day of work across five machines, as one graph. Click any node for who, when, which files, and why.</p>
+{galaxy_still_markup(stats)}
+        <p class="contrast-caption" data-i18n="afterCaption">One day of work across five machines, resolved into one graph &mdash; the same interactive map you can open at the top of the page.</p>
+        <div class="actions contrast-actions">
+          <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open the demo</button>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="pain">
+  <section class="section audiences" id="audiences">
     <div class="section-head">
-      <h2 data-i18n="painHeading">Three ways the day falls apart.</h2>
-      <p data-i18n="painBody">Run agents on more than one machine and you already know all three.</p>
+      <h2 data-i18n="audHeading">One map, two jobs.</h2>
+      <p data-i18n="audBody">The same graph answers a different question depending on who is looking at it.</p>
     </div>
-    <div class="pain-grid">
-      <article class="pain-card">
-        <span class="pain-num">PAIN 01</span>
-        {PAIN_FIGS[1]}
-        <h3 data-i18n="pain1Title">Nobody remembers who did what</h3>
-        <p data-i18n="pain1Body">Each agent leaves its trail in a different scrollback on a different machine. By the next morning, &ldquo;why did this change?&rdquo; has no answer.</p>
+    <div class="audience-grid">
+      <article class="audience res">
+        <span class="audience-tag" data-i18n="audResTag">FOR RESEARCHERS</span>
+        <h3 data-i18n="audResTitle">Stop losing track of your own agents</h3>
+        <ul class="aud-list">
+          <li data-i18n="r1">Who changed what &mdash; every entry carries the agent, machine, files, and the reason, so &ldquo;why did this change?&rdquo; always has an answer.</li>
+          <li data-i18n="r2">No duplicate afternoons &mdash; spot a fix that already landed on another machine before you chase the same bug again.</li>
+          <li data-i18n="r3">Real handoff &mdash; the next session, and the next agent, start from what already happened instead of a cold terminal.</li>
+        </ul>
       </article>
-      <article class="pain-card">
-        <span class="pain-num">PAIN 02</span>
-        {PAIN_FIGS[2]}
-        <h3 data-i18n="pain2Title">Duplicate work, hours apart</h3>
-        <p data-i18n="pain2Body">Two agents chase the same bug on two machines. Neither knows a fix already exists, so the same afternoon gets spent twice.</p>
-      </article>
-      <article class="pain-card">
-        <span class="pain-num">PAIN 03</span>
-        {PAIN_FIGS[3]}
-        <h3 data-i18n="pain3Title">No handoff between agents</h3>
-        <p data-i18n="pain3Body">Agents cannot see each other, so there is no handoff: configs get overwritten, runs get orphaned, and context dies with the session.</p>
+      <article class="audience pm">
+        <span class="audience-tag" data-i18n="audPmTag">FOR TEAM LEADS &amp; PM</span>
+        <h3 data-i18n="audPmTitle">Monitor the whole team from one map</h3>
+        <p class="aud-lead" data-i18n="audPmLead">Open the page and read the whole team in seconds &mdash; who is on which machine and project, and what is live right now.</p>
+{team_console_markup()}
+        <p class="tc-bridge" data-i18n="tcBridge">The live product renders this same team data as an interactive galaxy &mdash; the demo opens that map, not a list like this.</p>
       </article>
     </div>
+  </section>
+
+  <section class="gh-band" id="github" aria-label="All you need is a GitHub account">
+    <h2 data-i18n="ghHeading">All you need is a GitHub account.</h2>
+    <p class="gh-body" data-i18n="ghBody">No server to run, no database, no SaaS to sign up for &mdash; just a git repo and the Python standard library. Collaborate by adding a teammate as a GitHub collaborator and pushing.</p>
+    <div class="gh-chips">
+      <span data-i18n="ghNoServer">No server</span>
+      <span data-i18n="ghNoDb">No database</span>
+      <span data-i18n="ghNoSaas">No SaaS signup</span>
+      <span data-i18n="ghNoKey">No API key</span>
+    </div>
+    <p class="gh-foot" data-i18n="ghFoot">You&rsquo;ll need git and python3 on the machine &mdash; most dev machines already have both.</p>
   </section>
 
   <section class="section" id="how">
@@ -2523,7 +3131,7 @@ python3 -m http.server 8765 --directory docs</code></pre>
       <article class="tile"><div class="mini-label" data-i18n="inspectLabel">Inspect</div><h3 data-i18n="inspectTitle">Click through evidence</h3><p data-i18n="inspectBody">Open a node&rsquo;s detail panel, inspect neighbors, and follow inheritance or publishing edges.</p></article>
     </div>
     <div class="stat-band" id="numbers">
-      <span class="mini-label" data-i18n="statBandTitle">The synthetic demo, by the numbers</span>
+      <span class="mini-label" data-i18n="statBandTitle">The demo graph, by the numbers</span>
       <div class="stat-band-grid">
         <div class="stat-cell"><b>{stats['nodes']}</b><span data-i18n="statNodes">nodes</span></div>
         <div class="stat-cell"><b>{stats['edges']}</b><span data-i18n="statLinks">links</span></div>
@@ -2539,8 +3147,9 @@ python3 -m http.server 8765 --directory docs</code></pre>
   <section class="section" id="privacy">
     <div class="section-head">
       <h2 data-i18n="privacyHeading">Public framework. Private memory.</h2>
-      <p data-i18n="privacyBody">Your agent_memory.md and fragments never leave your machines unless you explicitly publish &mdash; and publishing ships ciphertext only. Nothing phones home. GitHub Pages carries the framework and this demo; real memory stays on your machines or in a private hub.</p>
+      <p data-i18n="privacyBody">Working solo, your agent_memory.md and fragments never leave your machine &mdash; nothing phones home. GitHub Pages carries only the open framework and this demo.</p>
     </div>
+    <p class="privacy-team" data-i18n="privacyTeam">On a team, distilled fragments &mdash; safe session metadata, never raw conversations &mdash; sync as plaintext inside your private GitHub repo, readable only by the collaborators you add. The only thing that ever leaves that repo is a public Pages deploy, and that ships AES-256-GCM ciphertext, unlocked in the browser.</p>
     <p class="privacy-more"><a href="https://github.com/RenyunLi0116/agent-memory-galaxy#readme"><span data-i18n="privacyMore">Full privacy model, roles, and URL map &mdash; see the README.</span></a></p>
   </section>
 

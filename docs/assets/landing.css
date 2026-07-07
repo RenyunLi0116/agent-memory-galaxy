@@ -536,7 +536,8 @@ h1 {
 @media (max-width: 480px) {
   .page, .nav-inner { width: min(var(--max), calc(100% - 24px)); }
   h1 { font-size: 38px; }
-  .actions { display: grid; }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .actions > :first-child { grid-column: 1 / -1; }
   .galaxy-card { min-height: 380px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -865,13 +866,66 @@ h1 {
   font-size: clamp(46px, 6.6vw, 94px);
   line-height: .96;
 }
+.landing-v2 h1, .landing-v2 h2 { text-wrap: balance; }
 .landing-v2 .hero-intro .lead { max-width: 840px; font-size: 19px; }
-.landing-v2 .hero-intro .proof-row { margin-top: 22px; }
+.landing-v2 .hero-intro .hero-def {
+  max-width: 860px;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.55;
+}
+.landing-v2 .hero-intro .hero-scene {
+  max-width: 720px;
+  margin-top: 12px;
+  font-size: 16.5px;
+}
+.landing-v2 .demo-note {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font: 500 12.5px/1.5 "JetBrains Mono", "Cascadia Code", monospace;
+}
+.hero-spec {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 20px;
+  margin-top: 26px;
+}
+.hero-spec .spec-num {
+  color: var(--accent);
+  font: 800 16px/1.5 "JetBrains Mono", "Cascadia Code", monospace;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.hero-spec .spec-privacy {
+  color: var(--muted);
+  font: 600 12.5px/1.6 "JetBrains Mono", "Cascadia Code", monospace;
+}
+
+/* zh typography: no orphan glyphs in display text, no shouting latin in zh labels */
+html[lang="zh-CN"] h1, html[lang="zh-CN"] h2, html[lang="zh-CN"] h3,
+html[lang="zh-CN"] .hero-def, html[lang="zh-CN"] .evidence-lead { word-break: keep-all; line-break: strict; }
+html[lang="zh-CN"] .kicker,
+html[lang="zh-CN"] .contrast-tag,
+html[lang="zh-CN"] .mini-label,
+html[lang="zh-CN"] .tl-step { text-transform: none; }
+
+/* horizontal-scroll hint: edge fade appears only while more code hides off-screen */
+.code {
+  background:
+    linear-gradient(90deg, var(--code-bg) 45%, transparent) 0 0 / 48px 100% no-repeat,
+    linear-gradient(270deg, var(--code-bg) 45%, transparent) 100% 0 / 48px 100% no-repeat,
+    radial-gradient(farthest-side at 0 50%, rgba(226, 232, 255, .26), transparent) 0 0 / 16px 100% no-repeat,
+    radial-gradient(farthest-side at 100% 50%, rgba(226, 232, 255, .26), transparent) 100% 0 / 16px 100% no-repeat,
+    var(--code-bg);
+  background-attachment: local, local, scroll, scroll;
+}
 
 .contrast { padding: 40px 0 14px; }
 .contrast-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+  grid-template-columns: minmax(0, .86fr) 44px minmax(0, 1.14fr);
   gap: 14px;
   align-items: stretch;
 }
@@ -953,11 +1007,11 @@ h1 {
   margin-right: 28px;
 }
 .chaos-term code {
-  display: block; padding: 3px 10px; color: #7c828b; font-size: 11px;
+  display: block; padding: 4px 12px; color: #7c828b; font-size: 12.5px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.chaos-term code:last-child { padding-bottom: 8px; }
-.chaos-term code.q { color: #c7ccd4; }
+.chaos-term code:last-child { padding-bottom: 10px; }
+.chaos-term code.q { color: #dfe4ec; font-size: 15px; font-weight: 700; }
 .chaos-note {
   position: absolute; z-index: 2;
   transform: rotate(var(--rot, 0deg));
@@ -1007,13 +1061,6 @@ h1 {
 .stat-band-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
 .stat-cell { min-width: 0; }
 .stat-cell b { display: block; font-size: clamp(26px, 2.6vw, 38px); font-weight: 860; color: var(--accent); line-height: 1.1; }
-.stat-cell.live b { color: var(--danger); }
-.stat-cell.live b::after {
-  content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%;
-  background: var(--danger); box-shadow: 0 0 10px var(--danger);
-  margin-left: 8px; vertical-align: 6px;
-  animation: mini-live-blink 1.6s ease-in-out infinite;
-}
 .stat-cell span { color: var(--muted); font-size: 12.5px; }
 .stat-honest { margin: 18px 0 0; padding-top: 12px; border-top: 1px dashed var(--line); color: var(--muted); font-size: 12.5px; }
 
@@ -1037,6 +1084,50 @@ h1 {
 
 .demo-wide { margin-bottom: 26px; }
 
+/* Evidence readout card: plain HTML, styled after the viewer's detail panel */
+.evidence-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+  gap: 30px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.evidence-card {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(148, 178, 255, .28);
+  border-radius: 8px;
+  background: linear-gradient(165deg, rgba(16, 24, 52, .92), rgba(5, 9, 24, .96));
+  box-shadow: 0 18px 50px rgba(1, 4, 16, .4), inset 0 0 28px rgba(88, 128, 255, .07);
+  font-family: "JetBrains Mono", "Cascadia Code", monospace;
+}
+.ev-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(120, 150, 255, .16);
+  background: rgba(9, 15, 34, .8);
+}
+.ev-kind { color: #ffcf6b; font-size: 11px; font-weight: 800; letter-spacing: .1em; flex: none; }
+.ev-title { color: #dbe4ff; font-size: 12.5px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ev-fields { margin: 0; padding: 14px 16px 16px; display: grid; gap: 9px; }
+.ev-field { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 12px; }
+.ev-field dt { color: #9fc0ff; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; padding-top: 2px; }
+.ev-field dd { margin: 0; color: #dbe4ff; font-size: 13px; line-height: 1.55; overflow-wrap: anywhere; }
+.ev-field dd.ev-ok { color: #7df3c4; }
+.evidence-aside .evidence-lead { margin: 0 0 10px; font-size: clamp(22px, 2.2vw, 28px); font-weight: 800; line-height: 1.2; }
+.evidence-aside .evidence-sub { margin: 0 0 18px; color: var(--muted); font-size: 15px; max-width: 46ch; }
+.evidence-aside .actions { margin-top: 0; }
+
+.privacy-more { margin: 4px 0 0; font-size: 15px; }
+.privacy-more a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.privacy-more a:hover { border-bottom-color: var(--accent); }
+
 .cta-band {
   margin: 76px 0;
   border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
@@ -1059,32 +1150,43 @@ h1 {
 @media (max-width: 900px) {
   .pain-grid { grid-template-columns: 1fr; }
   .pain-fig { height: 104px; }
+  .evidence-row { grid-template-columns: 1fr; gap: 18px; }
 }
 @media (max-width: 760px) {
-  .landing-v2 .hero-intro h1 { font-size: clamp(40px, 11vw, 56px); }
-  .stat-band-grid { grid-template-columns: repeat(2, 1fr); gap: 16px 12px; }
-  .chaos-board { min-height: 460px; }
-  .contrast-grid .galaxy-card { min-height: 400px; }
+  .landing-v2 .hero-intro { padding-top: 36px; }
+  .landing-v2 .hero-intro h1 { margin: 12px 0 14px; font-size: clamp(40px, 11vw, 56px); }
+  .landing-v2 .hero-intro .hero-def { font-size: 17px; }
+  .landing-v2 .hero-intro .hero-scene { margin-top: 10px; font-size: 15px; }
+  .landing-v2 .hero-intro .actions { margin-top: 18px; }
+  .hero-spec { margin-top: 16px; gap: 6px 16px; }
+  .hero-spec .spec-num { white-space: normal; font-size: 14px; }
+  .landing-v2 .section { padding: 36px 0; }
+  .landing-v2 .section-head { gap: 12px; margin-bottom: 20px; }
+  .stat-band-grid { grid-template-columns: repeat(3, 1fr); gap: 14px 10px; }
+  .stat-cell b { font-size: 22px; }
+  .chaos-board { min-height: 380px; }
+  .contrast-grid .galaxy-card { min-height: 380px; }
+  .contrast-arrow { min-height: 26px; font-size: 30px; }
+  .timeline { gap: 20px; }
   .timeline { padding-left: 32px; }
   .timeline::before { left: 7px; }
   .tl-item::before { left: -28px; }
-  .cta-band { padding: 44px 18px; margin: 48px 0; }
+  .tl-item h3 { margin: 6px 0 4px; font-size: 19px; }
+  .tile { padding: 16px; }
+  .pain-card { padding: 16px; }
+  .code { padding: 12px; font-size: 12px; }
+  .ev-fields { padding: 12px 14px 14px; gap: 7px; }
+  .cta-band { padding: 40px 16px; margin: 36px 0; }
+  .footer { padding: 28px 0; }
+  .nav-links > a[data-nav-install] { display: inline-flex; }
 }
-/* Narrow chaos board: re-seat the collage so nothing collides. The inline
-   left/top values are tuned for the two-column desktop board, hence !important. */
+/* Narrow chaos board: tighter type so the two question terminals stay readable. */
 @media (max-width: 600px) {
-  .chaos-chip { font-size: 9px; padding: 4px 7px; }
-  .chaos-term code { font-size: 9.5px; }
-  .chaos-note { font-size: 10.5px; left: 6% !important; top: 68% !important; max-width: 40%; }
+  .chaos-board { min-height: 280px; }
+  .chaos-chip { font-size: 9.5px; padding: 4px 7px; }
+  .chaos-term code { font-size: 11px; }
+  .chaos-term code.q { font-size: 13px; }
   .chaos-q { font-size: 34px; }
-  .chaos-term:nth-of-type(1) { left: 52% !important; width: 45% !important; }
-  .chaos-term:nth-of-type(2) { left: 2% !important; width: 48% !important; }
-  .chaos-term:nth-of-type(3) { right: 2% !important; width: 50% !important; }
-  .chaos-term:nth-of-type(3) code { font-size: 8.8px; }
-  .chaos-chip.c5 { right: 2% !important; }
-  .chaos-chip.c7 { left: 2% !important; }
-  .chaos-chip.c8 { left: 2% !important; top: 80% !important; }
-  .chaos-chip.c9 { top: 93% !important; }
-  .chaos-chip.c10 { left: 50% !important; top: 76% !important; }
-  .chaos-chip.c11 { top: 87% !important; }
+  .pain-fig { display: none; }
+  .contrast-grid .galaxy-card { min-height: 330px; }
 }

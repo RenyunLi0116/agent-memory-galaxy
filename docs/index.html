@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Agent Memory Galaxy: when many AI agents work across many machines, nobody remembers who did what. Merge their memory into one private, searchable galaxy.">
+<meta name="description" content="Agent Memory Galaxy is a Claude Code skill that merges every machine's agent_memory.md into one private, searchable map — a single static HTML page.">
 <title>Agent Memory Galaxy</title>
 <link rel="stylesheet" href="assets/landing.css">
 </head>
@@ -13,10 +13,9 @@
   <div class="nav-inner">
     <a class="brand" href="index.html">Agent Memory Galaxy</a>
     <div class="nav-links">
-      <a href="concepts/index.html" data-i18n="navConcepts">Design archive</a>
       <a href="#preview" data-i18n="navDemo">Demo</a>
+      <a href="#install" data-i18n="navInstall" data-nav-install>Install</a>
       <a href="#privacy" data-i18n="navPrivacy">Privacy</a>
-      <a href="#install" data-i18n="navInstall">Install</a>
       <a href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
       <div class="lang-switch" aria-label="Language">
         <button type="button" data-lang-choice="en">EN</button>
@@ -30,34 +29,35 @@
   <header class="hero-intro">
     <div class="kicker" data-i18n="heroKicker">FOR RESEARCHERS RUNNING MANY AGENTS</div>
     <h1 data-i18n="heroTitle">Which agent did that?</h1>
-    <p class="lead" data-i18n="heroLead">Claude on your laptop, a training agent on the GPU node, Codex on the CI box. By 11 pm each has touched a dozen files, and none of them knows the others exist. Agent Memory Galaxy merges the agent memory from every machine into one private, searchable galaxy - so tomorrow you can just look.</p>
+    <p class="lead hero-def" data-i18n="heroDef">Agent Memory Galaxy is a Claude Code skill that merges every machine&rsquo;s agent_memory.md into one private, searchable map &mdash; a single static HTML page.</p>
+    <p class="lead hero-scene" data-i18n="heroLead">Claude on your laptop, a trainer on the GPU node, Codex on CI. By 11 pm none of them knows what the others did.</p>
     <div class="actions">
-      <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open synthetic demo</button>
+      <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open the demo</button>
       <a class="btn" href="#install" data-i18n="installSkill">Install as skill</a>
       <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
     </div>
-    <div class="proof-row">
-      <span class="pill" data-i18n="heroPillDaemon">no daemon, no build step</span>
-      <span class="pill" data-i18n="heroPillStatic">static HTML viewer</span>
-      <span class="pill" data-i18n="heroPillPrivate">private by default, encrypted to publish</span>
+    <p class="demo-note" data-i18n="demoNote">Demo uses fictional data.</p>
+    <div class="hero-spec">
+      <span class="spec-num" data-i18n="heroSpec">0 daemons &middot; 1 static HTML file &middot; 2 commands</span>
+      <span class="spec-privacy" data-i18n="heroSpecPrivacy">Private by default &mdash; publishing ships ciphertext only.</span>
     </div>
   </header>
 
   <section class="contrast" id="contrast" aria-label="Before and after: scattered agents vs one shared memory galaxy">
     <div class="contrast-grid">
       <div class="contrast-side">
-        <div class="contrast-tag"><span data-i18n="beforeTag">WITHOUT SHARED MEMORY</span><em data-i18n="illustrativeTag">illustrative scene</em></div>
-<div class="chaos-board" aria-hidden="true"><svg class="chaos-lines" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 28 12 L 39 19" /><path d="M 36 23 L 45 30" /><path d="M 47 41 L 56 47" /><path d="M 30 57 L 39 64" /><path d="M 63 52 L 70 57" /><path d="M 20 73 L 29 80" /></svg><div class="chaos-term" style="left:40%;top:4%;width:42%;--rot:.6deg"><b>demo-gpu-node-c</b><code>$ tail -f train.log</code><code class="q" data-i18n="chaosNote3">47 checkpoints, 0 notes</code></div><div class="chaos-term" style="left:4%;top:38%;width:42%;--rot:-.8deg"><b>demo-workstation-a</b><code>$ git log --oneline -1</code><code class="q" data-i18n="chaosNote1">who changed dataloader.py?</code></div><div class="chaos-term" style="right:4%;top:57%;width:44%;--rot:.8deg"><b>demo-ci-runner-d</b><code>$ ls runs/ | wc -l</code><code class="q" data-i18n="chaosNote2">re-ran the same sweep. twice.</code></div><span class="chaos-chip c1" style="left:4%;top:4%;--rot:-3deg">claude · demo-laptop-b</span><span class="chaos-chip c2" style="left:2%;top:17%;--rot:2deg">train-loop · demo-gpu-node-c</span><span class="chaos-chip c3" style="right:3%;top:30%;--rot:3deg">codex · demo-gpu-node-c</span><span class="chaos-chip c4" style="left:4%;top:29%;--rot:-1deg">eval-runner · demo-ci-runner-d</span><span class="chaos-chip c5" style="right:4%;top:46%;--rot:-2deg">sweep-agent · demo-gpu-node-c</span><span class="chaos-chip c6" style="left:50%;top:38%;--rot:2deg">docs-agent · demo-laptop-b</span><span class="chaos-chip c7" style="left:6%;top:61%;--rot:1deg">claude · demo-workstation-a</span><span class="chaos-chip c8" style="left:4%;top:81%;--rot:-2deg">codex · demo-workstation-a</span><span class="chaos-chip c9" style="left:4%;top:91%;--rot:2deg">data-agent · demo-capture-server</span><span class="chaos-chip c10" style="left:52%;top:91%;--rot:-1deg">merge-bot · demo-merge-runner</span><span class="chaos-chip c11" style="right:2%;top:83%;--rot:2deg">deploy-agent · demo-pages-host-e</span><span class="chaos-note" style="left:12%;top:70%;--rot:-5deg" data-i18n="chaosNote4">was this fix already merged?</span><span class="chaos-q" style="left:30%;top:8%;--rot:-8deg">?</span><span class="chaos-q" style="left:48%;top:48%;--rot:6deg">?</span><span class="chaos-q" style="left:40%;top:83%;--rot:-6deg">?</span></div>
-        <p class="contrast-caption" data-i18n="beforeCaption">11 agents, 5 machines, zero shared context. Every window remembers a different slice of the day, and it all evaporates when the terminal closes.</p>
+        <div class="contrast-tag"><span data-i18n="beforeTag">WITHOUT SHARED MEMORY</span></div>
+<div class="chaos-board" aria-hidden="true"><svg class="chaos-lines" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M 28 12 L 39 19" /><path d="M 36 23 L 45 30" /><path d="M 47 41 L 56 47" /><path d="M 30 57 L 39 64" /><path d="M 63 52 L 70 57" /><path d="M 20 73 L 29 80" /></svg><div class="chaos-term" style="left:8%;top:15%;width:84%;--rot:-.7deg"><b>demo-workstation-a</b><code>$ git log --oneline -1</code><code class="q" data-i18n="chaosNote1">who changed dataloader.py?</code></div><div class="chaos-term" style="left:10%;top:60%;width:84%;--rot:.7deg"><b>demo-ci-runner-d</b><code>$ ls patches/ | tail -3</code><code class="q" data-i18n="chaosNote4">was this fix already merged?</code></div><span class="chaos-chip c1" style="left:4%;top:4%;--rot:-3deg">claude · demo-laptop-b</span><span class="chaos-chip c2" style="right:4%;top:7%;--rot:2deg">train-loop · demo-gpu-node-c</span><span class="chaos-chip c3" style="left:5%;top:43%;--rot:2deg">codex · demo-workstation-a</span><span class="chaos-chip c4" style="right:5%;top:49%;--rot:-2deg">sweep-agent · demo-gpu-node-c</span><span class="chaos-chip c5" style="left:5%;top:90%;--rot:2deg">eval-runner · demo-ci-runner-d</span><span class="chaos-q" style="left:46%;top:4%;--rot:-8deg">?</span><span class="chaos-q" style="right:12%;top:36%;--rot:6deg">?</span><span class="chaos-q" style="left:40%;top:82%;--rot:-6deg">?</span></div>
+        <p class="contrast-caption" data-i18n="beforeCaption">Five machines, zero shared context. Every window remembers a different slice of the day, and it all evaporates when the terminal closes.</p>
       </div>
       <div class="contrast-arrow" aria-hidden="true"><span>&#8594;</span></div>
       <div class="contrast-side">
-        <div class="contrast-tag gold"><span data-i18n="afterTag">WITH AGENT MEMORY GALAXY</span><em data-i18n="syntheticTag">synthetic data</em></div>
+        <div class="contrast-tag gold"><span data-i18n="afterTag">WITH AGENT MEMORY GALAXY</span></div>
 
-<div class="galaxy-card" id="after-galaxy" data-demo-src="demo/?style=cosmos" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
+<div class="galaxy-card" id="after-galaxy" data-demo-src="demo/?style=cosmos" role="button" tabindex="0" aria-label="Expand the interactive Agent Memory Galaxy demo">
   <div class="framebar">
     <span class="lights"><i></i><i></i><i></i></span>
-    <span class="mono" data-i18n="previewTitle">synthetic graph preview</span>
+    <span class="mono" data-i18n="previewTitle">demo graph preview</span>
     <span class="status mono" data-preview-status data-nodes="442" data-edges="1888" data-machines="5">442 nodes / 1888 links / 5 machines</span>
   </div>
 
@@ -137,7 +137,7 @@
   <button class="expand-galaxy" type="button" data-expand-galaxy data-i18n="expandGalaxy">Expand galaxy</button>
 </div>
 
-        <p class="contrast-caption" data-i18n="afterCaption">The same day as one graph: gold edges are cross-project references, red pulses are agents working right now, amber marks the encryption boundary. This demo is fully synthetic - your galaxy stays private.</p>
+        <p class="contrast-caption" data-i18n="afterCaption">One day of work across five machines, as one graph. Click any node for who, when, which files, and why.</p>
       </div>
     </div>
   </section>
@@ -160,7 +160,7 @@
   <text x="121" y="78" fill="#f06f79" font-size="26" font-weight="800" text-anchor="middle" font-family="Inter,sans-serif">?</text>
 </svg>
         <h3 data-i18n="pain1Title">Nobody remembers who did what</h3>
-        <p data-i18n="pain1Body">Each agent leaves its trail in a different scrollback on a different machine. By the next morning, "why did this change?" has no answer.</p>
+        <p data-i18n="pain1Body">Each agent leaves its trail in a different scrollback on a different machine. By the next morning, &ldquo;why did this change?&rdquo; has no answer.</p>
       </article>
       <article class="pain-card">
         <span class="pain-num">PAIN 02</span>
@@ -190,143 +190,30 @@
   <path d="M 60 42 L 84 56" stroke="#565b63" stroke-dasharray="3 7" fill="none" />
   <path d="M 178 38 L 194 52" stroke="#565b63" stroke-dasharray="3 7" fill="none" />
 </svg>
-        <h3 data-i18n="pain3Title">No collaboration network</h3>
+        <h3 data-i18n="pain3Title">No handoff between agents</h3>
         <p data-i18n="pain3Body">Agents cannot see each other, so there is no handoff: configs get overwritten, runs get orphaned, and context dies with the session.</p>
       </article>
-    </div>
-  </section>
-
-  <section class="section" id="numbers">
-    <div class="stat-band">
-      <span class="mini-label" data-i18n="statBandTitle">The demo galaxy, in real numbers</span>
-      <div class="stat-band-grid">
-        <div class="stat-cell"><b>442</b><span data-i18n="syntheticNodes">synthetic nodes</span></div>
-        <div class="stat-cell"><b>1888</b><span data-i18n="syntheticLinks">synthetic links</span></div>
-        <div class="stat-cell"><b>168</b><span data-i18n="statEntries">memory entries</span></div>
-        <div class="stat-cell"><b>6</b><span data-i18n="fictionalProjects">fictional projects</span></div>
-        <div class="stat-cell"><b>5</b><span data-i18n="fictionalMachines">fictional machines</span></div>
-        <div class="stat-cell live"><b>5</b><span data-i18n="statLive">agents live right now</span></div>
-      </div>
-      <p class="stat-honest" data-i18n="statHonest">Counts load live from the public demo graph.json. Every machine, project, agent, and file in it is synthetic and clearly fictional - no real work memory is published here.</p>
     </div>
   </section>
 
   <section class="section" id="how">
     <div class="section-head">
       <h2 data-i18n="howHeading">From scattered traces to one galaxy.</h2>
-      <p data-i18n="howBody">Plain files and static HTML - no daemon, no database, no build step. This is the path a day of agent work takes.</p>
+      <p data-i18n="howBody">Plain files and static HTML &mdash; here&rsquo;s how one day of agent work becomes one graph.</p>
     </div>
     <div class="timeline">
-      <div class="tl-item"><span class="tl-step" data-i18n="tl1Tag">STEP 01 - IN EVERY PROJECT</span><h3 data-i18n="tl1Title">Agents write memory as they work</h3><p data-i18n="tl1Body">Each project keeps an agent_memory.md: what changed, why, and which files. Agents read it when a session starts and append after meaningful changes.</p></div>
-      <div class="tl-item"><span class="tl-step" data-i18n="tl2Tag">STEP 02 - ON EVERY MACHINE</span><h3 data-i18n="tl2Title">Each machine contributes a fragment</h3><p data-i18n="tl2Body">contribute.sh scans reviewed notes and safe session metadata - never raw conversations - into fragments/&lt;machine&gt;.json.</p></div>
-      <div class="tl-item"><span class="tl-step" data-i18n="tl3Tag">STEP 03 - ON THE AGGREGATOR</span><h3 data-i18n="tl3Title">One aggregator merges the graph</h3><p data-i18n="tl3Body">Shared files, datasets, models, and servers connect projects across machines. A gold reference skeleton emerges between project hubs.</p></div>
-      <div class="tl-item live"><span class="tl-step" data-i18n="tl4Tag">LIVE - EVERY FEW MINUTES</span><h3 data-i18n="tl4Title">Working agents light up red</h3><p data-i18n="tl4Body">Agents currently on the clock carry a red pulse and a doing line that says what they are on - visible to you and to every other agent before work overlaps.</p></div>
-      <div class="tl-item"><span class="tl-step" data-i18n="tl5Tag">STEP 05 - ONLY IF YOU PUBLISH</span><h3 data-i18n="tl5Title">Encryption before anything leaves</h3><p data-i18n="tl5Body">Plaintext graphs stay local or in a private hub. A public Pages deploy ships the viewer shell plus ciphertext only, unlocked client-side.</p></div>
-    </div>
-  </section>
-
-  <section class="section" id="preview">
-    <div class="section-head">
-      <h2 data-i18n="previewHeading">Live synthetic demo. No real memory.</h2>
-      <p data-i18n="previewBody">The public graph demonstrates multi-server collaboration, currently-working agents, project inheritance, shared assets, and private/public/encrypted boundaries using fictional labels only.</p>
-    </div>
-    <div class="demo-wide">
-
-<div class="galaxy-card compact" id="preview-galaxy" data-demo-src="demo/?style=cosmos" role="button" tabindex="0" aria-label="Expand the interactive synthetic Agent Memory Galaxy demo">
-  <div class="framebar">
-    <span class="lights"><i></i><i></i><i></i></span>
-    <span class="mono" data-i18n="previewTitle">synthetic graph preview</span>
-    <span class="status mono" data-preview-status data-nodes="442" data-edges="1888" data-machines="5">442 nodes / 1888 links / 5 machines</span>
-  </div>
-
-  <div class="mini-galaxy-preview" data-mini-preview aria-hidden="true">
-    <canvas class="mini-canvas" data-mini-canvas></canvas>
-    <svg class="mini-map" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <filter id="mini-glow" x="-120%" y="-120%" width="340%" height="340%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
-        <filter id="mini-soft-glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="8" /></filter>
-      </defs>
-      <ellipse class="mini-orbit gold" cx="400" cy="260" rx="244" ry="126" />
-      <ellipse class="mini-orbit" cx="400" cy="260" rx="310" ry="166" transform="rotate(-17 400 260)" />
-      <path class="mini-coreline" d="M 148 332 C 248 198 350 154 472 204 S 620 356 704 210" />
-      <g class="mini-dust-layer"><circle class="mini-dust" cx="120" cy="130" r="1.4" />
-<circle class="mini-dust" cx="152" cy="398" r="1.1" />
-<circle class="mini-dust" cx="286" cy="114" r="1.2" />
-<circle class="mini-dust" cx="368" cy="422" r="1.4" />
-<circle class="mini-dust" cx="430" cy="126" r="1.1" />
-<circle class="mini-dust" cx="690" cy="150" r="1.5" />
-<circle class="mini-dust" cx="706" cy="386" r="1.1" />
-<circle class="mini-dust" cx="88" cy="276" r="1.0" />
-<circle class="mini-dust" cx="548" cy="92" r="1.0" />
-<circle class="mini-dust" cx="610" cy="420" r="1.2" />
-<circle class="mini-dust" cx="254" cy="444" r="1.0" />
-<circle class="mini-dust" cx="742" cy="264" r="1.2" /></g>
-      <g class="mini-links"><line class="mini-edge warm" data-mini-edge data-pair="0-1" x1="384" y1="252" x2="505" y2="178" /><line class="mini-edge" data-mini-edge data-pair="0-2" x1="384" y1="252" x2="232" y2="180" /><line class="mini-edge live" data-mini-edge data-pair="0-4" x1="384" y1="252" x2="330" y2="354" /><line class="mini-edge live" data-mini-edge data-pair="0-5" x1="384" y1="252" x2="468" y2="302" /><line class="mini-edge secure" data-mini-edge data-pair="1-7" x1="505" y1="178" x2="632" y2="220" /><line class="mini-edge secure" data-mini-edge data-pair="2-6" x1="232" y1="180" x2="190" y2="342" /><line class="mini-edge" data-mini-edge data-pair="3-5" x1="586" y1="338" x2="468" y2="302" /><line class="mini-edge warm" data-mini-edge data-pair="4-6" x1="330" y1="354" x2="190" y2="342" /><line class="mini-edge secure" data-mini-edge data-pair="5-7" x1="468" y1="302" x2="632" y2="220" /><line class="mini-edge" data-mini-edge data-pair="1-3" x1="505" y1="178" x2="586" y2="338" /></g>
-      <path class="mini-scan" d="M 146 394 C 264 222 406 146 570 206 C 650 236 702 286 724 342" />
-      <g class="mini-nodes"><g class="mini-star project" data-mini-node data-index="0" transform="translate(384 252)">
-        <circle class="halo" r="36" fill="currentColor" />
-        <path class="spike" d="M -26.4 0 H 26.4 M 0 -26.4 V 26.4 M -18.6 -18.6 L 18.6 18.6 M -18.6 18.6 L 18.6 -18.6" />
-        <circle class="core" r="12" />
-        <circle class="lock" r="20" />
-      </g><g class="mini-star project" data-mini-node data-index="1" transform="translate(505 178)">
-        <circle class="halo" r="30" fill="currentColor" />
-        <path class="spike" d="M -22.0 0 H 22.0 M 0 -22.0 V 22.0 M -15.5 -15.5 L 15.5 15.5 M -15.5 15.5 L 15.5 -15.5" />
-        <circle class="core" r="10" />
-        <circle class="lock" r="18" />
-      </g><g class="mini-star server" data-mini-node data-index="2" transform="translate(232 180)">
-        <circle class="halo" r="24" fill="currentColor" />
-        <path class="spike" d="M -13.6 0 H 13.6 M 0 -13.6 V 13.6" />
-        <circle class="core" r="8" />
-        <circle class="lock" r="16" />
-      </g><g class="mini-star server" data-mini-node data-index="3" transform="translate(586 338)">
-        <circle class="halo" r="24" fill="currentColor" />
-        <path class="spike" d="M -13.6 0 H 13.6 M 0 -13.6 V 13.6" />
-        <circle class="core" r="8" />
-        <circle class="lock" r="16" />
-      </g><g class="mini-star agent" data-mini-node data-index="4" transform="translate(330 354)">
-        <circle class="halo" r="21" fill="currentColor" />
-        <path class="spike" d="M -11.9 0 H 11.9 M 0 -11.9 V 11.9" />
-        <circle class="core" r="7" />
-        <circle class="lock" r="15" />
-      </g><g class="mini-star agent" data-mini-node data-index="5" transform="translate(468 302)">
-        <circle class="halo" r="21" fill="currentColor" />
-        <path class="spike" d="M -11.9 0 H 11.9 M 0 -11.9 V 11.9" />
-        <circle class="core" r="7" />
-        <circle class="lock" r="15" />
-      </g><g class="mini-star boundary" data-mini-node data-index="6" transform="translate(190 342)">
-        <circle class="halo" r="27" fill="currentColor" />
-        <path class="spike" d="M -19.8 0 H 19.8 M 0 -19.8 V 19.8 M -14.0 -14.0 L 14.0 14.0 M -14.0 14.0 L 14.0 -14.0" />
-        <circle class="core" r="9" />
-        <circle class="lock" r="17" />
-      </g><g class="mini-star artifact" data-mini-node data-index="7" transform="translate(632 220)">
-        <circle class="halo" r="27" fill="currentColor" />
-        <path class="spike" d="M -15.3 0 H 15.3 M 0 -15.3 V 15.3" />
-        <circle class="core" r="9" />
-        <circle class="lock" r="17" />
-      </g></g>
-    </svg>
-    <div class="mini-side"><b data-i18n="miniSideTitle">NODE TYPES</b><span data-mini-type="project" data-i18n="miniProject">Project</span><span data-mini-type="server" data-i18n="miniServer">Server</span><span data-mini-type="agent" data-i18n="miniAgent">Agent</span><span data-mini-type="boundary" data-i18n="miniBoundary">Boundary</span><span data-mini-type="artifact" data-i18n="miniArtifact">Artifact</span></div>
-    <div class="mini-readout"><b data-i18n="miniReadoutTitle">ONLINE HUD</b><span data-i18n="miniReadout">multi-server handoff / live agents / encrypted boundary</span></div>
-  </div>
-  <p class="preview-note" data-i18n="previewNote">Compressed public preview. Open the full demo for search, filters, zoom, and readouts.</p>
-  <button class="expand-galaxy" type="button" data-expand-galaxy data-i18n="expandGalaxy">Expand galaxy</button>
-</div>
-
-    </div>
-    <div class="grid">
-      <article class="tile"><div class="mini-label" data-i18n="searchLabel">Search</div><h3 data-i18n="searchTitle">Find a project or artifact</h3><p data-i18n="searchBody">Search across projects, agents, files, models, servers, and derived facts.</p></article>
-      <article class="tile"><div class="mini-label" data-i18n="filterLabel">Filter</div><h3 data-i18n="filterTitle">Focus by machine or activity</h3><p data-i18n="filterBody">Switch from the full graph to one machine, one project, recent work, or live doing state.</p></article>
-      <article class="tile"><div class="mini-label" data-i18n="inspectLabel">Inspect</div><h3 data-i18n="inspectTitle">Click through evidence</h3><p data-i18n="inspectBody">Open a node readout, inspect neighbors, and follow inheritance or publishing edges.</p></article>
+      <div class="tl-item"><span class="tl-step" data-i18n="tl1Tag">STEP 01 &middot; IN EVERY PROJECT</span><h3 data-i18n="tl1Title">Agents write memory as they work</h3><p data-i18n="tl1Body">Each project keeps an agent_memory.md: what changed, why, and which files. Agents read it when a session starts and append after meaningful changes.</p></div>
+      <div class="tl-item"><span class="tl-step" data-i18n="tl2Tag">STEP 02 &middot; ON EVERY MACHINE</span><h3 data-i18n="tl2Title">Each machine contributes a fragment</h3><p data-i18n="tl2Body">contribute.sh scans reviewed notes and safe session metadata &mdash; never raw conversations &mdash; into fragments/&lt;machine&gt;.json.</p></div>
+      <div class="tl-item"><span class="tl-step" data-i18n="tl3Tag">STEP 03 &middot; ON THE AGGREGATOR</span><h3 data-i18n="tl3Title">One aggregator merges the graph</h3><p data-i18n="tl3Body">Shared files, datasets, models, and servers connect projects across machines. A gold reference skeleton emerges between project hubs.</p></div>
+      <div class="tl-item live"><span class="tl-step" data-i18n="tl4Tag">STEP 04 &middot; LIVE, EVERY FEW MINUTES</span><h3 data-i18n="tl4Title">Working agents light up red</h3><p data-i18n="tl4Body">Agents that are mid-task show a red pulse plus a one-line status of what they&rsquo;re working on &mdash; so you and every other agent see the overlap before it happens.</p></div>
+      <div class="tl-item"><span class="tl-step" data-i18n="tl5Tag">STEP 05 &middot; ONLY IF YOU PUBLISH</span><h3 data-i18n="tl5Title">Encryption before anything leaves</h3><p data-i18n="tl5Body">Plaintext graphs stay local or in a private hub. A public Pages deploy ships the viewer shell plus ciphertext only, unlocked client-side.</p></div>
     </div>
   </section>
 
   <section class="section" id="install">
     <div class="section-head">
-      <h2 data-i18n="installHeading">Install in two Claude Code messages.</h2>
-      <p data-i18n="installBody">The public repository carries a Claude Code plugin/skill package. Use it to set up private hubs, connect contributors, aggregate fragments, publish encrypted viewers, or review privacy before release.</p>
+      <h2 data-i18n="installHeading">Install with two Claude Code commands.</h2>
+      <p data-i18n="installBody">The repo ships a Claude Code plugin. The skill sets up a private hub, pulls in each machine, merges their memory into one graph, and runs a privacy review before anything is published.</p>
     </div>
     <div class="install-grid">
       <article class="tile command-stack">
@@ -337,7 +224,7 @@
         <button class="copy-btn" type="button" data-copy="/plugin install agent-memory-galaxy@agent-memory-galaxy"><span data-i18n="copyInstall">Copy install command</span></button>
       </article>
       <article class="tile command-stack">
-        <h3 data-i18n="localDemo">Local demo fallback</h3>
+        <h3 data-i18n="localDemo">Try the demo locally</h3>
         <pre class="code"><code>git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git
 cd agent-memory-galaxy
 python3 scripts/build-public-demo.py
@@ -347,57 +234,83 @@ python3 -m http.server 8765 --directory docs</code></pre>
     </div>
   </section>
 
+  <section class="section" id="preview">
+    <div class="section-head">
+      <h2 data-i18n="previewHeading">Search, filter, click through evidence.</h2>
+      <p data-i18n="previewBody">The demo runs the same viewer as the real thing &mdash; search, filters, and node details, in your browser.</p>
+    </div>
+    <div class="evidence-row">
+      <figure class="evidence-card" aria-label="Example node detail panel from the demo">
+        <div class="ev-head"><span class="ev-kind">ENTRY</span><span class="ev-title">Project Aurora Loom &middot; fragment merge fix</span></div>
+        <dl class="ev-fields">
+          <div class="ev-field"><dt data-i18n="evWho">who</dt><dd>claude</dd></div>
+          <div class="ev-field"><dt data-i18n="evWhen">when</dt><dd>2026-07-02 21:14</dd></div>
+          <div class="ev-field"><dt data-i18n="evMachine">machine</dt><dd>demo-workstation-a</dd></div>
+          <div class="ev-field"><dt data-i18n="evFiles">files</dt><dd>graph_loader.py &middot; fragment_merge_tests.py</dd></div>
+          <div class="ev-field"><dt data-i18n="evWhy">why</dt><dd>fragment merge dropped duplicate file nodes; deduped by id and added a regression test</dd></div>
+          <div class="ev-field"><dt data-i18n="evStatus">status</dt><dd class="ev-ok">done</dd></div>
+        </dl>
+      </figure>
+      <div class="evidence-aside">
+        <p class="evidence-lead" data-i18n="evidenceCaption">This is what evidence looks like.</p>
+        <p class="evidence-sub" data-i18n="evidenceCaptionSub">Click any node in the demo and a panel like this opens &mdash; who, when, on which machine, which files, and why.</p>
+        <div class="actions">
+          <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open the demo</button>
+        </div>
+      </div>
+    </div>
+    <div class="grid">
+      <article class="tile"><div class="mini-label" data-i18n="searchLabel">Search</div><h3 data-i18n="searchTitle">Find a project or artifact</h3><p data-i18n="searchBody">Search across projects, agents, files, models, servers, and derived facts.</p></article>
+      <article class="tile"><div class="mini-label" data-i18n="filterLabel">Filter</div><h3 data-i18n="filterTitle">Focus by machine or activity</h3><p data-i18n="filterBody">Switch from the full graph to one machine, one project, recent work, or what agents are doing right now.</p></article>
+      <article class="tile"><div class="mini-label" data-i18n="inspectLabel">Inspect</div><h3 data-i18n="inspectTitle">Click through evidence</h3><p data-i18n="inspectBody">Open a node&rsquo;s detail panel, inspect neighbors, and follow inheritance or publishing edges.</p></article>
+    </div>
+    <div class="stat-band" id="numbers">
+      <span class="mini-label" data-i18n="statBandTitle">The synthetic demo, by the numbers</span>
+      <div class="stat-band-grid">
+        <div class="stat-cell"><b>442</b><span data-i18n="statNodes">nodes</span></div>
+        <div class="stat-cell"><b>1888</b><span data-i18n="statLinks">links</span></div>
+        <div class="stat-cell"><b>168</b><span data-i18n="statEntries">memory entries</span></div>
+        <div class="stat-cell"><b>6</b><span data-i18n="statProjects">projects</span></div>
+        <div class="stat-cell"><b>5</b><span data-i18n="statMachines">machines</span></div>
+        <div class="stat-cell"><b>5</b><span data-i18n="statLive">simulated agents active</span></div>
+      </div>
+      <p class="stat-honest" data-i18n="statHonest">The numbers above come straight from the demo&rsquo;s graph.json. Every project, machine, agent, and file in it is fictional &mdash; no real memory is published here.</p>
+    </div>
+  </section>
+
   <section class="section" id="privacy">
     <div class="section-head">
       <h2 data-i18n="privacyHeading">Public framework. Private memory.</h2>
-      <p data-i18n="privacyBody">GitHub Pages is not private access control. Public pages carry the framework and fake demo data. Real fragments and plaintext graphs belong in a private hub or local machine.</p>
+      <p data-i18n="privacyBody">Your agent_memory.md and fragments never leave your machines unless you explicitly publish &mdash; and publishing ships ciphertext only. Nothing phones home. GitHub Pages carries the framework and this demo; real memory stays on your machines or in a private hub.</p>
     </div>
-    <div class="callout-band">
-      <article class="tile"><h3 data-i18n="contributor">Contributor</h3><p data-i18n="contributorBody">Writes `fragments/&lt;machine&gt;.json` in a private hub. Does not need encryption passwords and should not touch `docs/galaxy/`.</p></article>
-      <article class="tile"><h3 data-i18n="aggregator">Aggregator</h3><p data-i18n="aggregatorBody">Merges all fragments, builds local `standalone.html`, and optionally creates `docs/galaxy/graph.enc.json` with strong passwords.</p></article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head">
-      <h2 data-i18n="urlHeading">Know which URL you are sharing.</h2>
-      <p data-i18n="urlBody">The marketing site, synthetic demo, and optional encrypted runtime viewer are separate paths.</p>
-    </div>
-    <div class="domain-scroll">
-      <table class="domain-table">
-        <thead><tr><th data-i18n="path">Path</th><th data-i18n="purpose">Purpose</th><th data-i18n="dataPolicy">Data policy</th></tr></thead>
-        <tbody>
-          <tr><td><code>/agent-memory-galaxy/</code></td><td data-i18n="urlPromo">Public promo landing</td><td data-i18n="urlNoReal">No real data</td></tr>
-          <tr><td><code>/agent-memory-galaxy/demo/</code></td><td data-i18n="urlDemo">Synthetic interactive demo</td><td data-i18n="urlFake">Fake graph only</td></tr>
-          <tr><td><code>/agent-memory-galaxy/concepts/</code></td><td data-i18n="urlConcepts">Design exploration archive</td><td data-i18n="urlSecondary">Public, secondary</td></tr>
-          <tr><td><code>/agent-memory-galaxy/galaxy/</code></td><td data-i18n="urlGalaxy">Optional encrypted viewer shell</td><td data-i18n="urlCipher">Public shell, ciphertext only</td></tr>
-          <tr><td><code>standalone.html</code></td><td data-i18n="urlStandalone">Local plaintext viewer</td><td data-i18n="urlLocal">Local only, gitignored</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <p class="privacy-more"><a href="https://github.com/RenyunLi0116/agent-memory-galaxy#readme"><span data-i18n="privacyMore">Full privacy model, roles, and URL map &mdash; see the README.</span></a></p>
   </section>
 
   <section class="cta-band" id="cta">
-    <h2 data-i18n="ctaTitle">Stop asking "which agent did that?"</h2>
-    <p data-i18n="ctaBody">Install the skill, point it at your project roots, and give tomorrow-you - and every other agent - one place to look.</p>
+    <h2 data-i18n="ctaTitle">Stop asking &ldquo;which agent did that?&rdquo;</h2>
+    <p data-i18n="ctaBody">Install the skill and point it at your projects. Tomorrow, you &mdash; and every agent &mdash; look in one place.</p>
     <div class="actions">
-      <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open synthetic demo</button>
+      <button class="btn primary" type="button" data-expand-galaxy data-demo-src="demo/?style=cosmos" data-i18n="openDemo">Open the demo</button>
       <a class="btn" href="#install" data-i18n="installSkill">Install as skill</a>
       <a class="btn" href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a>
     </div>
   </section>
 </main>
-<footer class="footer"><div class="page"><span>Agent Memory Galaxy</span><span data-i18n="footerPrivacy">Synthetic demo public. Real memory private.</span></div></footer>
+<footer class="footer"><div class="page">
+  <span>Agent Memory Galaxy</span>
+  <span><a href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a> &middot; <a href="concepts/index.html" data-i18n="navConcepts">Design archive</a></span>
+  <span data-i18n="footerPrivacy">Demo data fictional. Real memory private.</span>
+</div></footer>
 
 <div class="modal" data-galaxy-modal hidden>
-  <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Expanded synthetic galaxy demo">
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Expanded galaxy demo">
     <div class="modal-head">
       <strong>Agent Memory Galaxy</strong>
-      <span class="muted" data-i18n="modalMuted">Synthetic demo. Drag, zoom, filter, and inspect nodes.</span>
+      <span class="muted" data-i18n="modalMuted">Demo galaxy. Drag, zoom, filter, and inspect nodes.</span>
       <a class="btn" href="demo/?style=cosmos" data-demo-link data-i18n="openFullDemo">Open full demo</a>
       <button class="modal-close" type="button" data-modal-close data-i18n="close">Close</button>
     </div>
-    <iframe title="Expanded Agent Memory Galaxy synthetic demo" src="about:blank"></iframe>
+    <iframe title="Expanded Agent Memory Galaxy demo" src="about:blank"></iframe>
   </div>
 </div>
 

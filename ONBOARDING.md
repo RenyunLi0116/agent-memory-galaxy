@@ -36,12 +36,23 @@ git remote set-url origin git@github.com:<your-user-or-org>/<private-hub>.git
 
 Keep the private hub private if it will store real fragments.
 
+## 3.5 Invite Teammates (Team Work)
+
+Skip this section for a single-person hub; nothing changes there.
+
+1. Add each teammate as a GitHub collaborator on the private hub repository. Push permission is the membership declaration — no extra account system.
+2. Optionally commit `team.json` in the hub root (copy `team.json.example`): team name, member display names/colors for the viewer, and a `default_user` backfilled onto fragments pushed before team mode.
+
+Each member then follows section 4 on each of their servers, cloning with their own GitHub identity. The push identity (`user`) resolves as: `--user` / 4th `contribute.sh` argument > `AMG_USER` env > `git config user.name` > `$USER`.
+
+Do not confuse `user` with `agent`: `user` is the person who pushes the memory (a GitHub username, stored only as a node attribute, never in node ids), while `agent` is the tool labeled inside an entry (`claude`, `codex`, ...) that executed the work. One user's machines usually host many agents.
+
 ## 4. Connect Contributor Machines
 
 From the private hub checkout on each contributor machine:
 
 ```bash
-AMG_PRIVATE_HUB=1 ./contribute.sh <unique-machine-name> <claude|codex|cursor|human> <project-root>
+AMG_PRIVATE_HUB=1 ./contribute.sh <unique-machine-name> <claude|codex|cursor|human> <project-root> [user]
 ```
 
 Examples:
@@ -49,6 +60,8 @@ Examples:
 ```bash
 AMG_PRIVATE_HUB=1 ./contribute.sh laptop-a codex ~/projects/my-app
 AMG_PRIVATE_HUB=1 ./contribute.sh workstation-b claude ~/work/active-project
+AMG_PRIVATE_HUB=1 ./contribute.sh gpu-node-c claude ~/work/shared-eval kael      # explicit push identity
+AMG_USER=mira AMG_PRIVATE_HUB=1 ./contribute.sh lab-node-d codex ~/projects/relay # identity via env
 ```
 
 Contributor output goes to `fragments/`. These files are plaintext and should remain private. The `AMG_PRIVATE_HUB=1` flag is required before the script will stage ignored fragments and push them.
@@ -68,6 +81,8 @@ If `sources.json` has remote SSH collection configured:
 ```
 
 This produces local plaintext `graph.json` and `standalone.html`, both gitignored.
+
+In a team hub, merged fragments keep each contributor's `user` attribute; nodes from pre-team fragments are backfilled with `team.json`'s `default_user`, and the aggregator emits `user` nodes with `owns` edges to their machines.
 
 The public template intentionally does not stage real fragments, live presence, or encrypted graph snapshots during `update.sh`. In your private hub, opt in when you want Git to sync private memory artifacts:
 

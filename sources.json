@@ -4,7 +4,9 @@
     {
       "machine": "local",
       "type": "local",
-      "roots": ["~/projects/my-app"],
+      "roots": [
+        "~/projects/my-app"
+      ],
       "enabled": false,
       "note": "示例：把 roots 改成明确、较窄的项目目录并启用。首次运行不要扫 ~、/ 或整个 workspace。"
     }
@@ -17,9 +19,12 @@
       "host": "server-1.example.invalid",
       "user": "youruser",
       "port": 22,
-      "roots": ["~/Project"],
+      "roots": [
+        "~/Project"
+      ],
       "enabled": false,
-      "note": "汇总端 ssh 拉取该 server 上的 agent_memory.md（需汇总端对该机免密 ssh）。启用改 enabled:true。"
+      "note": "汇总端 ssh 拉取该 server 上的 agent_memory.md（需汇总端对该机免密 ssh）。启用改 enabled:true。",
+      "amg_user": "your-github-username"
     },
     "remote_collect": {
       "machine": "server-2",
@@ -27,12 +32,15 @@
       "host": "server-2.example.invalid",
       "user": "youruser",
       "port": 22,
-      "roots": ["~/projects/my-app"],
+      "roots": [
+        "~/projects/my-app"
+      ],
       "enabled": false,
       "remote_collect": true,
       "repo": "~/agent-memory-galaxy",
       "tool": "claude",
-      "note": "基站模式：汇总端 update.sh --pull 主动 ssh 到该机远程跑 collect+distill 并取回 fragment。server 只需一份本仓库副本，无需 push 权限/无需自己的 cron。enabled 保持 false（那是旧 md-拉取路径）。"
+      "note": "基站模式：汇总端 update.sh --pull 主动 ssh 到该机远程跑 collect+distill 并取回 fragment。server 只需一份本仓库副本，无需 push 权限/无需自己的 cron。enabled 保持 false（那是旧 md-拉取路径）。",
+      "amg_user": "your-github-username"
     }
   },
   "exclude_substrings": [

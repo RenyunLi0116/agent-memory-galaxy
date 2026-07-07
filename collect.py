@@ -101,6 +101,44 @@ def load_projects():
     for k in (d.get("stop_keys") or []):
         STOP_KEYS.add(squash(k))
 
+# ---- team work（多 user 协作，可选）：team.json 声明成员；仿 projects.json 容错加载 ----
+# user = 推送者身份（GitHub 用户名），与 agent 节点（正文标注的执行者，如 claude/codex）是不同概念：
+# user 回答「这份记忆是谁的机器推送的」，agent 回答「这条记录是哪个工具干的」。
+# user 绝不进入任何节点 id（防跨机合并图裂），只作为 entry/fact/machine/liveagent 的属性。
+TEAM = {"team": "", "default_user": "unassigned", "members": {}, "enabled": False}
+
+def load_team():
+    fp = os.path.join(HERE, "team.json")
+    if not os.path.isfile(fp):
+        return
+    try:
+        d = json.load(open(fp, encoding="utf-8"))
+    except Exception as e:
+        print(f"  ! team.json 解析失败: {e}", file=sys.stderr); return
+    if not isinstance(d, dict):
+        print("  ! team.json 非对象，跳过", file=sys.stderr); return
+    TEAM["team"] = str(d.get("team") or "")
+    if d.get("default_user"):
+        TEAM["default_user"] = str(d["default_user"])
+    if isinstance(d.get("members"), dict):
+        TEAM["members"] = d["members"]
+    TEAM["enabled"] = True
+
+def resolve_user(cli_user=""):
+    """推送者身份识别优先级：--user 参数 > AMG_USER env > git config user.name > $USER。"""
+    u = (cli_user or os.environ.get("AMG_USER", "")).strip()
+    if not u:
+        try:
+            r = subprocess.run(["git", "config", "user.name"],
+                               capture_output=True, text=True, timeout=5, cwd=HERE)
+            if r.returncode == 0:
+                u = r.stdout.strip()
+        except Exception:
+            u = ""
+    if not u:
+        u = os.environ.get("USER", "").strip()
+    return u
+
 def canon_of(cid_raw):
     return (squash(cid_raw), LABELS.get(squash(cid_raw), cid_raw))
 
@@ -240,7 +278,7 @@ def extract_entities(g: Graph, owner_id: str, text: str):
             break
 
 # ----------------------------- 解析：手工 agent_memory.md -----------------------------
-def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude"):
+def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude", user: str = None):
     try:
         txt = open(path, encoding='utf-8', errors='replace').read()
     except Exception as e:
@@ -249,7 +287,7 @@ def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude"):
     pkey, plabel = project_for_manual(path)
     PROJ_TEXT[pkey] = PROJ_TEXT.get(pkey, "") + txt.lower()[:200000]   # 累积文本供跨项目引用检测
     proj_id = g.node(f"project:{pkey}", "project", plabel, machines=[machine])
-    mach_id = g.node(f"machine:{machine}", "machine", machine)
+    mach_id = g.node(f"machine:{machine}", "machine", machine, user=user)
     g.edge(proj_id, mach_id, "on")
 
     # 按 ## 分节（# 一级标题作为文件简介，忽略其内容做节点）
@@ -295,7 +333,7 @@ def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude"):
         g.node(eid, "entry", title[:80],
                date=date, agent=agent, status=status, session=session, tool=tool,
                task=classify_task(blob),         # 任务类型：训练/数据/评测/部署/调研/同步/规划/其他
-               machine=machine, project=plabel, source=path,
+               machine=machine, project=plabel, source=path, user=user,
                weight=len(body),                 # job 体量 = 记录正文长度
                excerpt=body[:EXCERPT_LEN])
         g.edge(eid, proj_id, "in")
@@ -338,7 +376,7 @@ def parse_frontmatter(txt: str):
             parent[key] = val
     return root, body
 
-def parse_auto(g: Graph, path: str, slug: str, machine: str):
+def parse_auto(g: Graph, path: str, slug: str, machine: str, user: str = None):
     try:
         txt = open(path, encoding='utf-8', errors='replace').read()
     except Exception as e:
@@ -356,13 +394,13 @@ def parse_auto(g: Graph, path: str, slug: str, machine: str):
     pkey, plabel = project_for_auto(slug)
     PROJ_TEXT[pkey] = PROJ_TEXT.get(pkey, "") + (body or "").lower()[:200000]
     proj_id = g.node(f"project:{pkey}", "project", plabel, machines=[machine])
-    mach_id = g.node(f"machine:{machine}", "machine", machine)
+    mach_id = g.node(f"machine:{machine}", "machine", machine, user=user)
     g.edge(proj_id, mach_id, "on")
 
     fid = f"fact:{squash(name)}"
     g.node(fid, "fact", meta.get("name", name),
            memtype=ftype, description=desc, origin=origin, tool="claude",
-           machine=machine, project=plabel, source=path,
+           machine=machine, project=plabel, source=path, user=user,
            weight=len(body.strip()),
            excerpt=body.strip()[:EXCERPT_LEN])
     g.edge(fid, proj_id, "in")
@@ -517,6 +555,35 @@ def finalize(g: Graph):
                 n["primary"] = collections.Counter(projs).most_common(1)[0][0]
     return g
 
+def inject_users(g: Graph):
+    """汇总端 finalize 阶段的 team work 注入（贡献端碎片不内嵌，防跨机合并冲突）：
+    ① 无 user 属性的 entry/fact/machine 兜底 team.json 的 default_user（旧碎片兼容）；
+    ② 由 machine 节点的 user 属性生成 user 节点(id=user:{squash(name)}) + user→machine 的 owns 边。
+    图里完全没有 user 且未配置 team.json 时不做任何事（老图形态不变，viewer 自动隐藏 USER 过滤）。"""
+    has_user = any(n.get("user") for n in g.nodes.values())
+    if not (has_user or TEAM["enabled"]):
+        return 0
+    default = TEAM.get("default_user") or "unassigned"
+    for n in g.nodes.values():
+        if n["type"] in ("entry", "fact", "machine") and not n.get("user"):
+            n["user"] = default
+    owns = 0
+    for nid, n in list(g.nodes.items()):
+        if n["type"] != "machine" or not n.get("user"):
+            continue
+        u = str(n["user"])
+        if not squash(u):
+            continue
+        m = TEAM.get("members", {}).get(u) or {}
+        uid = g.node(f"user:{squash(u)}", "user", u, user=u,
+                     display=m.get("display"), color=m.get("color"))
+        g.edge(uid, nid, "owns")
+        owns += 1
+    users = {n["id"] for n in g.nodes.values() if n["type"] == "user"}
+    if users:
+        print(f"  [team] 注入 {len(users)} 个 user 节点 / {owns} 条 owns 边", file=sys.stderr)
+    return owns
+
 def merge_fragment(g, path):
     """把另一台机器提交的 fragment（graph json）合并进 g：节点按 id 去重合并、边去重。"""
     try:
@@ -557,7 +624,7 @@ def load_presence(g):
         g.node(lid, "liveagent", f"{agent}@{machine}",
                heartbeat=p.get("heartbeat"), status=p.get("status", "idle"),
                current=p.get("current", ""), project=clabel, machine=machine,
-               tool=p.get("tool", "agent"))
+               tool=p.get("tool", "agent"), user=p.get("user"))
         mid = f"machine:{machine}"; g.node(mid, "machine", machine); g.edge(lid, mid, "located")
         if ckey:
             pid = f"project:{ckey}"; g.node(pid, "project", clabel); g.edge(lid, pid, "working_on")
@@ -566,7 +633,7 @@ def load_presence(g):
         print(f"  [presence] 注入 {cnt} 个 agent 报到状态", file=sys.stderr)
     return cnt
 
-SANITIZE_DROP = ("excerpt", "source", "paths", "description", "origin", "current")
+SANITIZE_DROP = ("excerpt", "source", "paths", "description", "origin", "current", "user")
 _IP = re.compile(r'\b\d{1,3}(?:\.\d{1,3}){3}\b')
 
 def _scrub(s):
@@ -577,12 +644,16 @@ def _scrub(s):
     return s
 
 def sanitize_public(out):
-    """公开版：去正文/路径/来源，匿名化 server 节点与残留 IP/路径串；保留结构、名称、日期、连线。"""
+    """公开版：去正文/路径/来源，匿名化 server 节点与残留 IP/路径串；保留结构、名称、日期、连线。
+    user 是真实推送者身份（GitHub 用户名）→ 属性剥离（SANITIZE_DROP）、user 节点与其 owns 边整体移除。"""
+    drop_ids = {n["id"] for n in out["nodes"] if n["type"] == "user"}
     srv = [n["id"] for n in out["nodes"] if n["type"] == "server"]
     idmap = {sid: f"server:{chr(65 + i)}" for i, sid in enumerate(srv)}
     mid = lambda x: idmap.get(x, x)
     nodes = []
     for n in out["nodes"]:
+        if n["id"] in drop_ids:
+            continue
         m = {k: v for k, v in n.items() if k not in SANITIZE_DROP}
         m["id"] = mid(n["id"])
         if n["type"] == "server":
@@ -591,8 +662,10 @@ def sanitize_public(out):
             m["label"] = _scrub(m.get("label", ""))
         nodes.append(m)
     edges = [{"source": mid(e["source"]), "target": mid(e["target"]), "type": e["type"]}
-             for e in out["edges"]]
-    return {"meta": {**out["meta"], "sanitized": True}, "nodes": nodes, "edges": edges}
+             for e in out["edges"]
+             if e["source"] not in drop_ids and e["target"] not in drop_ids]
+    meta = {k: v for k, v in out["meta"].items() if k not in ("users", "user", "team")}
+    return {"meta": {**meta, "sanitized": True}, "nodes": nodes, "edges": edges}
 
 def _link_shadowed(ta, i, bsq, pool):
     """最长匹配遮蔽：ta 中位置 i 命中了名字 bsq；若该命中向前/向后各看一个字符就能延续拼进
@@ -672,15 +745,20 @@ def main():
     ap.add_argument("--roots", default="", help="逗号分隔的本地根目录，覆盖 sources.json（贡献端用）")
     ap.add_argument("--machine", default="local", help="本机标识名（配合 --roots）")
     ap.add_argument("--tool", default="claude", help="产出工具标记: claude/codex/human（配合 --roots）")
+    ap.add_argument("--user", default="", help="推送者身份（GitHub 用户名）；缺省依次取 AMG_USER / git config user.name / $USER")
     args = ap.parse_args()
 
     load_projects()
+    load_team()
+    cur_user = resolve_user(args.user)
+    if cur_user:
+        print(f"[user] 推送者身份: {cur_user}", file=sys.stderr)
     cfg = json.load(open(args.config, encoding="utf-8"))
     g = Graph()
     stats = {"manual_files": 0, "auto_files": 0, "entries": 0, "facts": 0}
 
     if args.roots:        # 贡献端：用命令行根目录，忽略 sources.json 的源
-        sources = [{"machine": args.machine, "type": "local", "tool": args.tool,
+        sources = [{"machine": args.machine, "type": "local", "tool": args.tool, "amg_user": cur_user,
                     "roots": [r for r in args.roots.split(",") if r], "enabled": True}]
     else:
         sources = cfg["sources"]
@@ -704,7 +782,8 @@ def main():
             continue
         machine = src["machine"]
         tool = src.get("tool") or args.tool
-        print(f"[源] {machine} ({src['type']}) tool={tool}", file=sys.stderr)
+        user = src.get("amg_user") or cur_user or None    # sources.json 每源可声明 "amg_user"（推送身份，勿与 ssh 登录名键 "user" 混淆），缺省用本次运行身份
+        print(f"[源] {machine} ({src['type']}) tool={tool}" + (f" user={user}" if user else ""), file=sys.stderr)
         if src["type"] == "local":
             for root in src["roots"]:
                 root = os.path.expanduser(root)
@@ -712,10 +791,10 @@ def main():
                     print(f"  ! 根目录不存在: {root}", file=sys.stderr); continue
                 for path, kind, slug in discover_local(root, cfg, src.get("max_depth")):
                     if kind == "manual":
-                        n = parse_manual(g, path, machine, tool)
+                        n = parse_manual(g, path, machine, tool, user)
                         stats["manual_files"] += 1; stats["entries"] += n
                     elif kind == "auto":
-                        n = parse_auto(g, path, slug, machine)
+                        n = parse_auto(g, path, slug, machine, user)
                         stats["auto_files"] += 1; stats["facts"] += n
                     # kind == "memindex"：事实节点在 parse_auto 已连到项目，无需再处理
         elif src["type"] == "ssh":
@@ -728,7 +807,7 @@ def main():
                 print(f"  · {machine}: 用缓存 {len(dsts)} 个文件（未 --pull）", file=sys.stderr)
             for dst in dsts:
                 # 远程按手工格式解析（server 上都是 agent_memory.md）
-                n = parse_manual(g, dst, machine, tool)
+                n = parse_manual(g, dst, machine, tool, user)
                 stats["manual_files"] += 1; stats["entries"] += n
 
     if args.merge:           # 汇总端：合并其他电脑提交的 fragments/*.json
@@ -740,6 +819,8 @@ def main():
         load_presence(g)
 
     link_projects(g)         # 项目间引用/派生边（每次都跑；贡献端会把边嵌入 fragment）
+    if not args.roots:       # 汇总端 finalize 阶段：default_user 兜底 + user 节点/owns 边（碎片不内嵌）
+        inject_users(g)
     finalize(g)
     type_counts = {}
     for n in g.nodes.values():
@@ -753,10 +834,16 @@ def main():
             "type_counts": type_counts,
             "machines": sorted({n["label"] for n in g.nodes.values() if n["type"] == "machine"}),
             "projects": sorted({n["label"] for n in g.nodes.values() if n["type"] == "project"}),
+            "users": sorted({str(n["user"]) for n in g.nodes.values() if n.get("user")}),
         },
         "nodes": list(g.nodes.values()),
         "edges": list(g.edges.values()),
     }
+    if TEAM["enabled"]:      # team.json 原样随 meta 带出（viewer 用 members 的 display/color 上色）
+        out["meta"]["team"] = {"team": TEAM["team"], "default_user": TEAM["default_user"],
+                               "members": TEAM["members"]}
+    if args.roots and cur_user:   # fragment 随带推送者身份；merge_fragment 属性泛化合并自动透传节点级 user
+        out["meta"]["user"] = cur_user
     if args.roots:   # 仅贡献端：把本机项目原始文本随 fragment 一并写出，供汇总端检测「跨机」项目引用（汇总端不写，graph.json/密文不含全文、保持精简）
         out["proj_text"] = {k: v[:200000] for k, v in PROJ_TEXT.items() if v}
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)

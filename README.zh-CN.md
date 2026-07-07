@@ -80,6 +80,31 @@ AMG_PRIVATE_HUB=1 ./contribute.sh workstation-a codex ~/projects/my-app
 AMG_TRACK_PRIVATE=1 ./update.sh
 ```
 
+### Team Work：一个私有 Hub，多个用户
+
+一个私有 hub 可以由整个团队共享。图谱中有两个身份概念，必须区分：
+
+- **agent** —— 记忆条目正文里标注的执行者（`claude`、`codex`、`cursor`、`human`），回答「这条工作是哪个工具干的」。
+- **user** —— 推送者身份（GitHub 用户名），即「这些机器和记忆属于谁」。
+
+创建团队 hub：
+
+1. 按上面路径 C 创建私有 hub 仓库。
+2. 把每位成员加为私有 hub 的 GitHub collaborator。push 权限即成员声明，不需要额外账号系统。
+3. 可选：在 hub 根目录提交 `team.json`（复制 `team.json.example`）：团队名、成员在 viewer 中的显示名/颜色，以及给启用 team 模式之前的旧 fragments 兜底的 `default_user`。
+
+加入团队 hub —— 每位成员在自己的每台 server 上，用自己的 GitHub 身份 clone 并照常贡献：
+
+```bash
+git clone git@github.com:<org>/<private-hub>.git && cd <private-hub>
+AMG_PRIVATE_HUB=1 ./contribute.sh my-workstation codex ~/projects/my-app        # 身份自动识别
+AMG_PRIVATE_HUB=1 ./contribute.sh my-workstation codex ~/projects/my-app ada   # 或显式声明
+```
+
+推送者身份的识别优先级：`--user`（`contribute.sh` 可选的第 4 个参数）> `AMG_USER` 环境变量 > `git config user.name` > `$USER`。它只作为 `user` 属性写在 entry/fact/machine/liveagent 节点上，绝不进入节点 id，因此不同机器的图谱始终能干净合并。
+
+汇总端无需新步骤：`./update.sh` 照常合并所有 fragments，对 team 模式之前的旧 fragments 兜底 `default_user`，并生成 `user` 节点及指向其机器的 `owns` 边。图里存在 user 数据时，viewer 会出现 USER 过滤（联动机器下拉）与按用户着色。
+
 ## 它做什么
 
 ```text
@@ -163,16 +188,16 @@ docs/galaxy/graph.enc.json
 
 ## Contributor 与 Aggregator
 
-- Contributor machine：运行 `AMG_PRIVATE_HUB=1 ./contribute.sh <machine> <claude|codex|cursor|human> <project-root>`，写入私有 fragment 并推到私有 hub。
+- Contributor machine：运行 `AMG_PRIVATE_HUB=1 ./contribute.sh <machine> <claude|codex|cursor|human> <project-root> [user]`，写入私有 fragment 并推到私有 hub。
 - Aggregator machine：运行 `./update.sh` 或 `./update.sh --pull`，合并 fragments，注入 presence，可选加密 Pages，并重建本地 standalone viewer。
 
 Contributors 不需要加密密码，也不应修改 `docs/galaxy/`。
 
 ## 数据模型
 
-节点包括 `project`、`entry`、`fact`、`agent`、`liveagent`、`machine`、`dataset`、`server`、`model`、`method`、`file`、`wandb`、`tech`、`notion`、`boundary`、`artifact`。
+节点包括 `project`、`entry`、`fact`、`agent`、`liveagent`、`machine`、`user`、`dataset`、`server`、`model`、`method`、`file`、`wandb`、`tech`、`notion`、`boundary`、`artifact`。
 
-边包括 `in`、`did`、`located`、`uses`、`touches`、`trains`、`tracks`、`syncs`、`explores`、`references`、`depends_on`、`inherits_from`、`exports_to`、`working_on`、`handoff_to`、`shared_on`、`cached_on`、`redacts`、`encrypts`、`publishes`、`keeps_private`、`validates`、`serves`、`replicates_to`、`link`、`on`。
+边包括 `in`、`did`、`located`、`uses`、`touches`、`trains`、`tracks`、`syncs`、`explores`、`references`、`depends_on`、`inherits_from`、`exports_to`、`working_on`、`handoff_to`、`owns`、`shared_on`、`cached_on`、`redacts`、`encrypts`、`publishes`、`keeps_private`、`validates`、`serves`、`replicates_to`、`link`、`on`。
 
 共享实体会自动连接跨机器项目。例如两个 agent 触碰同一数据集、文件、模型或 Notion 页面，它们会在图谱中相连。
 

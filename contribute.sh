@@ -2,19 +2,23 @@
 # 在「其他电脑」上运行：把本机 agent 记忆采集成 fragment，推送到共享私有仓库。
 # 汇总端下次跑 update.sh 会自动合并所有 fragment 并更新加密 Pages。
 #
-# 用法:  ./contribute.sh <本机唯一名> <工具> <项目根目录>
+# 用法:  ./contribute.sh <本机唯一名> <工具> <项目根目录> [推送者user]
 #   <本机唯一名>  这台机的唯一标识（如 workstation-a / laptop-b），勿与他机重名
 #   <工具>        claude / codex / cursor / human，用于在图里区分产出工具
 #   <项目根目录>  必须是明确、较窄的项目目录；首次运行不要扫 $HOME、/ 或整个 workspace
+#   [推送者user]  可选，团队 hub 中的推送者身份（GitHub 用户名）；缺省依次取
+#                 AMG_USER env / git config user.name / $USER（详见 README「Team Work」与 team.json.example）
 # 例:  ./contribute.sh workstation-a codex  ~/projects/my-app
 #      ./contribute.sh lab-node-b  claude ~/work/active-project
+#      ./contribute.sh lab-node-b  claude ~/work/active-project ada   # 显式声明推送者身份
 # 默认只生成本机 fragment，不提交；在私有 hub 中设置 AMG_PRIVATE_HUB=1 才会 git add -f/commit/push。
 # 依赖: 仅 python3(标准库) + git；私有 hub 推送需要 push 权限。
 set -uo pipefail
 cd "$(dirname "$0")"
-NAME="${1:?用法: ./contribute.sh <本机唯一名> <工具> <项目根目录>}"
-TOOL="${2:?用法: ./contribute.sh <本机唯一名> <工具> <项目根目录>}"
-ROOT="${3:?用法: ./contribute.sh <本机唯一名> <工具> <项目根目录>}"
+NAME="${1:?用法: ./contribute.sh <本机唯一名> <工具> <项目根目录> [推送者user]}"
+TOOL="${2:?用法: ./contribute.sh <本机唯一名> <工具> <项目根目录> [推送者user]}"
+ROOT="${3:?用法: ./contribute.sh <本机唯一名> <工具> <项目根目录> [推送者user]}"
+USER_ID="${4:-}"   # 可选推送者身份；留空时 collect.py 依次取 AMG_USER / git config user.name / $USER
 case "$TOOL" in claude|codex|cursor|human|agent) ;; *) echo "工具必须是 claude / codex / cursor / human"; exit 2;; esac
 ROOT_ABS="$(python3 -c 'import os,sys; print(os.path.abspath(os.path.expanduser(sys.argv[1])))' "$ROOT")"
 HOME_ABS="$(python3 -c 'import os; print(os.path.abspath(os.path.expanduser("~")))')"
@@ -26,8 +30,8 @@ if [ ! -d "$ROOT_ABS" ]; then
   echo "项目根目录不存在: $ROOT_ABS"; exit 2
 fi
 
-echo "[1/4] 采集本机记忆（root=$ROOT_ABS, tool=$TOOL）→ fragments/$NAME.json"
-python3 collect.py --local-only --machine "$NAME" --tool "$TOOL" --roots "$ROOT_ABS" --out "fragments/$NAME.json" >/dev/null \
+echo "[1/4] 采集本机记忆（root=$ROOT_ABS, tool=$TOOL${USER_ID:+, user=$USER_ID}）→ fragments/$NAME.json"
+python3 collect.py --local-only --machine "$NAME" --tool "$TOOL" ${USER_ID:+--user "$USER_ID"} --roots "$ROOT_ABS" --out "fragments/$NAME.json" >/dev/null \
   || { echo "采集失败"; exit 1; }
 echo "      $(python3 -c "import json;d=json.load(open('fragments/$NAME.json'));print(d['meta']['node_count'],'节点')" 2>/dev/null)"
 

@@ -1,0 +1,11 @@
+{
+  "_comment": "Copy to team.json in the ROOT of your PRIVATE hub and commit it there. Optional: without it, single-user hubs work unchanged. All values below are fictional examples.",
+  "_keys": "team: display name of the hub. default_user: identity backfilled onto fragments pushed before team mode existed (default 'unassigned'). members: push identities (GitHub usernames) -> viewer display name and color.",
+  "team": "demo-orbit",
+  "default_user": "unassigned",
+  "members": {
+    "ada": { "display": "Ada", "color": "#7dd3fc" },
+    "kael": { "display": "Kael", "color": "#f0abfc" },
+    "mira": { "display": "Mira", "color": "#fde68a" }
+  }
+}

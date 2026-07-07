@@ -82,6 +82,31 @@ AMG_TRACK_PRIVATE=1 ./update.sh
 
 Contributors write `fragments/<machine>.json`. The aggregator merges fragments, injects presence, optionally encrypts for Pages, and rebuilds the local `standalone.html`.
 
+### Team Work: Multiple Users On One Private Hub
+
+A private hub can be shared by a whole team. Two identity concepts stay separate in the graph:
+
+- **agent** — the executor labeled inside a memory entry (`claude`, `codex`, `cursor`, `human`). It answers "which tool did the work".
+- **user** — the push identity (GitHub username) of the person whose machines contribute fragments. It answers "whose machines and whose memory".
+
+Create a team hub:
+
+1. Create the private hub repository as in path C above.
+2. Add each teammate as a GitHub collaborator on the private hub. Push permission is the membership declaration; there is no extra account system.
+3. Optionally commit a `team.json` in the hub root (copy `team.json.example`): team name, member display names/colors for the viewer, and a `default_user` backfilled onto fragments pushed before team mode.
+
+Join a team hub — each member, on each of their servers, clones with their own GitHub identity and contributes as usual:
+
+```bash
+git clone git@github.com:<org>/<private-hub>.git && cd <private-hub>
+AMG_PRIVATE_HUB=1 ./contribute.sh my-workstation codex ~/projects/my-app        # identity auto-detected
+AMG_PRIVATE_HUB=1 ./contribute.sh my-workstation codex ~/projects/my-app ada   # or declared explicitly
+```
+
+The push identity resolves in this priority order: `--user` (the optional 4th `contribute.sh` argument) > `AMG_USER` env > `git config user.name` > `$USER`. It is written only as a `user` attribute on entry/fact/machine/liveagent nodes and never becomes part of a node id, so graphs from different machines always merge cleanly.
+
+The aggregator needs no new steps: `./update.sh` merges all fragments as before, backfills `default_user` on pre-team fragments, and emits `user` nodes with `owns` edges to their machines. When user data is present, the viewer gains a USER filter (with machine cascade) and per-user coloring.
+
 ## What This Does
 
 ```text
@@ -169,16 +194,16 @@ Do not publish plaintext `graph.json`.
 
 ## Contributor Vs Aggregator
 
-- Contributor machine: runs `AMG_PRIVATE_HUB=1 ./contribute.sh <machine> <claude|codex|cursor|human> <project-root>`, writes a private fragment, and pushes it to the private hub.
+- Contributor machine: runs `AMG_PRIVATE_HUB=1 ./contribute.sh <machine> <claude|codex|cursor|human> <project-root> [user]`, writes a private fragment, and pushes it to the private hub.
 - Aggregator machine: runs `./update.sh` or `./update.sh --pull`, merges all fragments, injects live presence, optionally encrypts for Pages, and rebuilds the local standalone viewer.
 
 Contributors do not need encryption passwords and should not touch `docs/galaxy/`.
 
 ## Data Model
 
-Nodes include `project`, `entry`, `fact`, `agent`, `liveagent`, `machine`, `dataset`, `server`, `model`, `method`, `file`, `wandb`, `tech`, `notion`, `boundary`, and `artifact`.
+Nodes include `project`, `entry`, `fact`, `agent`, `liveagent`, `machine`, `user`, `dataset`, `server`, `model`, `method`, `file`, `wandb`, `tech`, `notion`, `boundary`, and `artifact`.
 
-Edges include `in`, `did`, `located`, `uses`, `touches`, `trains`, `tracks`, `syncs`, `explores`, `references`, `depends_on`, `inherits_from`, `exports_to`, `working_on`, `handoff_to`, `shared_on`, `cached_on`, `redacts`, `encrypts`, `publishes`, `keeps_private`, `validates`, `serves`, `replicates_to`, `link`, and `on`.
+Edges include `in`, `did`, `located`, `uses`, `touches`, `trains`, `tracks`, `syncs`, `explores`, `references`, `depends_on`, `inherits_from`, `exports_to`, `working_on`, `handoff_to`, `owns`, `shared_on`, `cached_on`, `redacts`, `encrypts`, `publishes`, `keeps_private`, `validates`, `serves`, `replicates_to`, `link`, and `on`.
 
 Shared entities automatically connect projects across machines. For example, two different agents touching the same dataset, file, model, or Notion page will become connected in the graph.
 

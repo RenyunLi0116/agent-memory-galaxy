@@ -232,8 +232,10 @@
         <label><input type="radio" name="cm" value="type" checked> <span id="colorType">TYPE</span></label>
         <label><input type="radio" name="cm" value="task"> <span id="colorTask">TASK</span></label>
         <label><input type="radio" name="cm" value="tool"> <span id="colorTool">TOOL</span></label>
+        <label id="colorUserWrap"><input type="radio" name="cm" value="user"> <span id="colorUser">USER</span></label>
       </div>
       <div class="row"><label id="projectLabel">PROJECT</label><select id="fProject"><option value="">ALL</option></select></div>
+      <div class="row" id="userRow"><label id="userLabel">USER</label><select id="fUser"><option value="">ALL</option></select></div>
       <div class="row"><label id="machineLabel">MACHINE</label><select id="fMachine"><option value="">ALL</option></select></div>
       <div class="row"><label id="statusLabel">STATUS</label><select id="fStatus"><option value="">ALL</option>
         <option>done</option><option>doing</option><option>planned</option><option>logged</option></select></div>
@@ -263,25 +265,25 @@ function readLang(){const q=new URLSearchParams(location.search).get('lang');
   return nav.startsWith('zh')?'zh':'en';}
 let LANG=readLang();
 const UI={
-  en:{booting:'BOOTING...',noData:'NO DATA',encrypted:'🔒 ENCRYPTED',unlockTitle:'◢ Memory Galaxy',unlockSub1:'Encrypted · enter a password to unlock locally',unlockSub2:'Encrypted · enter two passwords to unlock locally',password1:'Password 1',password2:'Password 2',password:'PASSWORD',unlock:'UNLOCK',decrypting:'DECRYPTING...',badPassword:'Wrong password. Try again.',lockFoot:'Passwords are used only in your browser for decryption. They are not uploaded or stored. Search engines and unauthorized visitors only see ciphertext.',search:'SEARCH ⏎',recenter:'RECENTER',styleTitle:'STYLE',types:'NODE TYPES',tasks:'TASK TYPES',color:'COLOR:',type:'TYPE',task:'TASK',tool:'TOOL',project:'PROJECT',machine:'MACHINE',status:'STATUS',activity:'ACTIVITY',all:'ALL',active:'🟢 RECENT RECORDS',live:'🔴 WORKING NOW',timeline:'TIMELINE',spin:'SPIN',edges:'EDGES',hideDerived:'HIDE AUTO-DERIVED',hideDerivedTitle:'Hide memories derived from native Claude/Codex/Cursor sessions.',readout:'READOUT',hint:'Drag to rotate · Wheel to zoom · Click readout · 🟢 recent records · 🔴 working now',noMatch:'NO MATCH',online:'ONLINE',nodes:'NODES',links:'LINKS',proj:'PROJ',mach:'MACH',agentsOnline:'agents online',noneDates:'(no dates)',working:'working now',autoDerived:'auto-derived',doing:'Doing',heartbeat:'Heartbeat',activeState:'active',staleState:'stale',session:'Session',source:'Source',primary:'Primary',memoryType:'Memory type',weight:'Weight',degree:'Links',related:'Related',justNow:'just now',minutesAgo:'minutes ago',hoursAgo:'hours ago',daysAgo:'days ago',languageNext:'中文',panelBtn:'CONTROLS',statsBtn:'STATS'},
-  zh:{booting:'启动中...',noData:'无数据',encrypted:'🔒 已加密',unlockTitle:'◢ Memory Galaxy',unlockSub1:'已加密 · 输入密码在本地解锁',unlockSub2:'已加密 · 输入两个密码在本地解锁',password1:'密码 1',password2:'密码 2',password:'密码',unlock:'解锁',decrypting:'解密中...',badPassword:'密码错误，请重试',lockFoot:'密码只在你的浏览器里用于解密，不上传、不留存。搜索引擎与未授权访问者只能看到密文。',search:'搜索 ⏎',recenter:'回中',styleTitle:'视觉风格 STYLE',types:'节点类型 NODE TYPES',tasks:'任务类型 TASK',color:'着色:',type:'类型',task:'任务',tool:'工具',project:'项目 PROJECT',machine:'机器 MACHINE',status:'状态 STATUS',activity:'活跃 ACTIVITY',all:'全部',active:'🟢 近3天有记录',live:'🔴 正在工作',timeline:'时间轴',spin:'自转',edges:'连线',hideDerived:'隐藏自动提炼',hideDerivedTitle:'隐藏从 Claude/Codex/Cursor 原生会话自动提炼、无人工 agent_memory.md 的记忆。',readout:'读出 READOUT',hint:'拖拽旋转 · 滚轮缩放 · 点击读出 · 🟢近3天有记录 · 🔴正在工作',noMatch:'没有匹配',online:'ONLINE',nodes:'NODES',links:'LINKS',proj:'PROJ',mach:'MACH',agentsOnline:'个 agent 在线',noneDates:'(无日期)',working:'正在工作',autoDerived:'自动提炼',doing:'正在做',heartbeat:'心跳',activeState:'活跃',staleState:'已超时',session:'Session',source:'来源',primary:'主要项目',memoryType:'记忆类型',weight:'体量',degree:'连接',related:'关联',justNow:'刚刚',minutesAgo:'分钟前',hoursAgo:'小时前',daysAgo:'天前',languageNext:'EN',panelBtn:'控制面板',statsBtn:'统计'}
+  en:{booting:'BOOTING...',noData:'NO DATA',encrypted:'🔒 ENCRYPTED',unlockTitle:'◢ Memory Galaxy',unlockSub1:'Encrypted · enter a password to unlock locally',unlockSub2:'Encrypted · enter two passwords to unlock locally',password1:'Password 1',password2:'Password 2',password:'PASSWORD',unlock:'UNLOCK',decrypting:'DECRYPTING...',badPassword:'Wrong password. Try again.',lockFoot:'Passwords are used only in your browser for decryption. They are not uploaded or stored. Search engines and unauthorized visitors only see ciphertext.',search:'SEARCH ⏎',recenter:'RECENTER',styleTitle:'STYLE',types:'NODE TYPES',tasks:'TASK TYPES',color:'COLOR:',type:'TYPE',task:'TASK',tool:'TOOL',user:'USER',userShort:'USER',unassigned:'Unassigned',project:'PROJECT',machine:'MACHINE',status:'STATUS',activity:'ACTIVITY',all:'ALL',active:'🟢 RECENT RECORDS',live:'🔴 WORKING NOW',timeline:'TIMELINE',spin:'SPIN',edges:'EDGES',hideDerived:'HIDE AUTO-DERIVED',hideDerivedTitle:'Hide memories derived from native Claude/Codex/Cursor sessions.',readout:'READOUT',hint:'Drag to rotate · Wheel to zoom · Click readout · 🟢 recent records · 🔴 working now',noMatch:'NO MATCH',online:'ONLINE',nodes:'NODES',links:'LINKS',proj:'PROJ',mach:'MACH',agentsOnline:'agents online',noneDates:'(no dates)',working:'working now',autoDerived:'auto-derived',doing:'Doing',heartbeat:'Heartbeat',activeState:'active',staleState:'stale',session:'Session',source:'Source',primary:'Primary',memoryType:'Memory type',weight:'Weight',degree:'Links',related:'Related',justNow:'just now',minutesAgo:'minutes ago',hoursAgo:'hours ago',daysAgo:'days ago',languageNext:'中文',panelBtn:'CONTROLS',statsBtn:'STATS'},
+  zh:{booting:'启动中...',noData:'无数据',encrypted:'🔒 已加密',unlockTitle:'◢ Memory Galaxy',unlockSub1:'已加密 · 输入密码在本地解锁',unlockSub2:'已加密 · 输入两个密码在本地解锁',password1:'密码 1',password2:'密码 2',password:'密码',unlock:'解锁',decrypting:'解密中...',badPassword:'密码错误，请重试',lockFoot:'密码只在你的浏览器里用于解密，不上传、不留存。搜索引擎与未授权访问者只能看到密文。',search:'搜索 ⏎',recenter:'回中',styleTitle:'视觉风格 STYLE',types:'节点类型 NODE TYPES',tasks:'任务类型 TASK',color:'着色:',type:'类型',task:'任务',tool:'工具',user:'用户 USER',userShort:'用户',unassigned:'未标注',project:'项目 PROJECT',machine:'机器 MACHINE',status:'状态 STATUS',activity:'活跃 ACTIVITY',all:'全部',active:'🟢 近3天有记录',live:'🔴 正在工作',timeline:'时间轴',spin:'自转',edges:'连线',hideDerived:'隐藏自动提炼',hideDerivedTitle:'隐藏从 Claude/Codex/Cursor 原生会话自动提炼、无人工 agent_memory.md 的记忆。',readout:'读出 READOUT',hint:'拖拽旋转 · 滚轮缩放 · 点击读出 · 🟢近3天有记录 · 🔴正在工作',noMatch:'没有匹配',online:'ONLINE',nodes:'NODES',links:'LINKS',proj:'PROJ',mach:'MACH',agentsOnline:'个 agent 在线',noneDates:'(无日期)',working:'正在工作',autoDerived:'自动提炼',doing:'正在做',heartbeat:'心跳',activeState:'活跃',staleState:'已超时',session:'Session',source:'来源',primary:'主要项目',memoryType:'记忆类型',weight:'体量',degree:'连接',related:'关联',justNow:'刚刚',minutesAgo:'分钟前',hoursAgo:'小时前',daysAgo:'天前',languageNext:'EN',panelBtn:'控制面板',statsBtn:'统计'}
 };
 function tr(k){return (UI[LANG]&&UI[LANG][k])||UI.en[k]||k;}
 const TYPE_LABELS={
-  en:{project:'Project',entry:'Work entry',fact:'Auto memory',agent:'Agent',dataset:'Dataset',server:'Server',model:'Model/Run',method:'Method',file:'File',wandb:'W&B',tech:'Tech',notion:'Notion',machine:'Machine',liveagent:'Working now',boundary:'Boundary',artifact:'Artifact'},
-  zh:{project:'项目',entry:'工作记录',fact:'自动记忆',agent:'Agent',dataset:'数据集',server:'服务器',model:'模型/Run',method:'方法/思路',file:'文件',wandb:'W&B',tech:'框架/技术',notion:'Notion',machine:'机器',liveagent:'正在工作',boundary:'边界',artifact:'产物'}
+  en:{project:'Project',entry:'Work entry',fact:'Auto memory',agent:'Agent',dataset:'Dataset',server:'Server',model:'Model/Run',method:'Method',file:'File',wandb:'W&B',tech:'Tech',notion:'Notion',machine:'Machine',liveagent:'Working now',boundary:'Boundary',artifact:'Artifact',user:'Team member'},
+  zh:{project:'项目',entry:'工作记录',fact:'自动记忆',agent:'Agent',dataset:'数据集',server:'服务器',model:'模型/Run',method:'方法/思路',file:'文件',wandb:'W&B',tech:'框架/技术',notion:'Notion',machine:'机器',liveagent:'正在工作',boundary:'边界',artifact:'产物',user:'团队成员'}
 };
 const TYPE_DESC={
-  en:{project:'Top-level unit that owns work memory',entry:'A reviewed work record from a session or day',fact:'Structured memory distilled from safe session metadata',agent:'The human or AI actor that performed work',dataset:'Dataset, training input, or shared asset',server:'Server or runtime node',model:'Model checkpoint or tracked run',method:'Technical method or workflow inside a project',file:'Code, config, or output file',wandb:'Experiment tracking run id',tech:'External framework or technology',notion:'Notion page or sync target',machine:'Machine where memory was recorded',liveagent:'Currently working agent with a fresh heartbeat',boundary:'Public, private, or encrypted boundary',artifact:'Build, encrypted, or published output'},
-  zh:{project:'研究项目 — 工作归属的顶层单位',entry:'一条工作记录(某次 session/某天)',fact:'自动提炼的结构化记忆事实卡',agent:'标注的执行者(人/AI)',dataset:'数据集/训练数据/共享资产',server:'服务器或运行节点',model:'训练出的模型 / run',method:'项目内技术思路或流程',file:'代码/配置/产物文件',wandb:'实验追踪 run id',tech:'外部框架/技术',notion:'Notion 页面/同步目标',machine:'记录所在机器',liveagent:'正在工作(红光)',boundary:'公开、私有或加密边界',artifact:'构建、加密或发布产物'}
+  en:{project:'Top-level unit that owns work memory',entry:'A reviewed work record from a session or day',fact:'Structured memory distilled from safe session metadata',agent:'The human or AI actor that performed work',dataset:'Dataset, training input, or shared asset',server:'Server or runtime node',model:'Model checkpoint or tracked run',method:'Technical method or workflow inside a project',file:'Code, config, or output file',wandb:'Experiment tracking run id',tech:'External framework or technology',notion:'Notion page or sync target',machine:'Machine where memory was recorded',liveagent:'Currently working agent with a fresh heartbeat',boundary:'Public, private, or encrypted boundary',artifact:'Build, encrypted, or published output',user:'Team member (push identity)'},
+  zh:{project:'研究项目 — 工作归属的顶层单位',entry:'一条工作记录(某次 session/某天)',fact:'自动提炼的结构化记忆事实卡',agent:'标注的执行者(人/AI)',dataset:'数据集/训练数据/共享资产',server:'服务器或运行节点',model:'训练出的模型 / run',method:'项目内技术思路或流程',file:'代码/配置/产物文件',wandb:'实验追踪 run id',tech:'外部框架/技术',notion:'Notion 页面/同步目标',machine:'记录所在机器',liveagent:'正在工作(红光)',boundary:'公开、私有或加密边界',artifact:'构建、加密或发布产物',user:'团队成员（推送身份）'}
 };
 const TASK_LABELS={
   en:{'训练':'Training','数据':'Data','评测':'Evaluation','部署':'Deployment','调研':'Research','同步':'Sync','规划':'Planning','其他':'Other'},
   zh:{'训练':'训练','数据':'数据','评测':'评测','部署':'部署','调研':'调研','同步':'同步','规划':'规划','其他':'其他'}
 };
 const EDGE_LABELS={
-  en:{in:'in project',located:'located on',did:'did',uses:'uses',touches:'touches',trains:'trains',tracks:'tracks',syncs:'syncs',on:'on',explores:'explores',references:'references',link:'links',depends_on:'depends on',inherits_from:'inherits from',exports_to:'exports to',working_on:'working on',handoff_to:'handoff to',keeps_private:'keeps private',encrypts:'encrypts',redacts:'redacts',publishes_to:'publishes to',publishes:'publishes',shared_on:'shared on',cached_on:'cached on',validates:'validates',serves:'serves',replicates_to:'replicates to',exposes:'exposes'},
-  zh:{in:'归属项目',located:'位于',did:'执行',uses:'使用',touches:'触及',trains:'训练',tracks:'追踪',syncs:'同步',on:'位于',explores:'探索',references:'引用',link:'连接',depends_on:'依赖',inherits_from:'继承',exports_to:'导出到',working_on:'正在做',handoff_to:'交接给',keeps_private:'保持私有',encrypts:'加密',redacts:'脱敏',publishes_to:'发布到',publishes:'发布',shared_on:'共享于',cached_on:'缓存于',validates:'验证',serves:'服务',replicates_to:'同步到',exposes:'暴露'}
+  en:{in:'in project',located:'located on',did:'did',uses:'uses',touches:'touches',trains:'trains',tracks:'tracks',syncs:'syncs',on:'on',explores:'explores',references:'references',link:'links',depends_on:'depends on',inherits_from:'inherits from',exports_to:'exports to',working_on:'working on',handoff_to:'handoff to',keeps_private:'keeps private',encrypts:'encrypts',redacts:'redacts',publishes_to:'publishes to',publishes:'publishes',shared_on:'shared on',cached_on:'cached on',validates:'validates',serves:'serves',replicates_to:'replicates to',exposes:'exposes',owns:'owns'},
+  zh:{in:'归属项目',located:'位于',did:'执行',uses:'使用',touches:'触及',trains:'训练',tracks:'追踪',syncs:'同步',on:'位于',explores:'探索',references:'引用',link:'连接',depends_on:'依赖',inherits_from:'继承',exports_to:'导出到',working_on:'正在做',handoff_to:'交接给',keeps_private:'保持私有',encrypts:'加密',redacts:'脱敏',publishes_to:'发布到',publishes:'发布',shared_on:'共享于',cached_on:'缓存于',validates:'验证',serves:'服务',replicates_to:'同步到',exposes:'暴露',owns:'拥有'}
 };
 function typeLabel(t){return (TYPE_LABELS[LANG]&&TYPE_LABELS[LANG][t])||TYPE_LABELS.en[t]||t;}
 function typeDesc(t){return (TYPE_DESC[LANG]&&TYPE_DESC[LANG][t])||TYPE_DESC.en[t]||'';}
@@ -292,11 +294,11 @@ function nodeLabel(n){return i18nField(n,'label')||n.label||'';}
 function nodeValue(n,k){return i18nField(n,k)||n[k]||'';}
 const PALETTE={project:"#ff5d73",entry:"#4ea8ff",fact:"#2ee6c5",agent:"#ffb24d",dataset:"#b07bff",
   server:"#ff5fa2",model:"#2bf0a0",method:"#ff7bdf",file:"#8aa0c8",wandb:"#ffd84d",tech:"#33c6ff",notion:"#d9c2ff",machine:"#ffe14d",
-  liveagent:"#ff3b4e",boundary:"#f5b642",artifact:"#7df3c4"};
+  liveagent:"#ff3b4e",boundary:"#f5b642",artifact:"#7df3c4",user:"#c6f24e"};
 const LIVE_TTL=6*60*60*1000;   // 心跳新鲜期：6 小时
 const TASKC={"训练":"#ff8a3d","数据":"#3da5ff","评测":"#2be0a6","部署":"#9aa6c0","调研":"#c06bff","同步":"#ff6fae","规划":"#ffd24b","其他":"#6b7690"};
 const TOOLC={claude:"#c39bff",codex:"#10b981",cursor:"#38bdf8",human:"#ffd24b",agent:"#8aa0c8",automator:"#9aa6c0"};   // 产出工具配色
-const BASE={project:13,machine:15,agent:10,fact:7,entry:6,notion:9,dataset:9,server:9,model:8,method:8,tech:8,file:5,boundary:10,artifact:8};
+const BASE={project:13,machine:15,agent:10,fact:7,entry:6,notion:9,dataset:9,server:9,model:8,method:8,tech:8,file:5,boundary:10,artifact:8,user:12};
 const DEFAULT_OFF=new Set(["file"]);
 const FOV=820,DIST=920;
 // 移动断点：与 CSS 的 @media (max-width:768px),(max-height:480px) 保持一致
@@ -308,7 +310,7 @@ let cv,ctx,W=0,H=0,DPR=1,cx=0,cy=0;
 let yaw=0.5,pitch=-0.32,zoom=1.15,autoSpin=true,showEdges=true,colorMode="type";
 let sel=null,hover=null,dragging=false,moved=false,last={x:0,y:0};
 let alpha=1,wmax=1,stars=[],nebula=[],tick=0,boot=0;
-let filters={types:new Set(),project:"",machine:"",status:"",task:"",activity:"",hideDerived:false,tmin:0,tmax:1e15};
+let filters={types:new Set(),project:"",user:"",machine:"",status:"",task:"",activity:"",hideDerived:false,tmin:0,tmax:1e15};
 let dmin=0,dmax=0,hasDates=false;
 let liveCount=0,_pw=null,_encMode=false;   // 红光 live 统计 + 轮询用密码/加密模式
 
@@ -316,6 +318,17 @@ function setText(id,key){const el=document.getElementById(id);if(el)el.textConte
 function setFirstOption(id){const s=document.getElementById(id);if(s&&s.options.length)s.options[0].textContent=tr('all');}
 function projectDisplay(value){const n=N.find(x=>x.type==='project'&&x.label===value);return n?nodeLabel(n):value;}
 function machineDisplay(value){const n=N.find(x=>x.type==='machine'&&x.label===value);return n?nodeLabel(n):value;}
+// —— 用户(推送身份)：user=推送者身份字符串，写在 entry/fact/machine/liveagent 的 user 属性 + 独立 user 节点上 ——
+function usersOf(){return [...new Set(N.map(n=>n.type==='user'?(n.label||n.user):n.user).filter(Boolean))];}
+function teamMembers(){const m=RAW&&RAW.meta&&RAW.meta.team&&RAW.meta.team.members;return (m&&typeof m==='object')?m:null;}
+function defaultUser(){const t=RAW&&RAW.meta&&RAW.meta.team;return (t&&t.default_user)||'';}
+function userDisplay(value){const m=teamMembers();if(m&&m[value]&&m[value].display)return m[value].display;
+  const n=N.find(x=>x.type==='user'&&x.label===value);return n?nodeLabel(n):value;}
+function machinesOf(user){   // 某 user 的机器集合 = machine 节点 user 属性 ∪ 该 user 记录触及的机器（覆盖共享机器）
+  if(!user)return N.filter(n=>n.type==='machine').map(n=>n.label);
+  const s=new Set();N.forEach(n=>{if(n.type==='machine'&&n.user===user)s.add(n.label);
+    else if((n.type==='entry'||n.type==='fact'||n.type==='liveagent')&&n.user===user&&n.machine)s.add(n.machine);});
+  return [...s];}
 function syncLangUrl(){try{const u=new URL(location.href);u.searchParams.set('lang',LANG);history.replaceState(null,'',u);}catch(e){}}
 function setLanguage(lang){if(!LANGS.has(lang)||lang===LANG)return;LANG=lang;try{localStorage.setItem('amg_lang',LANG);}catch(e){}syncLangUrl();applyLanguage();}
 function applyLanguage(){
@@ -326,14 +339,14 @@ function applyLanguage(){
   const sq=document.getElementById('sq-trig');if(sq)sq.title=tr('styleTitle');
   const langCur=document.getElementById('lang-cur');if(langCur)langCur.textContent=LANG==='zh'?'中文':'EN';
   setText('fit','recenter');setText('typesHead','types');setText('tasksHead','tasks');setText('colorHead','color');
-  setText('colorType','type');setText('colorTask','task');setText('colorTool','tool');setText('projectLabel','project');setText('machineLabel','machine');
+  setText('colorType','type');setText('colorTask','task');setText('colorTool','tool');setText('colorUser','userShort');setText('projectLabel','project');setText('userLabel','user');setText('machineLabel','machine');
   setText('statusLabel','status');setText('activityLabel','activity');setText('timelineLabel','timeline');setText('spinLabel','spin');setText('edgesLabel','edges');
   setText('derivedLabel','hideDerived');setText('readoutLabel','readout');setText('hint','hint');setText('empty','noMatch');
   const dw=document.getElementById('derivedWrap');if(dw)dw.title=tr('hideDerivedTitle');
   const _sbt=document.getElementById('searchBtn');if(_sbt)_sbt.title=tr('search');
   const _stg=document.getElementById('sideToggle');if(_stg)_stg.title=tr('panelBtn');
   const _sbg=document.getElementById('statBadge');if(_sbg)_sbg.title=tr('statsBtn');
-  setFirstOption('fProject');setFirstOption('fMachine');setFirstOption('fStatus');setFirstOption('fActivity');
+  setFirstOption('fProject');setFirstOption('fUser');setFirstOption('fMachine');setFirstOption('fStatus');setFirstOption('fActivity');
   const fa=document.getElementById('fActivity');if(fa&&fa.options.length>=3){fa.options[1].textContent=tr('active');fa.options[2].textContent=tr('live');}
   if(document.getElementById('sq-cur'))_styleSync(styleKey);   // 风格触发钮标签跟随语言（中/英半段）
   if(RAW){buildUI([...new Set(N.map(n=>n.type))]);computeLive();if(sel)select(sel);}
@@ -405,7 +418,15 @@ function go(){
   const _sb=document.getElementById('statBadge');if(_sb)_sb.innerHTML=`◉ <b>${N.length}</b>`;   // 移动端紧凑计数徽标
   resize();applyFilter();loop();
 }
-function col(n){ if(n.type==='entry'){ if(colorMode==='task')return TASKC[n.task]||'#6b7690'; if(colorMode==='tool')return TOOLC[n.tool]||'#8aa0c8'; } return PALETTE[n.type]||'#9fb0d0'; }
+function col(n){ if(colorMode==='user'){const u=n.type==='user'?(n.label||n.user):n.user;return u?userColor(u):'#6b7690';}
+  if(n.type==='entry'){ if(colorMode==='task')return TASKC[n.task]||'#6b7690'; if(colorMode==='tool')return TOOLC[n.tool]||'#8aa0c8'; } return PALETTE[n.type]||'#9fb0d0'; }
+// 用户着色：team.json members 指定色优先（meta.team.members[u].color）；否则 FNV-1a 哈希→确定性色相
+function userColor(u){const m=teamMembers();
+  if(m&&m[u]&&/^#[0-9a-fA-F]{6}$/.test(m[u].color||''))return m[u].color;
+  let h=2166136261;const s=''+u;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}
+  return _hslHex(h%360,0.66,0.62);}
+function _hslHex(hh,ss,ll){const a=ss*Math.min(ll,1-ll),f=x=>{const k=(x+hh/30)%12,c=ll-a*Math.max(Math.min(k-3,9-k,1),-1);
+  return Math.round(c*255).toString(16).padStart(2,'0');};return '#'+f(0)+f(8)+f(4);}
 // —— 正在工作(红光) 判定：liveagent 心跳 15min 内且 working（用 Date.now 现算，快照过期会自动降级）——
 function isLiveAgent(n){return n.type==='liveagent'&&(n.status==='working'||n.status==='doing')&&(n.demo_live||(n.heartbeat&&(Date.now()-Date.parse(n.heartbeat)<LIVE_TTL)));}
 function computeLive(){
@@ -448,8 +469,20 @@ function buildUI(types){
     tk.appendChild(d);});
   const fill=(id,v,labeler=x=>x,current='')=>{const s=document.getElementById(id);s.innerHTML=`<option value="">${tr('all')}</option>`;[...new Set(v)].filter(Boolean).sort().forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=labeler(x);s.appendChild(o);});s.value=current||'';};
   fill('fProject',N.filter(n=>n.type==='project').map(n=>n.label),projectDisplay,filters.project);
-  fill('fMachine',N.filter(n=>n.type==='machine').map(n=>n.label),machineDisplay,filters.machine);
+  // —— 用户 USER 筛选：仅当图里存在 user 数据时显示（老图/无 user 图自动隐藏行与着色项，页面不坏）——
+  const _users=usersOf(),_hasU=_users.length>0,
+        _uRow=document.getElementById('userRow'),_uCol=document.getElementById('colorUserWrap');
+  if(_uRow)_uRow.style.display=_hasU?'':'none';
+  if(_uCol)_uCol.style.display=_hasU?'':'none';
+  if(!_hasU){filters.user='';
+    if(colorMode==='user'){colorMode='type';const r0=document.querySelector('input[name=cm][value=type]');if(r0)r0.checked=true;}}
+  const refillMachines=()=>fill('fMachine',machinesOf(filters.user),machineDisplay,filters.machine);   // 先清 options 再按当前 user 重建机器集合
+  fill('fUser',_users,userDisplay,filters.user);
+  refillMachines();
   fProject.onchange=e=>{filters.project=e.target.value;applyFilter();};
+  fUser.onchange=e=>{filters.user=e.target.value;   // 用户→机器联动：机器下拉重建为该 user 的机器集合；ALL 恢复全部
+    if(filters.machine&&!machinesOf(filters.user).includes(filters.machine))filters.machine='';
+    refillMachines();applyFilter();};
   fMachine.onchange=e=>{filters.machine=e.target.value;applyFilter();};
   fStatus.onchange=e=>{filters.status=e.target.value;applyFilter();};
   fActivity.onchange=e=>{filters.activity=e.target.value;applyFilter();};
@@ -485,17 +518,23 @@ let visN=[],visSet=new Set(),focusSet=null;
 // 选中项目/机器时，算出"焦点邻域"：匹配的记录/agent + 它们触及的实体/机器 + 项目/机器节点本身
 function buildFocus(){
   focusSet=null;
-  if(!filters.project&&!filters.machine)return;
+  if(!filters.project&&!filters.machine&&!filters.user)return;
   const s=new Set();
   N.forEach(n=>{
     if(n.type==='entry'||n.type==='fact'||n.type==='liveagent'){
       const okP=!filters.project||n.project===filters.project;
       const okM=!filters.machine||n.machine===filters.machine;
-      if(okP&&okM){s.add(n.id);(adj[n.id]||[]).forEach(x=>s.add(x.o));}
+      const okU=!filters.user||n.user===filters.user;
+      if(okP&&okM&&okU){s.add(n.id);(adj[n.id]||[]).forEach(x=>s.add(x.o));}
     }
   });
   if(filters.project)N.forEach(n=>{if(n.type==='project'&&n.label===filters.project)s.add(n.id);});
   if(filters.machine)N.forEach(n=>{if(n.type==='machine'&&n.label===filters.machine)s.add(n.id);});
+  // user 节点随焦点收敛：选中的 user 保留自身 + owns 邻域；未选 user 时，owns 的机器仍在焦点内的 user 保留
+  N.forEach(n=>{if(n.type==='user'){
+    if(filters.user){if(n.label===filters.user){s.add(n.id);(adj[n.id]||[]).forEach(x=>{if(x.e.type==='owns')s.add(x.o);});}}
+    else if((adj[n.id]||[]).some(x=>x.e.type==='owns'&&s.has(x.o)))s.add(n.id);
+  }});
   focusSet=s;
 }
 function applyFilter(){buildFocus();visN=N.filter(visible);visSet=new Set(visN.map(n=>n.id));
@@ -539,7 +578,7 @@ function setStyle(k){if(!THEMES[k])return;styleKey=k;try{localStorage.setItem('a
   if(typeof _styleSync==='function')_styleSync(k);}
 // 按类型的全息异形（比小圆球酷）
 const SHAPE={project:'reactor',machine:'reactor',agent:'ring',file:'dot',entry:'diamond',method:'diamond',
-  dataset:'hex',tech:'hex',model:'tri',wandb:'tri',server:'square',fact:'square',notion:'square',boundary:'hex',artifact:'diamond'};
+  dataset:'hex',tech:'hex',model:'tri',wandb:'tri',server:'square',fact:'square',notion:'square',boundary:'hex',artifact:'diamond',user:'duo'};
 const POLY={diamond:[4,0],square:[4,Math.PI/4],hex:[6,0],tri:[3,-Math.PI/2]};
 function poly(x,y,r,s,rot){ctx.beginPath();for(let i=0;i<s;i++){const a=rot+i/s*6.2832,px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;i?ctx.lineTo(px,py):ctx.moveTo(px,py);}ctx.closePath();}
 function drawGlyph(n,dep){(TH().glyph||glyphShapes)(n,dep);}
@@ -553,6 +592,10 @@ function glyphShapes(n,dep){const x=n._sx,y=n._sy,r=n._r,c=col(n),sh=SHAPE[n.typ
   }else if(sh==='ring'){            // agent：环 + 核
     ctx.strokeStyle=fill;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r*0.9,0,6.2832);ctx.stroke();
     ctx.fillStyle=hx('#ffffff',.7*dep);ctx.beginPath();ctx.arc(x,y,r*0.3,0,6.2832);ctx.fill();
+  }else if(sh==='duo'){             // user(团队成员/推送身份)：双环 + 白核，与 agent 单环区分
+    ctx.strokeStyle=fill;ctx.lineWidth=1.8;ctx.beginPath();ctx.arc(x,y,r*0.95,0,6.2832);ctx.stroke();
+    ctx.strokeStyle=hx(c,.5*dep);ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,r*0.6,0,6.2832);ctx.stroke();
+    ctx.fillStyle=hx('#ffffff',.75*dep);ctx.beginPath();ctx.arc(x,y,r*0.24,0,6.2832);ctx.fill();
   }else if(sh==='dot'){             // file：小点
     ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,r,0,6.2832);ctx.fill();
   }else{                            // 多边形：菱形/方块/六边形/三角
@@ -724,7 +767,7 @@ function mergeLive(fresh){
   let changed=false;
   freshLA.forEach(fn=>{
     const ex=byId[fn.id];
-    if(ex){ex.heartbeat=fn.heartbeat;ex.status=fn.status;ex.current=fn.current;ex.project=fn.project;ex.tool=fn.tool;}
+    if(ex){ex.heartbeat=fn.heartbeat;ex.status=fn.status;ex.current=fn.current;ex.project=fn.project;ex.tool=fn.tool;ex.user=fn.user;}
     else{fn.x=(Math.random()*2-1)*220;fn.y=(Math.random()*2-1)*220;fn.z=(Math.random()*2-1)*220;fn.vx=fn.vy=fn.vz=0;
       N.push(fn);byId[fn.id]=fn;adj[fn.id]=[];filters.types.add('liveagent');changed=true;}
   });
@@ -791,6 +834,10 @@ function select(p){sel=p;const d=document.getElementById('detail'),b=document.ge
   if(p.session)kv.push([tr('session'),p.session]);if(p.project)kv.push([tr('project'),projectDisplay(p.project)]);
   if(p.derived)kv.push([tr('source'),LANG==='zh'?(p.tool||'')+' 原生会话自动提炼'+(p.n_sessions?'（'+p.n_sessions+' session）':''):'Auto-derived from '+(p.tool||'native')+' sessions'+(p.n_sessions?' ('+p.n_sessions+' sessions)':'')]);
   if(p.primary)kv.push([tr('primary'),nodeValue(p,'primary')]);if(p.machine)kv.push([tr('machine'),machineDisplay(p.machine)]);
+  // 用户行：有 user 属性直接显示；应带而未带时回退 team.json default_user，再退「未标注」（无 user 数据的老图不加此行）
+  if(p.user)kv.push([tr('user'),userDisplay(p.user)]);
+  else if(usersOf().length&&(p.type==='entry'||p.type==='fact'||p.type==='machine'||p.type==='liveagent'))
+    kv.push([tr('user'),defaultUser()?userDisplay(defaultUser()):tr('unassigned')]);
   if(p.memtype)kv.push([tr('memoryType'),p.memtype]);kv.push([tr('weight'),p.weight||0]);kv.push([tr('degree'),p.degree||0]);
   kv.forEach(([k,v])=>h+=`<b>${k}</b><span>${esc(v)}</span>`);h+=`</div>`;
   if(nodeValue(p,'description'))h+=`<div class="excerpt">${esc(nodeValue(p,'description'))}</div>`;
@@ -893,6 +940,12 @@ function _jvGlyph(n,dep){
     ctx.fillStyle=hx(c,0.1*dep);ctx.fill();
     ctx.strokeStyle=hx(c,0.85*dep);ctx.lineWidth=1.6;ctx.stroke();
     ctx.fillStyle=hx('#eaffff',0.45*dep);ctx.beginPath();ctx.arc(x,y,r*0.26,0,6.2832);ctx.fill();
+  }else if(sh==='duo'){               // user：双环全息 + 白热核
+    ctx.beginPath();ctx.arc(x,y,r*0.92,0,6.2832);
+    ctx.fillStyle=hx(c,0.08*dep);ctx.fill();
+    ctx.strokeStyle=hx(c,0.85*dep);ctx.lineWidth=1.5;ctx.stroke();
+    ctx.strokeStyle=hx(c,0.45*dep);ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,r*0.56,0,6.2832);ctx.stroke();
+    ctx.fillStyle=hx('#eaffff',0.5*dep);ctx.beginPath();ctx.arc(x,y,r*0.22,0,6.2832);ctx.fill();
   }else if(sh==='dot'){               // file：细线小圆，最不起眼
     ctx.beginPath();ctx.arc(x,y,r,0,6.2832);
     ctx.fillStyle=hx(c,0.28*dep);ctx.fill();
@@ -924,7 +977,7 @@ THEMES.jarvis={label:'贾维斯 JARVIS',
 // 每个节点=一颗离子：白热核 + col(n) 电晕 + 1~3 条倾斜椭圆电子轨道（电子实时公转）
 // 背景=暗等离子体场：漂移带电微粒(速度拖尾) + 低透明场力线弧 + 青↔紫辉光气穴
 let _ionP=[],_ionArcs=[],_ionPock=[];
-const _ionOrbits={project:3,machine:3,dataset:2,model:2,server:2,agent:2,tech:2,notion:2,method:2,wandb:2,fact:2,entry:1,file:0};
+const _ionOrbits={project:3,machine:3,dataset:2,model:2,server:2,agent:2,tech:2,notion:2,method:2,wandb:2,fact:2,entry:1,file:0,user:2};
 function _ionPhase(n){               // 每节点一次性哈希出 相位/倾角/扁率/方向，缓存在节点上（FNV-1a）
   if(n._ionPh===undefined){
     let h=2166136261;const s=''+(n.id||nodeLabel(n)||n.label||'');
@@ -1050,7 +1103,7 @@ const _gxSpk={project:{k:6,L:3.2,rot:Math.PI/6,ring:1},machine:{k:4,L:2.9,rot:Ma
   agent:{k:4,L:1.5,rot:0},dataset:{k:4,L:1.5,rot:0},server:{k:4,L:1.5,rot:0},model:{k:4,L:1.5,rot:0},
   method:{k:4,L:1.5,rot:0},tech:{k:4,L:1.5,rot:0},wandb:{k:4,L:1.4,rot:0},notion:{k:4,L:1.4,rot:0},
   fact:{k:4,L:1.4,rot:0},artifact:{k:4,L:1.55,rot:Math.PI/4},boundary:{k:6,L:1.85,rot:0,ring:1},
-  liveagent:{k:4,L:1.8,rot:Math.PI/4}};
+  liveagent:{k:4,L:1.8,rot:Math.PI/4},user:{k:4,L:1.6,rot:Math.PI/4}};
 function _gxSpike(x,y,ang,len,w){   // 锥形衍射芒：底宽 2w → 尖端，三角填充自然渐细
   const dx=Math.cos(ang),dy=Math.sin(ang);
   ctx.beginPath();ctx.moveTo(x-dy*w,y+dx*w);ctx.lineTo(x+dx*len,y+dy*len);ctx.lineTo(x+dy*w,y-dx*w);

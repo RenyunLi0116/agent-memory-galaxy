@@ -59,6 +59,13 @@ MACHINE_ZH = {
     "demo-ci-runner-d": "演示 CI Runner D",
     "demo-pages-host-e": "演示 Pages 主机 E",
 }
+# 虚构团队成员（user = 推送者身份，全部虚构短 handle，与任何真实人名无关；改名须通过 FORBIDDEN_PATTERNS 校验）
+TEAM_MEMBERS = {
+    "ada": {"display": "Ada", "color": "#7dd3fc"},
+    "kael": {"display": "Kael", "color": "#f0abfc"},
+    "mira": {"display": "Mira", "color": "#fde68a"},
+}
+TEAM_META = {"team": "demo-orbit", "default_user": "unassigned", "members": TEAM_MEMBERS}
 MACHINE_PRIMARY_ZH = {
     "capture + local viewer": "采集 + 本地 viewer",
     "writing + release review": "写作 + 发布审阅",
@@ -185,13 +192,15 @@ def build_graph():
     edges = []
     seen_edges = set()
 
+    # 第 4 元素 = 机器归属的虚构 user（推送者身份）：5 台机器分属 3 人
     machines = [
-        ("demo-workstation-a", "capture + local viewer", "Contributor"),
-        ("demo-laptop-b", "writing + release review", "Contributor"),
-        ("demo-gpu-node-c", "training + merge rehearsals", "Contributor"),
-        ("demo-ci-runner-d", "nightly validation", "Aggregator"),
-        ("demo-pages-host-e", "public Pages dry run", "Publisher"),
+        ("demo-workstation-a", "capture + local viewer", "Contributor", "ada"),
+        ("demo-laptop-b", "writing + release review", "Contributor", "ada"),
+        ("demo-gpu-node-c", "training + merge rehearsals", "Contributor", "kael"),
+        ("demo-ci-runner-d", "nightly validation", "Aggregator", "mira"),
+        ("demo-pages-host-e", "public Pages dry run", "Publisher", "mira"),
     ]
+    machine_owner = {m[0]: m[3] for m in machines}
     agents = [
         ("codex", "implementation"),
         ("claude", "research synthesis"),
@@ -290,8 +299,20 @@ def build_graph():
     # 长尾 weight：对标私有图实测分布(min 1/中位 9/p90 2670/max 128956)，
     # 经 viewer radiusOf=2.4+26*sqrt(w)/wmax 归一化后形成「尘埃(entry/fact/file) → 中层实体 → 枢纽(machine/server/project)」星系层级。
     project_weights = [6000, 4600, 3800, 3100, 2600, 2100]
-    for machine, primary, role in machines:
-        nodes.append(node(f"machine:{machine}", "machine", machine, label_i18n=bi(machine, MACHINE_ZH[machine]), primary=primary, primary_i18n=bi(primary, MACHINE_PRIMARY_ZH[primary]), role=role, role_i18n=bi(role, ROLE_ZH.get(role, role)), weight=300 + rng.randint(0, 1200)))
+    for machine, primary, role, owner in machines:
+        nodes.append(node(f"machine:{machine}", "machine", machine, label_i18n=bi(machine, MACHINE_ZH[machine]), primary=primary, primary_i18n=bi(primary, MACHINE_PRIMARY_ZH[primary]), role=role, role_i18n=bi(role, ROLE_ZH.get(role, role)), user=owner, weight=300 + rng.randint(0, 1200)))
+    # user 节点（团队成员，推送者身份）+ owns 边；常量 weight，不消费 rng（保住 Random(4077) 确定性序列）
+    for handle, info in TEAM_MEMBERS.items():
+        owned = [m[0] for m in machines if m[3] == handle]
+        nodes.append(node(
+            f"user:{handle}", "user", handle,
+            display=info["display"], color=info["color"], user=handle, machines=owned,
+            role="Team member (push identity)",
+            role_i18n=bi("Team member (push identity)", "团队成员（推送身份）"),
+            weight=430 if len(owned) > 1 else 280,
+        ))
+        for owned_machine in owned:
+            add_edge(edges, seen_edges, f"user:{handle}", f"machine:{owned_machine}", "owns")
     for agent_name, role in agents:
         nodes.append(node(f"agent:{agent_name}", "agent", agent_name, tool=agent_name, role=role, role_i18n=bi(role, AGENT_ROLE_ZH.get(role, role)), weight=140 + rng.randint(0, 180)))
     for pidx, (label, machine_labels, phase, summary, visibility) in enumerate(projects):
@@ -422,6 +443,7 @@ def build_graph():
                 task=task,
                 tool=agent_name,
                 machine=machine,
+                user=machine_owner[machine],
                 project=project_label,
                 project_i18n=bi(project_label, PROJECT_ZH[project_label]),
                 phase=phase,
@@ -467,6 +489,7 @@ def build_graph():
                 task="调研",
                 tool=tool,
                 machine=machine,
+                user=machine_owner[machine],
                 project=project_label,
                 project_i18n=bi(project_label, PROJECT_ZH[project_label]),
                 derived=True,
@@ -501,6 +524,7 @@ def build_graph():
             label_i18n=bi(f"{agent_name}@{machine}", f"{agent_name}@{MACHINE_ZH[machine]}"),
             agent=agent_name,
             machine=machine,
+            user=machine_owner[machine],
             project=project_label,
             project_i18n=bi(project_label, PROJECT_ZH[project_label]),
             project_canonical=slug(project_label),
@@ -548,10 +572,12 @@ def build_graph():
             "machines": [m[0] for m in machines],
             "projects": [p[0] for p in projects],
             "servers": [s[0] for s in servers],
-            "privacy_note": "All labels, sessions, machines, projects, files, datasets, models, servers, and live work states are fictional.",
+            "users": sorted(TEAM_MEMBERS),
+            "team": TEAM_META,
+            "privacy_note": "All labels, sessions, machines, projects, files, datasets, models, servers, team members, and live work states are fictional.",
             "privacy_note_i18n": bi(
-                "All labels, sessions, machines, projects, files, datasets, models, servers, and live work states are fictional.",
-                "所有标签、session、机器、项目、文件、数据集、模型、服务器和当前工作状态都是虚构的。",
+                "All labels, sessions, machines, projects, files, datasets, models, servers, team members, and live work states are fictional.",
+                "所有标签、session、机器、项目、文件、数据集、模型、服务器、团队成员和当前工作状态都是虚构的。",
             ),
             "demo_features": [
                 "multi-server collaboration",
@@ -583,16 +609,36 @@ def validate_graph(graph):
     if isolated:
         raise ValueError(f"demo graph has isolated nodes: {isolated[:5]}")
 
-    required_types = {"machine", "agent", "project", "entry", "fact", "liveagent", "server", "boundary", "artifact"}
+    required_types = {"machine", "agent", "project", "entry", "fact", "liveagent", "server", "boundary", "artifact", "user"}
     missing_types = required_types - {n["type"] for n in graph["nodes"]}
     if missing_types:
         raise ValueError(f"demo graph missing node types: {sorted(missing_types)}")
 
-    required_edges = {"depends_on", "inherits_from", "encrypts", "redacts", "keeps_private", "shared_on", "working_on", "handoff_to", "publishes_to"}
+    required_edges = {"depends_on", "inherits_from", "encrypts", "redacts", "keeps_private", "shared_on", "working_on", "handoff_to", "publishes_to", "owns"}
     present_edges = {e["type"] for e in graph["edges"]}
     missing_edges = required_edges - present_edges
     if missing_edges:
         raise ValueError(f"demo graph missing edge types: {sorted(missing_edges)}")
+
+    # team work 完整性：entry/fact/machine/liveagent 全带 user、user 声明齐、机器都有归属、至少 1 个跨 user 共享项目
+    meta_users = set(graph["meta"].get("users") or [])
+    user_carriers = [n for n in graph["nodes"] if n["type"] in ("entry", "fact", "machine", "liveagent")]
+    missing_user = [n["id"] for n in user_carriers if not n.get("user")]
+    if missing_user:
+        raise ValueError(f"demo graph nodes missing user attribute: {missing_user[:5]}")
+    undeclared = {n["user"] for n in user_carriers} - meta_users
+    if undeclared:
+        raise ValueError(f"demo graph node users not declared in meta.users: {sorted(undeclared)}")
+    owned_machines = {e["target"] for e in graph["edges"] if e["type"] == "owns"}
+    all_machines = {n["id"] for n in graph["nodes"] if n["type"] == "machine"}
+    if all_machines - owned_machines:
+        raise ValueError(f"demo graph machines without an owning user: {sorted(all_machines - owned_machines)}")
+    project_users = {}
+    for n in graph["nodes"]:
+        if n["type"] == "entry":
+            project_users.setdefault(n["project"], set()).add(n["user"])
+    if not any(len(us) >= 2 for us in project_users.values()):
+        raise ValueError("demo graph has no cross-user shared project (need entries from >=2 users on one project)")
 
     allowed_tasks = {"训练", "数据", "评测", "部署", "调研", "同步", "规划", "其他"}
     bad_tasks = [n for n in graph["nodes"] if n.get("task") and n["task"] not in allowed_tasks]

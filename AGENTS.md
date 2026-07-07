@@ -13,10 +13,12 @@ Inside a private hub, use the contributor role unless the user explicitly says t
 ## Contributor Flow
 
 ```bash
-AMG_PRIVATE_HUB=1 ./contribute.sh <unique-machine-name> <claude|codex|cursor|human> <project-root>
+AMG_PRIVATE_HUB=1 ./contribute.sh <unique-machine-name> <claude|codex|cursor|human> <project-root> [user]
 ```
 
 Use a neutral unique machine name: `workstation-a`, `laptop-b`, `lab-node-c`. Avoid real hostnames in public docs. Use a narrow project root; do not scan `$HOME`, `/`, or a whole workspace on the first run.
+
+The optional `[user]` is the push identity (GitHub username) for multi-user team hubs; it defaults to `AMG_USER`, then `git config user.name`, then `$USER`, and is distinct from the agent label inside entries (which tool did the work). See `team.json.example`.
 
 The command writes:
 

@@ -16,6 +16,8 @@ Contributor example:
 AMG_PRIVATE_HUB=1 ./contribute.sh workstation-a claude ~/projects/my-app
 ```
 
+In a multi-user team hub, append the push identity (GitHub username) as an optional 4th argument or set `AMG_USER`; it defaults to `git config user.name`, then `$USER`. See the Team Work section in `README.md` and `team.json.example`. The push identity (`user`) is distinct from the agent label inside entries.
+
 Aggregator examples:
 
 ```bash

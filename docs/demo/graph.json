@@ -5,10 +5,11 @@
     "demo": true,
     "synthetic": true,
     "story": "Public Memory Graph Release Pipeline",
-    "node_count": 442,
-    "edge_count": 1888,
+    "node_count": 445,
+    "edge_count": 1893,
     "type_counts": {
       "machine": 5,
+      "user": 3,
       "agent": 5,
       "project": 6,
       "server": 5,
@@ -26,6 +27,7 @@
       "liveagent": 5
     },
     "edge_counts": {
+      "owns": 5,
       "on": 72,
       "inherits_from": 2,
       "depends_on": 3,
@@ -76,10 +78,33 @@
       "demo-vault",
       "demo-pages-edge"
     ],
-    "privacy_note": "All labels, sessions, machines, projects, files, datasets, models, servers, and live work states are fictional.",
+    "users": [
+      "ada",
+      "kael",
+      "mira"
+    ],
+    "team": {
+      "team": "demo-orbit",
+      "default_user": "unassigned",
+      "members": {
+        "ada": {
+          "display": "Ada",
+          "color": "#7dd3fc"
+        },
+        "kael": {
+          "display": "Kael",
+          "color": "#f0abfc"
+        },
+        "mira": {
+          "display": "Mira",
+          "color": "#fde68a"
+        }
+      }
+    },
+    "privacy_note": "All labels, sessions, machines, projects, files, datasets, models, servers, team members, and live work states are fictional.",
     "privacy_note_i18n": {
-      "en": "All labels, sessions, machines, projects, files, datasets, models, servers, and live work states are fictional.",
-      "zh": "所有标签、session、机器、项目、文件、数据集、模型、服务器和当前工作状态都是虚构的。"
+      "en": "All labels, sessions, machines, projects, files, datasets, models, servers, team members, and live work states are fictional.",
+      "zh": "所有标签、session、机器、项目、文件、数据集、模型、服务器、团队成员和当前工作状态都是虚构的。"
     },
     "demo_features": [
       "multi-server collaboration",
@@ -109,8 +134,9 @@
         "en": "Contributor",
         "zh": "贡献机器"
       },
+      "user": "ada",
       "weight": 1036,
-      "degree": 40
+      "degree": 41
     },
     {
       "id": "machine:demo-laptop-b",
@@ -130,8 +156,9 @@
         "en": "Contributor",
         "zh": "贡献机器"
       },
+      "user": "ada",
       "weight": 937,
-      "degree": 40
+      "degree": 41
     },
     {
       "id": "machine:demo-gpu-node-c",
@@ -151,8 +178,9 @@
         "en": "Contributor",
         "zh": "贡献机器"
       },
+      "user": "kael",
       "weight": 624,
-      "degree": 59
+      "degree": 60
     },
     {
       "id": "machine:demo-ci-runner-d",
@@ -172,8 +200,9 @@
         "en": "Aggregator",
         "zh": "聚合机器"
       },
+      "user": "mira",
       "weight": 1103,
-      "degree": 41
+      "degree": 42
     },
     {
       "id": "machine:demo-pages-host-e",
@@ -193,8 +222,65 @@
         "en": "Publisher",
         "zh": "发布机器"
       },
+      "user": "mira",
       "weight": 1150,
-      "degree": 60
+      "degree": 61
+    },
+    {
+      "id": "user:ada",
+      "type": "user",
+      "label": "ada",
+      "display": "Ada",
+      "color": "#7dd3fc",
+      "user": "ada",
+      "machines": [
+        "demo-workstation-a",
+        "demo-laptop-b"
+      ],
+      "role": "Team member (push identity)",
+      "role_i18n": {
+        "en": "Team member (push identity)",
+        "zh": "团队成员（推送身份）"
+      },
+      "weight": 430,
+      "degree": 2
+    },
+    {
+      "id": "user:kael",
+      "type": "user",
+      "label": "kael",
+      "display": "Kael",
+      "color": "#f0abfc",
+      "user": "kael",
+      "machines": [
+        "demo-gpu-node-c"
+      ],
+      "role": "Team member (push identity)",
+      "role_i18n": {
+        "en": "Team member (push identity)",
+        "zh": "团队成员（推送身份）"
+      },
+      "weight": 280,
+      "degree": 1
+    },
+    {
+      "id": "user:mira",
+      "type": "user",
+      "label": "mira",
+      "display": "Mira",
+      "color": "#fde68a",
+      "user": "mira",
+      "machines": [
+        "demo-ci-runner-d",
+        "demo-pages-host-e"
+      ],
+      "role": "Team member (push identity)",
+      "role_i18n": {
+        "en": "Team member (push identity)",
+        "zh": "团队成员（推送身份）"
+      },
+      "weight": 430,
+      "degree": 2
     },
     {
       "id": "agent:codex",
@@ -1983,6 +2069,7 @@
       "task": "数据",
       "tool": "codex",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2012,6 +2099,7 @@
       "task": "训练",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2041,6 +2129,7 @@
       "task": "评测",
       "tool": "cursor",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2070,6 +2159,7 @@
       "task": "部署",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2099,6 +2189,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2128,6 +2219,7 @@
       "task": "同步",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2157,6 +2249,7 @@
       "task": "规划",
       "tool": "claude",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2186,6 +2279,7 @@
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2215,6 +2309,7 @@
       "task": "数据",
       "tool": "human",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2244,6 +2339,7 @@
       "task": "训练",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2273,6 +2369,7 @@
       "task": "评测",
       "tool": "codex",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2302,6 +2399,7 @@
       "task": "部署",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2331,6 +2429,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2360,6 +2459,7 @@
       "task": "同步",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2389,6 +2489,7 @@
       "task": "规划",
       "tool": "automator",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2418,6 +2519,7 @@
       "task": "其他",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2447,6 +2549,7 @@
       "task": "数据",
       "tool": "claude",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2476,6 +2579,7 @@
       "task": "训练",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2505,6 +2609,7 @@
       "task": "评测",
       "tool": "human",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2534,6 +2639,7 @@
       "task": "部署",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2563,6 +2669,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2592,6 +2699,7 @@
       "task": "同步",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2621,6 +2729,7 @@
       "task": "规划",
       "tool": "cursor",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2650,6 +2759,7 @@
       "task": "其他",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2679,6 +2789,7 @@
       "task": "数据",
       "tool": "automator",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2708,6 +2819,7 @@
       "task": "训练",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2737,6 +2849,7 @@
       "task": "评测",
       "tool": "claude",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2766,6 +2879,7 @@
       "task": "部署",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2795,6 +2909,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2824,6 +2939,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2853,6 +2969,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2882,6 +2999,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2911,6 +3029,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2940,6 +3059,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2969,6 +3089,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -2998,6 +3119,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -3027,6 +3149,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -3056,6 +3179,7 @@
       "task": "训练",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3085,6 +3209,7 @@
       "task": "评测",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3114,6 +3239,7 @@
       "task": "部署",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3143,6 +3269,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3172,6 +3299,7 @@
       "task": "同步",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3201,6 +3329,7 @@
       "task": "规划",
       "tool": "claude",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3230,6 +3359,7 @@
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3259,6 +3389,7 @@
       "task": "数据",
       "tool": "human",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3288,6 +3419,7 @@
       "task": "训练",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3317,6 +3449,7 @@
       "task": "评测",
       "tool": "codex",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3346,6 +3479,7 @@
       "task": "部署",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3375,6 +3509,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3404,6 +3539,7 @@
       "task": "同步",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3433,6 +3569,7 @@
       "task": "规划",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3462,6 +3599,7 @@
       "task": "其他",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3491,6 +3629,7 @@
       "task": "数据",
       "tool": "claude",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3520,6 +3659,7 @@
       "task": "训练",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3549,6 +3689,7 @@
       "task": "评测",
       "tool": "human",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3578,6 +3719,7 @@
       "task": "部署",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3607,6 +3749,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3636,6 +3779,7 @@
       "task": "同步",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3665,6 +3809,7 @@
       "task": "规划",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3694,6 +3839,7 @@
       "task": "其他",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3723,6 +3869,7 @@
       "task": "数据",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3752,6 +3899,7 @@
       "task": "训练",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3781,6 +3929,7 @@
       "task": "评测",
       "tool": "claude",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3810,6 +3959,7 @@
       "task": "部署",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3839,6 +3989,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3868,6 +4019,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3897,6 +4049,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3926,6 +4079,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3955,6 +4109,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -3984,6 +4139,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -4013,6 +4169,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -4042,6 +4199,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -4071,6 +4229,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -4100,6 +4259,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -4129,6 +4289,7 @@
       "task": "评测",
       "tool": "cursor",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4158,6 +4319,7 @@
       "task": "部署",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4187,6 +4349,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4216,6 +4379,7 @@
       "task": "同步",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4245,6 +4409,7 @@
       "task": "规划",
       "tool": "claude",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4274,6 +4439,7 @@
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4303,6 +4469,7 @@
       "task": "数据",
       "tool": "human",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4332,6 +4499,7 @@
       "task": "训练",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4361,6 +4529,7 @@
       "task": "评测",
       "tool": "codex",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4390,6 +4559,7 @@
       "task": "部署",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4419,6 +4589,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4448,6 +4619,7 @@
       "task": "同步",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4477,6 +4649,7 @@
       "task": "规划",
       "tool": "automator",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4506,6 +4679,7 @@
       "task": "其他",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4535,6 +4709,7 @@
       "task": "数据",
       "tool": "claude",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4564,6 +4739,7 @@
       "task": "训练",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4593,6 +4769,7 @@
       "task": "评测",
       "tool": "human",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4622,6 +4799,7 @@
       "task": "部署",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4651,6 +4829,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4680,6 +4859,7 @@
       "task": "同步",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4709,6 +4889,7 @@
       "task": "规划",
       "tool": "cursor",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4738,6 +4919,7 @@
       "task": "其他",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4767,6 +4949,7 @@
       "task": "数据",
       "tool": "automator",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4796,6 +4979,7 @@
       "task": "训练",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4825,6 +5009,7 @@
       "task": "评测",
       "tool": "claude",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4854,6 +5039,7 @@
       "task": "部署",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4883,6 +5069,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4912,6 +5099,7 @@
       "task": "同步",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4941,6 +5129,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4970,6 +5159,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -4999,6 +5189,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -5028,6 +5219,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -5057,6 +5249,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -5086,6 +5279,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -5115,6 +5309,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -5144,6 +5339,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -5173,6 +5369,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -5202,6 +5399,7 @@
       "task": "部署",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5231,6 +5429,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5260,6 +5459,7 @@
       "task": "同步",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5289,6 +5489,7 @@
       "task": "规划",
       "tool": "claude",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5318,6 +5519,7 @@
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5347,6 +5549,7 @@
       "task": "数据",
       "tool": "human",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5376,6 +5579,7 @@
       "task": "训练",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5405,6 +5609,7 @@
       "task": "评测",
       "tool": "codex",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5434,6 +5639,7 @@
       "task": "部署",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5463,6 +5669,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5492,6 +5699,7 @@
       "task": "同步",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5521,6 +5729,7 @@
       "task": "规划",
       "tool": "automator",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5550,6 +5759,7 @@
       "task": "其他",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5579,6 +5789,7 @@
       "task": "数据",
       "tool": "claude",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5608,6 +5819,7 @@
       "task": "训练",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5637,6 +5849,7 @@
       "task": "评测",
       "tool": "human",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5666,6 +5879,7 @@
       "task": "部署",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5695,6 +5909,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5724,6 +5939,7 @@
       "task": "同步",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5753,6 +5969,7 @@
       "task": "规划",
       "tool": "cursor",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5782,6 +5999,7 @@
       "task": "其他",
       "tool": "human",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5811,6 +6029,7 @@
       "task": "数据",
       "tool": "automator",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5840,6 +6059,7 @@
       "task": "训练",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5869,6 +6089,7 @@
       "task": "评测",
       "tool": "claude",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5898,6 +6119,7 @@
       "task": "部署",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5927,6 +6149,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5956,6 +6179,7 @@
       "task": "同步",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -5985,6 +6209,7 @@
       "task": "规划",
       "tool": "codex",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6014,6 +6239,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6043,6 +6269,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6072,6 +6299,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6101,6 +6329,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6130,6 +6359,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6159,6 +6389,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6188,6 +6419,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6217,6 +6449,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-gpu-node-c",
+      "user": "kael",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6246,6 +6479,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -6275,6 +6509,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6304,6 +6539,7 @@
       "task": "同步",
       "tool": "codex",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6333,6 +6569,7 @@
       "task": "规划",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6362,6 +6599,7 @@
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6391,6 +6629,7 @@
       "task": "数据",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6420,6 +6659,7 @@
       "task": "训练",
       "tool": "automator",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6449,6 +6689,7 @@
       "task": "评测",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6478,6 +6719,7 @@
       "task": "部署",
       "tool": "claude",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6507,6 +6749,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6536,6 +6779,7 @@
       "task": "同步",
       "tool": "human",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6565,6 +6809,7 @@
       "task": "规划",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6594,6 +6839,7 @@
       "task": "其他",
       "tool": "codex",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6623,6 +6869,7 @@
       "task": "数据",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6652,6 +6899,7 @@
       "task": "训练",
       "tool": "cursor",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6681,6 +6929,7 @@
       "task": "评测",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6710,6 +6959,7 @@
       "task": "部署",
       "tool": "automator",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6739,6 +6989,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6768,6 +7019,7 @@
       "task": "同步",
       "tool": "claude",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6797,6 +7049,7 @@
       "task": "规划",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6826,6 +7079,7 @@
       "task": "其他",
       "tool": "human",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6855,6 +7109,7 @@
       "task": "数据",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6884,6 +7139,7 @@
       "task": "训练",
       "tool": "codex",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6913,6 +7169,7 @@
       "task": "评测",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6942,6 +7199,7 @@
       "task": "部署",
       "tool": "cursor",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -6971,6 +7229,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7000,6 +7259,7 @@
       "task": "同步",
       "tool": "automator",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7029,6 +7289,7 @@
       "task": "规划",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7058,6 +7319,7 @@
       "task": "其他",
       "tool": "claude",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7087,6 +7349,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7116,6 +7379,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7145,6 +7409,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7174,6 +7439,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7203,6 +7469,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7232,6 +7499,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7261,6 +7529,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7290,6 +7559,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7319,6 +7589,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Prism Cache",
       "project_i18n": {
         "en": "Project Prism Cache",
@@ -7348,6 +7619,7 @@
       "task": "同步",
       "tool": "codex",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7377,6 +7649,7 @@
       "task": "规划",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7406,6 +7679,7 @@
       "task": "其他",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7435,6 +7709,7 @@
       "task": "数据",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7464,6 +7739,7 @@
       "task": "训练",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7493,6 +7769,7 @@
       "task": "评测",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7522,6 +7799,7 @@
       "task": "部署",
       "tool": "claude",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7551,6 +7829,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7580,6 +7859,7 @@
       "task": "同步",
       "tool": "human",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7609,6 +7889,7 @@
       "task": "规划",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7638,6 +7919,7 @@
       "task": "其他",
       "tool": "codex",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7667,6 +7949,7 @@
       "task": "数据",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7696,6 +7979,7 @@
       "task": "训练",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7725,6 +8009,7 @@
       "task": "评测",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7754,6 +8039,7 @@
       "task": "部署",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7783,6 +8069,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7812,6 +8099,7 @@
       "task": "同步",
       "tool": "claude",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7841,6 +8129,7 @@
       "task": "规划",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7870,6 +8159,7 @@
       "task": "其他",
       "tool": "human",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7899,6 +8189,7 @@
       "task": "数据",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7928,6 +8219,7 @@
       "task": "训练",
       "tool": "codex",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7957,6 +8249,7 @@
       "task": "评测",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -7986,6 +8279,7 @@
       "task": "部署",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8015,6 +8309,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8044,6 +8339,7 @@
       "task": "同步",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8073,6 +8369,7 @@
       "task": "规划",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8102,6 +8399,7 @@
       "task": "其他",
       "tool": "claude",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8131,6 +8429,7 @@
       "task": "数据",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8160,6 +8459,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8189,6 +8489,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8218,6 +8519,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8247,6 +8549,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8276,6 +8579,7 @@
       "task": "调研",
       "tool": "codex",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8305,6 +8609,7 @@
       "task": "调研",
       "tool": "claude",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8334,6 +8639,7 @@
       "task": "调研",
       "tool": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8363,6 +8669,7 @@
       "task": "调研",
       "tool": "human",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8392,6 +8699,7 @@
       "task": "调研",
       "tool": "automator",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8418,6 +8726,7 @@
       },
       "agent": "codex",
       "machine": "demo-workstation-a",
+      "user": "ada",
       "project": "Project Aurora Loom",
       "project_i18n": {
         "en": "Project Aurora Loom",
@@ -8446,6 +8755,7 @@
       },
       "agent": "claude",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Atlas Relay",
       "project_i18n": {
         "en": "Project Atlas Relay",
@@ -8474,6 +8784,7 @@
       },
       "agent": "cursor",
       "machine": "demo-pages-host-e",
+      "user": "mira",
       "project": "Project Harbor Lens",
       "project_i18n": {
         "en": "Project Harbor Lens",
@@ -8502,6 +8813,7 @@
       },
       "agent": "automator",
       "machine": "demo-ci-runner-d",
+      "user": "mira",
       "project": "Project Meridian Sync",
       "project_i18n": {
         "en": "Project Meridian Sync",
@@ -8530,6 +8842,7 @@
       },
       "agent": "human",
       "machine": "demo-laptop-b",
+      "user": "ada",
       "project": "Project Solstice Bench",
       "project_i18n": {
         "en": "Project Solstice Bench",
@@ -8550,6 +8863,31 @@
     }
   ],
   "edges": [
+    {
+      "source": "user:ada",
+      "target": "machine:demo-workstation-a",
+      "type": "owns"
+    },
+    {
+      "source": "user:ada",
+      "target": "machine:demo-laptop-b",
+      "type": "owns"
+    },
+    {
+      "source": "user:kael",
+      "target": "machine:demo-gpu-node-c",
+      "type": "owns"
+    },
+    {
+      "source": "user:mira",
+      "target": "machine:demo-ci-runner-d",
+      "type": "owns"
+    },
+    {
+      "source": "user:mira",
+      "target": "machine:demo-pages-host-e",
+      "type": "owns"
+    },
     {
       "source": "project:project-aurora-loom",
       "target": "machine:demo-workstation-a",

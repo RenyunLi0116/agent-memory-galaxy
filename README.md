@@ -1,14 +1,108 @@
-# Agent Memory Galaxy
+<div align="center">
 
-[English](README.md) | [中文](README.zh-CN.md)
+<h1>🌌 Agent Memory Galaxy</h1>
 
-Your agents remember together. Privately.
+<p><b><i>Which agent did that?</i></b><br>
+One private, searchable map of everything your agents remember — across every machine, every tool.</p>
 
-Agent Memory Galaxy turns scattered AI-agent work traces across machines into one private, inspectable memory graph. It collects reviewed `agent_memory.md` notes, optional safe session metadata, machine fragments, and live presence into `graph.json`, then renders the result in a static Galaxy Viewer.
+<p>
+<img alt="Python 3.8+" src="https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white">
+<img alt="Dependencies: Python stdlib" src="https://img.shields.io/badge/dependencies-Python%20stdlib-2ea44f">
+<img alt="Deploy: static site on GitHub Pages" src="https://img.shields.io/badge/deploy-static%20%C2%B7%20GitHub%20Pages-222222?logo=githubpages&logoColor=white">
+<img alt="Docs: English / 中文" src="https://img.shields.io/badge/docs-EN%20%2F%20%E4%B8%AD%E6%96%87-8957e5">
+</p>
 
-Use this public repo as the reusable framework and marketing/demo package. Keep real memory fragments and full graphs in a private fork, private hub, or local checkout.
+<a href="https://renyunli0116.github.io/agent-memory-galaxy/">
+  <img alt="Agent Memory Galaxy — one graph, every agent" src="media/hero.png" width="840">
+</a>
 
-## Quick Install as a Claude Code Plugin/Skill
+<p>
+  <a href="https://renyunli0116.github.io/agent-memory-galaxy/"><b>▶ Open the live demo / 打开在线演示</b></a>
+</p>
+
+<sub><a href="README.md">English</a> · <a href="README.zh-CN.md">中文</a></sub>
+
+</div>
+
+---
+
+Agent Memory Galaxy turns scattered AI-agent work traces across machines into one private, inspectable memory graph. It's a Claude Code skill plus a small toolkit of zero-dependency Python scripts: it collects reviewed `agent_memory.md` notes, optional safe session metadata, per-machine fragments, and live presence into a single `graph.json`, then renders it in a static Galaxy Viewer — one HTML page, no server, no database.
+
+Use this public repo as the reusable framework and demo package. Keep real memory fragments and full graphs in a private fork, private hub, or local checkout.
+
+## Why teams pick it
+
+- **🪐 Your whole team's memory, one graph** — every teammate's machines push fragments into one private hub; filter and colour by user to see who did what, on which machine.
+- **🔒 Plaintext stays local or in your private hub** — only a public Pages deploy is encrypted, client-side AES-256-GCM with PBKDF2 and a dual password. Nothing phones home.
+- **🧩 Works with the coding agents you already run** — native today for Claude Code, Codex, and Cursor. `agent_memory.md` is plain markdown, so any tool that writes it joins the graph too.
+- **🪶 The memory layer barely adds tokens** — the graph is built by zero-dependency Python: heuristics by default, LLM optional and off. Indexing your agents' work doesn't burn tokens.
+- **🐙 All you need is a GitHub account** — no server, no database, no SaaS signup, no API key. Just a git repo and the Python standard library; collaborate by adding a GitHub collaborator and pushing.
+- **♻️ It refreshes itself and lights up live work** — a cron job rebuilds the graph on a schedule; auto-presence detects working agents and pulses them red, no manual heartbeat.
+- **🛰️ A live map for team leads** — see who's on which machine and project at a glance: red means working now, gold lines mean cross-project references.
+
+## See it
+
+<div align="center">
+<table>
+<tr>
+<td width="50%" align="center" valign="top">
+  <a href="https://renyunli0116.github.io/agent-memory-galaxy/demo/">
+    <img alt="Interactive demo galaxy — click any node for its evidence" src="media/galaxy.png">
+  </a>
+  <br><sub>The interactive demo galaxy — drag, zoom, click a node.</sub>
+</td>
+<td width="50%" align="center" valign="top">
+  <a href="https://renyunli0116.github.io/agent-memory-galaxy/">
+    <img alt="Team monitoring console — who is on which machine, working now" src="media/team-console.png">
+  </a>
+  <br><sub>A team-lead view: who's on which machine, live.</sub>
+</td>
+</tr>
+</table>
+<sub>Everything shown is fictional demo data. Real memory stays private.</sub>
+</div>
+
+## Quick start
+
+Install the Claude Code plugin — two commands, run as two separate messages:
+
+```text
+/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy
+```
+
+```text
+/plugin install agent-memory-galaxy@agent-memory-galaxy
+```
+
+Then invoke the skill with natural language, e.g. *"Use Agent Memory Galaxy to create a private hub"* or *"Use Agent Memory Galaxy to review this repo before public release."* The plugin installs the guidance; you still need a repo checkout for the scripts.
+
+Prefer to poke at it first? Rebuild the synthetic demo locally — this path never scans your machine:
+
+```bash
+git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git
+cd agent-memory-galaxy
+python3 scripts/build-public-demo.py
+python3 -m http.server 8765 --directory docs
+```
+
+Open `http://127.0.0.1:8765/` for the promo page and `http://127.0.0.1:8765/demo/?style=cosmos&lang=en` for the interactive demo.
+
+## How team work fits together
+
+A private hub can be shared by a whole team. Two identity concepts stay separate in the graph:
+
+- **agent** — the executor labeled inside a memory entry (`claude`, `codex`, `cursor`, `human`). It answers "which tool did the work".
+- **user** — the push identity (GitHub username) of the person whose machines contribute fragments. It answers "whose machines and whose memory".
+
+Push permission *is* the membership declaration: add a teammate as a GitHub collaborator on the private hub and they contribute with their own identity. The `user` value is only ever a node attribute — never part of a node id — so graphs from different machines always merge cleanly. Full setup is under [Team Work](#team-work-multiple-users-on-one-private-hub).
+
+## Privacy in one line
+
+The public repo carries only framework code, docs, the skill package, and synthetic demo data; real `fragments/*.json`, `presence/*.json`, and `graph.json` live in a private hub, and the only thing that ever leaves it is a public Pages deploy shipping AES-256-GCM ciphertext. See [Privacy Model](#privacy-model) for the full picture.
+
+---
+
+## Install as a Claude Code Plugin/Skill
 
 Run these as two separate Claude Code messages:
 

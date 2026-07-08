@@ -7,13 +7,15 @@
 <title>Agent Memory Galaxy</title>
 <link rel="stylesheet" href="assets/landing.css">
 <script>
-/* Cinematic 渐入渐出 intro: decide BEFORE first paint whether to play, so the settled
-   hero never flashes under the veil. Fully self-contained — the whole show is CSS
-   @keyframes gated by the intro-cine class, and this head script owns the safety timers,
-   so it always completes and content is never permanently covered even if landing.js
-   never loads or throws. Honest defaults: reduced-motion, repeat visits (sessionStorage
-   amg_intro_cine), and ?intro=skip present the finished hero immediately with no overlay;
-   ?intro=play forces the intro for capture/regression. */
+/* Cinematic FLIP intro (self-contained). Decide BEFORE first paint whether to play, so
+   the settled hero never flashes under the veil. If it plays: the demo galaxy fades in
+   big & centered on a deep-space veil, holds, then SHRINKS + FLIES — a runtime FLIP
+   transform measured against the live hero galaxy_card — into that card's slot and
+   crossfades into the real interactive card. Honest defaults: reduced-motion, repeat
+   visits (sessionStorage amg_intro_cine) and ?intro=skip present the finished hero
+   immediately with no overlay; ?intro=play forces it for capture/regression. Safety
+   timers guarantee teardown even if anything throws, so content is never permanently
+   covered. Total show+fly+land ~3.8s. */
 (function () {
   try {
     var d = document.documentElement;
@@ -26,19 +28,71 @@
     try { played = sessionStorage.getItem('amg_intro_cine') === '1'; } catch (e) {}
     var shouldPlay = !reduce && (forcePlay || (!played && !forceSkip));
     if (!forcePlay) { try { sessionStorage.setItem('amg_intro_cine', '1'); } catch (e) {} }
+
     var ended = false;
-    var end = function () { if (ended) return; ended = true; d.classList.remove('intro-cine'); };
+    var end = function () {
+      if (ended) return; ended = true;
+      d.classList.remove('intro-cine', 'intro-flying', 'intro-landed');
+    };
     d.__amgIntroEnd = end;
+
     /* Skip works from the very first frame, before landing.js parses: a capturing
        delegated listener catches the click no matter when the button is inserted. */
     document.addEventListener('click', function (ev) {
       var t = ev.target;
       if (t && t.closest && t.closest('[data-intro-skip]')) { ev.preventDefault(); end(); }
     }, true);
+
     if (!shouldPlay) return;
+
+    /* Cinematic hold, then a slow eased shrink-and-fly, then a short crossfade. */
+    var SHOW_MS = 1900, FLY_MS = 1600, LAND_MS = 300;
+
+    /* FLIP: measure the big centered overlay galaxy and the live hero card at fly time
+       (layout is final by SHOW_MS), then transform the overlay so its centre and width
+       land exactly on the card's slot. Returns false if elements/layout aren't ready, so
+       the caller can degrade gracefully (galaxy just fades without flying). */
+    var applyFlip = function () {
+      var g = document.querySelector('[data-cine-galaxy]');
+      var card = document.getElementById('after-galaxy');
+      if (!g || !card) return false;
+      g.style.animation = 'none';
+      g.style.transition = 'none';
+      g.style.transform = 'none';
+      var src = g.getBoundingClientRect();   /* untransformed rect (reflow committed) */
+      var tgt = card.getBoundingClientRect();
+      if (!src.width || !tgt.width) return false;
+      var s = tgt.width / src.width;
+      var tx = (tgt.left + tgt.width / 2) - (src.left + src.width / 2);
+      var ty = (tgt.top + tgt.height / 2) - (src.top + src.height / 2);
+      g.style.transformOrigin = '50% 50%';
+      void g.offsetWidth;
+      g.style.transition = 'transform ' + FLY_MS + 'ms cubic-bezier(.45,.05,.2,1), opacity 320ms ease';
+      g.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + s.toFixed(4) + ')';
+      return true;
+    };
+
+    var land = function () {
+      if (ended) return;
+      try {
+        d.classList.add('intro-landed');   /* reveal the real interactive card */
+        var g = document.querySelector('[data-cine-galaxy]');
+        if (g) g.style.opacity = '0';      /* crossfade the flown still out — masks any delta */
+      } catch (e) {}
+      setTimeout(end, LAND_MS);
+    };
+    var fly = function () {
+      if (ended) return;
+      try {
+        d.classList.add('intro-flying');   /* reveal hero behind, dissolve veil, fade caption */
+        applyFlip();
+      } catch (e) {}
+      setTimeout(land, FLY_MS);
+    };
+
     d.classList.add('intro-cine');
-    setTimeout(end, 2350);   /* primary teardown just after the 2.3s CSS timeline */
-    setTimeout(end, 2600);   /* hard safety net — content is never blocked past this */
+    setTimeout(fly, SHOW_MS);
+    setTimeout(end, 4200);   /* hard safety net — content is never blocked past this */
   } catch (e) {}
 })();
 </script>
@@ -470,7 +524,7 @@ python3 -m http.server 8765 --directory docs</code></pre>
 
 <div class="intro-veil" data-intro-cine>
   <div class="cine-inner">
-    <div class="cine-galaxy">
+    <div class="cine-galaxy" data-cine-galaxy>
 
 <div class="galaxy-still" aria-hidden="true">
   <div class="framebar">

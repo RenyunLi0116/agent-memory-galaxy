@@ -1,12 +1,106 @@
-# Agent Memory Galaxy
+<div align="center">
 
-[English](README.md) | [中文](README.zh-CN.md)
+<h1>🌌 Agent Memory Galaxy</h1>
 
-让你的 agents 一起记住工作，并保持私有。
+<p><b><i>昨天是哪个 agent 改的？</i></b><br>
+把每台机器、每个工具里 agent 记住的一切，汇成一张私有、可搜索的图。</p>
 
-Agent Memory Galaxy 会把分散在多台机器和多种 AI agent 工具中的工作痕迹汇成一个私有、可检查、可搜索的记忆图谱。它采集已审阅的 `agent_memory.md`、可选的安全会话元数据、机器 fragments 和在线 presence，生成 `graph.json`，并用静态 Galaxy Viewer 展示。
+<p>
+<img alt="Python 3.8+" src="https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white">
+<img alt="依赖：Python 标准库" src="https://img.shields.io/badge/dependencies-Python%20stdlib-2ea44f">
+<img alt="部署：静态站点 · GitHub Pages" src="https://img.shields.io/badge/deploy-static%20%C2%B7%20GitHub%20Pages-222222?logo=githubpages&logoColor=white">
+<img alt="文档：EN / 中文" src="https://img.shields.io/badge/docs-EN%20%2F%20%E4%B8%AD%E6%96%87-8957e5">
+</p>
 
-这个 public repo 是可复用框架、skill 包和公开宣传/demo 站点。真实 fragments、presence、明文图谱和本地 viewer 应放在私有 fork、私有 hub 或本地 checkout。
+<a href="https://renyunli0116.github.io/agent-memory-galaxy/">
+  <img alt="Agent Memory Galaxy —— 一张银河，容纳每个 agent" src="media/hero.png" width="840">
+</a>
+
+<p>
+  <a href="https://renyunli0116.github.io/agent-memory-galaxy/"><b>▶ 打开在线演示 / Open the live demo</b></a>
+</p>
+
+<sub><a href="README.md">English</a> · <a href="README.zh-CN.md">中文</a></sub>
+
+</div>
+
+---
+
+Agent Memory Galaxy 会把分散在多台机器、多种 AI agent 工具中的工作痕迹，汇成一个私有、可检查、可搜索的记忆图谱。它是一个 Claude Code skill，加上一小套零依赖的 Python 脚本：采集已审阅的 `agent_memory.md`、可选的安全会话元数据、每台机器的 fragments 和在线 presence，生成一份 `graph.json`，再用静态 Galaxy Viewer 展示——就一个 HTML 页面，不需要服务器，不需要数据库。
+
+这个 public repo 是可复用框架、skill 包和公开演示站点。真实 fragments、明文图谱应放在私有 fork、私有 hub 或本地 checkout。
+
+## 团队为什么选它
+
+- **🪐 全队的记忆，汇成同一张图** —— 每个成员的机器把 fragment 推进同一个私有 hub；可按 user 筛选、着色，看清谁在哪台机器上做了什么。
+- **🔒 明文只留在本地或你的私有 hub** —— 只有公开的 Pages 部署才加密：客户端 AES-256-GCM，配合 PBKDF2 与双密码；没有任何联网上报。
+- **🧩 兼容你已经在用的编码 agent** —— 今天已原生支持 Claude Code、Codex、Cursor；`agent_memory.md` 是纯 markdown，任何会写它的工具也都能进图。
+- **🪶 这层记忆几乎不额外烧 token** —— 图谱由零依赖的 Python 标准库构建：默认启发式，LLM 可选且默认关闭。给 agent 的工作建索引本身不烧 token。
+- **🐙 你只需要一个 GitHub 账号** —— 不用服务器、不用数据库、不用注册 SaaS、不用 API key。一个 git 仓库加 Python 标准库即可；协作只需把队友加为 GitHub collaborator 再 push。
+- **♻️ 自动刷新，自动点亮在线工作** —— cron 定时重建图谱；auto-presence 自动检测正在工作的 agent 并亮起红色脉冲，无需手动心跳。
+- **🛰️ 给负责人的一张实时地图** —— 一眼看清谁在哪台机器、哪个项目：红色代表正在工作，金线代表跨项目引用。
+
+## 看一眼
+
+<div align="center">
+<table>
+<tr>
+<td width="50%" align="center" valign="top">
+  <a href="https://renyunli0116.github.io/agent-memory-galaxy/demo/">
+    <img alt="可交互 demo 银河 —— 点任意节点看它的证据链" src="media/galaxy.png">
+  </a>
+  <br><sub>可交互的 demo 银河 —— 拖拽、缩放、点击节点。</sub>
+</td>
+<td width="50%" align="center" valign="top">
+  <a href="https://renyunli0116.github.io/agent-memory-galaxy/">
+    <img alt="团队监控控制台 —— 谁在哪台机器、此刻在忙什么" src="media/team-console.png">
+  </a>
+  <br><sub>负责人视角：谁在哪台机器，实时可见。</sub>
+</td>
+</tr>
+</table>
+<sub>图中一切均为虚构 demo 数据，真实记忆保持私有。</sub>
+</div>
+
+## 快速开始
+
+安装 Claude Code 插件 —— 两条命令，分两条消息运行：
+
+```text
+/plugin marketplace add https://github.com/RenyunLi0116/agent-memory-galaxy
+```
+
+```text
+/plugin install agent-memory-galaxy@agent-memory-galaxy
+```
+
+然后用自然语言调用 skill，例如：“Use Agent Memory Galaxy to create a private hub” 或“Use Agent Memory Galaxy to review this repo before public release”。插件安装的是指导流程；运行脚本仍需要 repo checkout。
+
+想先上手试试？在本地重建合成 demo —— 这条路径不会扫描你的机器：
+
+```bash
+git clone https://github.com/RenyunLi0116/agent-memory-galaxy.git
+cd agent-memory-galaxy
+python3 scripts/build-public-demo.py
+python3 -m http.server 8765 --directory docs
+```
+
+打开 `http://127.0.0.1:8765/` 查看宣传页，打开 `http://127.0.0.1:8765/demo/?style=cosmos&lang=zh` 查看中文交互 demo。
+
+## Team Work 如何拼在一起
+
+一个私有 hub 可以由整个团队共享。图谱中有两个身份概念，必须区分：
+
+- **agent** —— 记忆条目正文里标注的执行者（`claude`、`codex`、`cursor`、`human`），回答「这条工作是哪个工具干的」。
+- **user** —— 推送者身份（GitHub 用户名），即「这些机器和记忆属于谁」。
+
+push 权限本身就是成员声明：把队友加为私有 hub 的 GitHub collaborator，他就能用自己的身份贡献。`user` 只作为节点属性存在，绝不进入节点 id，因此不同机器的图谱始终能干净合并。完整步骤见下方「Team Work：一个私有 Hub，多个用户」一节。
+
+## 一句话说清隐私
+
+public repo 只承载框架代码、文档、skill 包和合成 demo 数据；真实的 `fragments/*.json`、`presence/*.json`、`graph.json` 都放在私有 hub，唯一会离开它的，是携带 AES-256-GCM 密文的公开 Pages 部署。完整说明见 [隐私模型](#隐私模型)。
+
+---
 
 ## 作为 Claude Code Plugin/Skill 安装
 
@@ -79,6 +173,8 @@ AMG_PRIVATE_HUB=1 ./contribute.sh workstation-a codex ~/projects/my-app
 ```bash
 AMG_TRACK_PRIVATE=1 ./update.sh
 ```
+
+Contributors 写入 `fragments/<machine>.json`。聚合端合并 fragments、注入 presence、可选加密 Pages，并重建本地 `standalone.html`。
 
 ### Team Work：一个私有 Hub，多个用户
 
@@ -165,6 +261,12 @@ Agent Memory Galaxy 是 privacy-first，不是 privacy-magic。
 - 可选加密 Pages viewer：`docs/galaxy/index.html` 加 `docs/galaxy/graph.enc.json`，绝不发布明文 `graph.json`。
 
 不要把 secrets、credentials、private keys、未经审阅的敏感代码或原始机密对话写进 memory 文件。会话提炼只应抽取结构化元数据，但发布前仍应审阅配置和生成产物。客户端加密能降低暴露，但公开密文仍可被下载并离线攻击。
+
+本公开模板默认忽略真实 fragments、在线 presence 和加密图谱快照。在私有 hub 中若明确希望 Git 同步私有记忆产物，使用：
+
+```bash
+AMG_TRACK_PRIVATE=1 ./update.sh
+```
 
 ## 可选加密 Pages Viewer
 

@@ -1565,59 +1565,135 @@ CSS += r"""
   pointer-events: none;
 }
 
-/* Skip control: a small, non-blocking fixed pill, only present while the reveal runs. */
+/* === Round-6b: cinematic 渐入渐出 intro overlay ============================
+   A one-time opening where the DEMO galaxy itself fades in center-stage on a
+   deep-space veil, holds (~0.6s), then dissolves — revealing the settled hero
+   whose interactive demo card is the same galaxy, "landed". The overlay galaxy
+   is the inert galaxy_still (no canvas, no data hooks, no role=button), so the
+   single interactive-galaxy rule holds. Base (no html.intro-cine) = overlay
+   hidden + hero settled: no-JS, reduced-motion, repeat visits, and ?intro=skip
+   all get the finished hero with zero motion and nothing ever covering it.
+   The whole timeline is 2.3s of CSS @keyframes so key frames can be frozen for
+   deterministic capture, and the veil ends visibility:hidden/pointer-events:none
+   (fill:forwards) so content is never blocked even if the JS teardown never runs. */
+
+/* Skip: high-contrast gold pill, top-right, rendered from the first frame. */
 .intro-skip {
   position: fixed;
-  top: 70px;
-  right: 18px;
-  z-index: 60;
+  top: 20px;
+  right: 20px;
+  z-index: 90;
   display: none;
   align-items: center;
-  gap: 6px;
-  border: 1px solid var(--line);
+  gap: 8px;
+  border: 1.5px solid var(--accent);
   border-radius: 999px;
-  padding: 7px 15px;
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
-  color: var(--muted);
-  font: 700 12px/1 "JetBrains Mono", "Cascadia Code", monospace;
-  letter-spacing: .02em;
+  padding: 9px 18px;
+  background: color-mix(in srgb, #05060f 76%, transparent);
+  color: #ffdd94;
+  font: 800 12.5px/1 "JetBrains Mono", "Cascadia Code", monospace;
+  letter-spacing: .04em;
   cursor: pointer;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, .3);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .5), 0 0 20px color-mix(in srgb, var(--accent) 42%, transparent);
 }
 .intro-skip::before {
   content: "";
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 9px color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow: 0 0 10px var(--accent);
 }
-.intro-skip:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
-html.intro-run .intro-skip { display: inline-flex; }
+.intro-skip:hover {
+  color: #fff;
+  border-color: #ffdd94;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .5), 0 0 28px color-mix(in srgb, var(--accent) 62%, transparent);
+}
+html.intro-cine .intro-skip { display: inline-flex; }
 
-/* In-place reveal. Base (no class) is the SETTLED state, so no-JS, reduced-motion,
-   repeat visits, and ?intro=skip all show the finished hero with zero motion. */
-html.intro-run .hero-split .stage-frame { opacity: 0; transform: scale(.955) translateY(10px); }
-html.intro-run .hero-split .hero-copy > * { opacity: 0; transform: translateY(12px); }
-html.intro-run.intro-go .hero-split .stage-frame {
-  opacity: 1; transform: none;
-  transition: opacity 1.1s ease, transform 1.4s cubic-bezier(.19, .72, .22, 1);
+/* Deep-space veil holding the center-stage galaxy. Hidden unless the intro runs.
+   NB: the class is intro-VEIL, not intro-cine — the html element itself carries the
+   intro-cine gate class, so a bare `.intro-cine{display:none}` would blank the page. */
+.intro-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 24% 28%, rgba(104, 66, 222, .30), transparent 55%),
+    radial-gradient(ellipse at 78% 72%, rgba(40, 92, 214, .26), transparent 58%),
+    radial-gradient(ellipse at 52% 46%, rgba(255, 196, 128, .08), transparent 44%),
+    radial-gradient(circle at 50% 46%, #0a102e 0%, #05071c 55%, #01020a 100%);
 }
-html.intro-run.intro-go .hero-split .hero-copy > * {
-  opacity: 1; transform: none;
-  transition: opacity .68s ease, transform .68s cubic-bezier(.2, .7, .2, 1);
+html.intro-cine .intro-veil {
+  display: flex;
+  animation: cineVeil 2.3s ease forwards;
 }
-html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(1) { transition-delay: .46s; }
-html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(2) { transition-delay: .58s; }
-html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(3) { transition-delay: .70s; }
-html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(4) { transition-delay: .82s; }
-html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(5) { transition-delay: .93s; }
-html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(6) { transition-delay: 1.02s; }
-html.intro-run.intro-go .hero-split .hero-copy > *:nth-child(7) { transition-delay: 1.10s; }
-/* Skip => fast-forward everything to settled. */
-html.intro-fast .hero-split .stage-frame,
-html.intro-fast .hero-split .hero-copy > * {
-  transition-duration: .2s !important;
-  transition-delay: 0s !important;
+.cine-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: min(760px, 82vw);
+}
+.cine-galaxy {
+  width: 100%;
+  container-type: inline-size;
+  transform-origin: 50% 46%;
+}
+html.intro-cine .cine-galaxy { animation: cineGalaxy 2.3s cubic-bezier(.2, .65, .2, 1) forwards; }
+.cine-galaxy .galaxy-still { box-shadow: 0 30px 90px rgba(0, 0, 0, .5), 0 0 60px rgba(96, 128, 255, .14); }
+.cine-caption { text-align: center; }
+html.intro-cine .cine-caption { animation: cineCap 2.3s ease forwards; }
+.cine-brand {
+  display: block;
+  color: var(--accent);
+  font: 800 11px/1.2 "JetBrains Mono", "Cascadia Code", monospace;
+  letter-spacing: .42em;
+  text-indent: .42em;
+  margin-bottom: 8px;
+  opacity: .92;
+}
+.cine-tagline {
+  display: block;
+  color: #eaf0ff;
+  font-size: clamp(18px, 2.6vw, 26px);
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+@keyframes cineVeil {
+  0%   { opacity: 1; }
+  66%  { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+@keyframes cineGalaxy {
+  0%   { opacity: 0; transform: scale(.82); }
+  40%  { opacity: 1; transform: scale(1); }
+  66%  { opacity: 1; transform: scale(1.035); }
+  100% { opacity: 0; transform: scale(1.14); }
+}
+@keyframes cineCap {
+  0%   { opacity: 0; transform: translateY(10px); }
+  24%  { opacity: 0; transform: translateY(10px); }
+  46%  { opacity: 1; transform: translateY(0); }
+  66%  { opacity: 1; transform: translateY(0); }
+  86%  { opacity: 0; transform: translateY(-6px); }
+  100% { opacity: 0; }
+}
+
+/* Hero "lands" in as the veil dissolves — one container animation (no per-child
+   stagger fragility). Hidden under the opaque veil for the first ~60%. */
+html.intro-cine .hero-intro.hero-split {
+  animation: cineHero 2.3s cubic-bezier(.2, .7, .2, 1) forwards;
+}
+@keyframes cineHero {
+  0%   { opacity: 0; transform: translateY(16px) scale(.99); }
+  60%  { opacity: 0; transform: translateY(16px) scale(.99); }
+  90%  { opacity: 1; transform: none; }
+  100% { opacity: 1; transform: none; }
 }
 
 /* Decorative before/after still: mirrors the galaxy_card frame but is inert. */
@@ -1636,10 +1712,12 @@ html.intro-fast .hero-split .hero-copy > * {
 .contrast-actions { margin-top: 4px; }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Honesty: never animate the hero for reduced-motion visitors. Base state is settled,
-     so this is a belt-and-braces guard on top of the head script never adding intro-run. */
-  html.intro-run .hero-split .stage-frame,
-  html.intro-run .hero-split .hero-copy > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+  /* Honesty + a11y: never play the intro for reduced-motion visitors. Base state is the
+     settled hero, so this is a belt-and-braces guard on top of the head script never
+     adding intro-cine — and it also neutralises the global `* { animation: none }` rule,
+     which would otherwise freeze the veil at its opaque first frame and block content. */
+  html.intro-cine .intro-veil { display: none !important; }
+  html.intro-cine .hero-intro.hero-split { animation: none !important; opacity: 1 !important; transform: none !important; }
   .intro-skip { display: none !important; }
 }
 
@@ -1704,7 +1782,7 @@ JS = r"""
       privacyTeam: 'On a team, distilled fragments — safe session metadata, never raw conversations — sync as plaintext inside your private GitHub repo, readable only by the collaborators you add. The only thing that ever leaves that repo is a public Pages deploy, and that ships AES-256-GCM ciphertext, unlocked in the browser.',
       privacyMore: 'Full privacy model, roles, and URL map — see the README.',
       footerPrivacy: 'Demo data fictional. Real memory private.',
-      skipIntro: 'Skip intro', stageHint: 'Interactive demo — drag, zoom, click a node.', stillTitle: 'one graph, settled',
+      skipIntro: 'Skip intro', cineTag: 'One galaxy. Every agent.', stageHint: 'Interactive demo — drag, zoom, click a node.', stillTitle: 'one graph, settled',
       beforeTag: 'WITHOUT SHARED MEMORY', afterTag: 'WITH AGENT MEMORY GALAXY',
       beforeCaption: 'Five machines, zero shared context. Every window remembers a different slice of the day, and it all evaporates when the terminal closes.',
       afterCaption: 'One day of work across five machines, resolved into one graph — the same interactive map you can open at the top of the page.',
@@ -1767,7 +1845,7 @@ JS = r"""
       privacyTeam: '在团队里，提炼出的 fragment（只含安全的会话元数据，绝不含原始对话）会以明文形式同步进你的私有 GitHub 仓库，只有你添加的协作者能读到。真正会离开这个仓库的，只有公开的 Pages 部署，而它携带的只有 AES-256-GCM 密文，在浏览器端解锁。',
       privacyMore: '完整的隐私模型、角色分工与 URL 对照表见 README。',
       footerPrivacy: '演示数据均为虚构，真实记忆保持私有。',
-      skipIntro: '跳过', stageHint: '可交互 demo——拖拽、缩放、点击节点。', stillTitle: '一张图，已汇合',
+      skipIntro: '跳过', cineTag: '一张银河，容纳每个 agent。', stageHint: '可交互 demo——拖拽、缩放、点击节点。', stillTitle: '一张图，已汇合',
       beforeTag: '没有共享记忆的一天', afterTag: '接入 Agent Memory Galaxy 之后',
       beforeCaption: '五台机器，零共享上下文。每个窗口只记得这一天的一个切片，终端一关就全部蒸发。',
       afterCaption: '五台机器一天的工作，汇成一张图——就是页面顶部你能打开的那张可交互地图。',
@@ -2375,20 +2453,17 @@ JS = r"""
       }
     });
   });
-  /* Intro reveal is orchestrated by the head script (self-contained, always completes).
-     Here we only progressively enhance it with a Skip control that fast-forwards the
-     in-place reveal to its settled state. No skip button, or JS off => the head script
-     still finishes the reveal on its own. */
+  /* The cinematic intro is orchestrated entirely by the head script (self-contained,
+     always completes, and already delegates the Skip click). This is a belt-and-braces
+     binding so Skip still tears the overlay down even if the delegated listener is gone.
+     Idempotent: __amgIntroEnd only fires once. */
   function wireIntroSkip() {
     var d = document.documentElement;
     var btn = document.querySelector('[data-intro-skip]');
     if (!btn) return;
     btn.addEventListener('click', function () {
-      d.classList.add('intro-go', 'intro-fast');
-      setTimeout(function () {
-        if (typeof d.__amgIntroEnd === 'function') d.__amgIntroEnd();
-        else d.classList.remove('intro-run', 'intro-go', 'intro-fast');
-      }, 240);
+      if (typeof d.__amgIntroEnd === 'function') d.__amgIntroEnd();
+      else d.classList.remove('intro-cine');
     });
   }
 
@@ -2549,6 +2624,31 @@ def galaxy_still_markup(stats: dict) -> str:
     <span class="status mono" data-preview-status data-nodes="{stats['nodes']}" data-edges="{stats['edges']}" data-machines="{stats['machines']}">{stats['nodes']} nodes / {stats['edges']} links / {stats['machines']} machines</span>
   </div>
 {mini_preview_markup(stats, still=True)}
+</div>
+"""
+
+
+def intro_cine_markup(stats: dict) -> str:
+    """Cinematic 渐入渐出 opening overlay. The demo galaxy — the inert galaxy_still (no
+    canvas, no data hooks, no role=button, aria-hidden) — fades in center-stage on a
+    deep-space veil, holds, then dissolves into the settled hero. A high-contrast gold
+    Skip pill is present from the first frame. The overlay is display:none by default, so
+    no-JS / reduced-motion / repeat visits / ?intro=skip never render it; only the head
+    script's intro-cine class turns it on. Placed last in <body> so it reuses the hero
+    galaxy_card's SVG filter defs by id (backward reference, like the contrast still),
+    and adds no second interactive galaxy."""
+    return f"""
+<div class="intro-veil" data-intro-cine>
+  <div class="cine-inner">
+    <div class="cine-galaxy">
+{galaxy_still_markup(stats)}
+    </div>
+    <div class="cine-caption">
+      <span class="cine-brand">AGENT MEMORY GALAXY</span>
+      <span class="cine-tagline" data-i18n="cineTag">One galaxy. Every agent.</span>
+    </div>
+  </div>
+  <button class="intro-skip" type="button" data-intro-skip data-i18n="skipIntro" aria-label="Skip the intro animation">Skip intro</button>
 </div>
 """
 
@@ -2909,11 +3009,13 @@ def landing_html(stats: dict) -> str:
 <title>Agent Memory Galaxy</title>
 <link rel="stylesheet" href="assets/landing.css">
 <script>
-/* Demo-first hero: decide the one-time in-place reveal BEFORE first paint so the settled
-   state never flashes. This is self-contained — the reveal starts and always completes
-   even if landing.js never loads, so content is never blocked. landing.js only adds the
-   Skip button on top. Honest defaults: reduced-motion, repeat visits (sessionStorage), and
-   ?intro=skip present the finished hero immediately; ?intro=play forces it for capture. */
+/* Cinematic 渐入渐出 intro: decide BEFORE first paint whether to play, so the settled
+   hero never flashes under the veil. Fully self-contained — the whole show is CSS
+   @keyframes gated by the intro-cine class, and this head script owns the safety timers,
+   so it always completes and content is never permanently covered even if landing.js
+   never loads or throws. Honest defaults: reduced-motion, repeat visits (sessionStorage
+   amg_intro_cine), and ?intro=skip present the finished hero immediately with no overlay;
+   ?intro=play forces the intro for capture/regression. */
 (function () {{
   try {{
     var d = document.documentElement;
@@ -2923,16 +3025,22 @@ def landing_html(stats: dict) -> str:
     var forceSkip = /[?&]intro=skip/.test(qs);
     var forcePlay = /[?&]intro=play/.test(qs);
     var played = false;
-    try {{ played = sessionStorage.getItem('amg_intro_v6') === '1'; }} catch (e) {{}}
+    try {{ played = sessionStorage.getItem('amg_intro_cine') === '1'; }} catch (e) {{}}
     var shouldPlay = !reduce && (forcePlay || (!played && !forceSkip));
-    if (!forcePlay) {{ try {{ sessionStorage.setItem('amg_intro_v6', '1'); }} catch (e) {{}} }}
+    if (!forcePlay) {{ try {{ sessionStorage.setItem('amg_intro_cine', '1'); }} catch (e) {{}} }}
+    var ended = false;
+    var end = function () {{ if (ended) return; ended = true; d.classList.remove('intro-cine'); }};
+    d.__amgIntroEnd = end;
+    /* Skip works from the very first frame, before landing.js parses: a capturing
+       delegated listener catches the click no matter when the button is inserted. */
+    document.addEventListener('click', function (ev) {{
+      var t = ev.target;
+      if (t && t.closest && t.closest('[data-intro-skip]')) {{ ev.preventDefault(); end(); }}
+    }}, true);
     if (!shouldPlay) return;
-    d.classList.add('intro-run');
-    var go = function () {{ d.classList.add('intro-go'); }};
-    d.__amgIntroEnd = function () {{ d.classList.remove('intro-run', 'intro-go', 'intro-fast'); }};
-    if (window.requestAnimationFrame) requestAnimationFrame(function () {{ requestAnimationFrame(go); }});
-    else setTimeout(go, 32);
-    setTimeout(d.__amgIntroEnd, 2600);
+    d.classList.add('intro-cine');
+    setTimeout(end, 2350);   /* primary teardown just after the 2.3s CSS timeline */
+    setTimeout(end, 2600);   /* hard safety net — content is never blocked past this */
   }} catch (e) {{}}
 }})();
 </script>
@@ -2941,7 +3049,6 @@ def landing_html(stats: dict) -> str:
 {nav("", "concepts/index.html", archive=False)}
 <main class="page">
   <header class="hero-intro hero-split">
-    <button class="intro-skip" type="button" data-intro-skip data-i18n="skipIntro" aria-label="Skip the intro animation">Skip intro</button>
     <div class="hero-copy">
       <div class="kicker" data-i18n="heroKicker">FOR RESEARCHERS AND TEAMS RUNNING MANY AGENTS</div>
       <h1 data-i18n="heroTitle">Which agent did that?</h1>
@@ -3168,6 +3275,7 @@ python3 -m http.server 8765 --directory docs</code></pre>
   <span><a href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a> &middot; <a href="concepts/index.html" data-i18n="navConcepts">Design archive</a></span>
   <span data-i18n="footerPrivacy">Demo data fictional. Real memory private.</span>
 </div></footer>
+{intro_cine_markup(stats)}
 {modal_markup("")}
 <script src="assets/landing.js"></script>
 </body>

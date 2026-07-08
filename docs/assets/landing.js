@@ -31,7 +31,7 @@
       privacyTeam: 'On a team, distilled fragments — safe session metadata, never raw conversations — sync as plaintext inside your private GitHub repo, readable only by the collaborators you add. The only thing that ever leaves that repo is a public Pages deploy, and that ships AES-256-GCM ciphertext, unlocked in the browser.',
       privacyMore: 'Full privacy model, roles, and URL map — see the README.',
       footerPrivacy: 'Demo data fictional. Real memory private.',
-      skipIntro: 'Skip intro', stageHint: 'Interactive demo — drag, zoom, click a node.', stillTitle: 'one graph, settled',
+      skipIntro: 'Skip intro', cineTag: 'One galaxy. Every agent.', stageHint: 'Interactive demo — drag, zoom, click a node.', stillTitle: 'one graph, settled',
       beforeTag: 'WITHOUT SHARED MEMORY', afterTag: 'WITH AGENT MEMORY GALAXY',
       beforeCaption: 'Five machines, zero shared context. Every window remembers a different slice of the day, and it all evaporates when the terminal closes.',
       afterCaption: 'One day of work across five machines, resolved into one graph — the same interactive map you can open at the top of the page.',
@@ -94,7 +94,7 @@
       privacyTeam: '在团队里，提炼出的 fragment（只含安全的会话元数据，绝不含原始对话）会以明文形式同步进你的私有 GitHub 仓库，只有你添加的协作者能读到。真正会离开这个仓库的，只有公开的 Pages 部署，而它携带的只有 AES-256-GCM 密文，在浏览器端解锁。',
       privacyMore: '完整的隐私模型、角色分工与 URL 对照表见 README。',
       footerPrivacy: '演示数据均为虚构，真实记忆保持私有。',
-      skipIntro: '跳过', stageHint: '可交互 demo——拖拽、缩放、点击节点。', stillTitle: '一张图，已汇合',
+      skipIntro: '跳过', cineTag: '一张银河，容纳每个 agent。', stageHint: '可交互 demo——拖拽、缩放、点击节点。', stillTitle: '一张图，已汇合',
       beforeTag: '没有共享记忆的一天', afterTag: '接入 Agent Memory Galaxy 之后',
       beforeCaption: '五台机器，零共享上下文。每个窗口只记得这一天的一个切片，终端一关就全部蒸发。',
       afterCaption: '五台机器一天的工作，汇成一张图——就是页面顶部你能打开的那张可交互地图。',
@@ -702,20 +702,17 @@
       }
     });
   });
-  /* Intro reveal is orchestrated by the head script (self-contained, always completes).
-     Here we only progressively enhance it with a Skip control that fast-forwards the
-     in-place reveal to its settled state. No skip button, or JS off => the head script
-     still finishes the reveal on its own. */
+  /* The cinematic intro is orchestrated entirely by the head script (self-contained,
+     always completes, and already delegates the Skip click). This is a belt-and-braces
+     binding so Skip still tears the overlay down even if the delegated listener is gone.
+     Idempotent: __amgIntroEnd only fires once. */
   function wireIntroSkip() {
     var d = document.documentElement;
     var btn = document.querySelector('[data-intro-skip]');
     if (!btn) return;
     btn.addEventListener('click', function () {
-      d.classList.add('intro-go', 'intro-fast');
-      setTimeout(function () {
-        if (typeof d.__amgIntroEnd === 'function') d.__amgIntroEnd();
-        else d.classList.remove('intro-run', 'intro-go', 'intro-fast');
-      }, 240);
+      if (typeof d.__amgIntroEnd === 'function') d.__amgIntroEnd();
+      else d.classList.remove('intro-cine');
     });
   }
 

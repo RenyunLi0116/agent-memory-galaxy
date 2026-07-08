@@ -7,11 +7,13 @@
 <title>Agent Memory Galaxy</title>
 <link rel="stylesheet" href="assets/landing.css">
 <script>
-/* Demo-first hero: decide the one-time in-place reveal BEFORE first paint so the settled
-   state never flashes. This is self-contained — the reveal starts and always completes
-   even if landing.js never loads, so content is never blocked. landing.js only adds the
-   Skip button on top. Honest defaults: reduced-motion, repeat visits (sessionStorage), and
-   ?intro=skip present the finished hero immediately; ?intro=play forces it for capture. */
+/* Cinematic 渐入渐出 intro: decide BEFORE first paint whether to play, so the settled
+   hero never flashes under the veil. Fully self-contained — the whole show is CSS
+   @keyframes gated by the intro-cine class, and this head script owns the safety timers,
+   so it always completes and content is never permanently covered even if landing.js
+   never loads or throws. Honest defaults: reduced-motion, repeat visits (sessionStorage
+   amg_intro_cine), and ?intro=skip present the finished hero immediately with no overlay;
+   ?intro=play forces the intro for capture/regression. */
 (function () {
   try {
     var d = document.documentElement;
@@ -21,16 +23,22 @@
     var forceSkip = /[?&]intro=skip/.test(qs);
     var forcePlay = /[?&]intro=play/.test(qs);
     var played = false;
-    try { played = sessionStorage.getItem('amg_intro_v6') === '1'; } catch (e) {}
+    try { played = sessionStorage.getItem('amg_intro_cine') === '1'; } catch (e) {}
     var shouldPlay = !reduce && (forcePlay || (!played && !forceSkip));
-    if (!forcePlay) { try { sessionStorage.setItem('amg_intro_v6', '1'); } catch (e) {} }
+    if (!forcePlay) { try { sessionStorage.setItem('amg_intro_cine', '1'); } catch (e) {} }
+    var ended = false;
+    var end = function () { if (ended) return; ended = true; d.classList.remove('intro-cine'); };
+    d.__amgIntroEnd = end;
+    /* Skip works from the very first frame, before landing.js parses: a capturing
+       delegated listener catches the click no matter when the button is inserted. */
+    document.addEventListener('click', function (ev) {
+      var t = ev.target;
+      if (t && t.closest && t.closest('[data-intro-skip]')) { ev.preventDefault(); end(); }
+    }, true);
     if (!shouldPlay) return;
-    d.classList.add('intro-run');
-    var go = function () { d.classList.add('intro-go'); };
-    d.__amgIntroEnd = function () { d.classList.remove('intro-run', 'intro-go', 'intro-fast'); };
-    if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(go); });
-    else setTimeout(go, 32);
-    setTimeout(d.__amgIntroEnd, 2600);
+    d.classList.add('intro-cine');
+    setTimeout(end, 2350);   /* primary teardown just after the 2.3s CSS timeline */
+    setTimeout(end, 2600);   /* hard safety net — content is never blocked past this */
   } catch (e) {}
 })();
 </script>
@@ -55,7 +63,6 @@
 
 <main class="page">
   <header class="hero-intro hero-split">
-    <button class="intro-skip" type="button" data-intro-skip data-i18n="skipIntro" aria-label="Skip the intro animation">Skip intro</button>
     <div class="hero-copy">
       <div class="kicker" data-i18n="heroKicker">FOR RESEARCHERS AND TEAMS RUNNING MANY AGENTS</div>
       <h1 data-i18n="heroTitle">Which agent did that?</h1>
@@ -460,6 +467,93 @@ python3 -m http.server 8765 --directory docs</code></pre>
   <span><a href="https://github.com/RenyunLi0116/agent-memory-galaxy">GitHub</a> &middot; <a href="concepts/index.html" data-i18n="navConcepts">Design archive</a></span>
   <span data-i18n="footerPrivacy">Demo data fictional. Real memory private.</span>
 </div></footer>
+
+<div class="intro-veil" data-intro-cine>
+  <div class="cine-inner">
+    <div class="cine-galaxy">
+
+<div class="galaxy-still" aria-hidden="true">
+  <div class="framebar">
+    <span class="lights"><i></i><i></i><i></i></span>
+    <span class="mono" data-i18n="stillTitle">one graph, settled</span>
+    <span class="status mono" data-preview-status data-nodes="445" data-edges="1893" data-machines="5">445 nodes / 1893 links / 5 machines</span>
+  </div>
+
+  <div class="mini-galaxy-preview" aria-hidden="true">
+    <svg class="mini-map" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet">
+      <ellipse class="mini-orbit gold" cx="400" cy="260" rx="244" ry="126" />
+      <ellipse class="mini-orbit" cx="400" cy="260" rx="310" ry="166" transform="rotate(-17 400 260)" />
+      <path class="mini-coreline" d="M 148 332 C 248 198 350 154 472 204 S 620 356 704 210" />
+      <g class="mini-dust-layer"><circle class="mini-dust" cx="120" cy="130" r="1.4" />
+<circle class="mini-dust" cx="152" cy="398" r="1.1" />
+<circle class="mini-dust" cx="286" cy="114" r="1.2" />
+<circle class="mini-dust" cx="368" cy="422" r="1.4" />
+<circle class="mini-dust" cx="430" cy="126" r="1.1" />
+<circle class="mini-dust" cx="690" cy="150" r="1.5" />
+<circle class="mini-dust" cx="706" cy="386" r="1.1" />
+<circle class="mini-dust" cx="88" cy="276" r="1.0" />
+<circle class="mini-dust" cx="548" cy="92" r="1.0" />
+<circle class="mini-dust" cx="610" cy="420" r="1.2" />
+<circle class="mini-dust" cx="254" cy="444" r="1.0" />
+<circle class="mini-dust" cx="742" cy="264" r="1.2" /></g>
+      <g class="mini-links"><line class="mini-edge warm" data-pair="0-1" x1="384" y1="252" x2="505" y2="178" /><line class="mini-edge" data-pair="0-2" x1="384" y1="252" x2="232" y2="180" /><line class="mini-edge live" data-pair="0-4" x1="384" y1="252" x2="330" y2="354" /><line class="mini-edge live" data-pair="0-5" x1="384" y1="252" x2="468" y2="302" /><line class="mini-edge secure" data-pair="1-7" x1="505" y1="178" x2="632" y2="220" /><line class="mini-edge secure" data-pair="2-6" x1="232" y1="180" x2="190" y2="342" /><line class="mini-edge" data-pair="3-5" x1="586" y1="338" x2="468" y2="302" /><line class="mini-edge warm" data-pair="4-6" x1="330" y1="354" x2="190" y2="342" /><line class="mini-edge secure" data-pair="5-7" x1="468" y1="302" x2="632" y2="220" /><line class="mini-edge" data-pair="1-3" x1="505" y1="178" x2="586" y2="338" /></g>
+      <path class="mini-scan" d="M 146 394 C 264 222 406 146 570 206 C 650 236 702 286 724 342" />
+      <g class="mini-nodes"><g class="mini-star project" data-index="0" transform="translate(384 252)">
+        <circle class="halo" r="36" fill="currentColor" />
+        <path class="spike" d="M -26.4 0 H 26.4 M 0 -26.4 V 26.4 M -18.6 -18.6 L 18.6 18.6 M -18.6 18.6 L 18.6 -18.6" />
+        <circle class="core" r="12" />
+        <circle class="lock" r="20" />
+      </g><g class="mini-star project" data-index="1" transform="translate(505 178)">
+        <circle class="halo" r="30" fill="currentColor" />
+        <path class="spike" d="M -22.0 0 H 22.0 M 0 -22.0 V 22.0 M -15.5 -15.5 L 15.5 15.5 M -15.5 15.5 L 15.5 -15.5" />
+        <circle class="core" r="10" />
+        <circle class="lock" r="18" />
+      </g><g class="mini-star server" data-index="2" transform="translate(232 180)">
+        <circle class="halo" r="24" fill="currentColor" />
+        <path class="spike" d="M -13.6 0 H 13.6 M 0 -13.6 V 13.6" />
+        <circle class="core" r="8" />
+        <circle class="lock" r="16" />
+      </g><g class="mini-star server" data-index="3" transform="translate(586 338)">
+        <circle class="halo" r="24" fill="currentColor" />
+        <path class="spike" d="M -13.6 0 H 13.6 M 0 -13.6 V 13.6" />
+        <circle class="core" r="8" />
+        <circle class="lock" r="16" />
+      </g><g class="mini-star agent" data-index="4" transform="translate(330 354)">
+        <circle class="halo" r="21" fill="currentColor" />
+        <path class="spike" d="M -11.9 0 H 11.9 M 0 -11.9 V 11.9" />
+        <circle class="core" r="7" />
+        <circle class="lock" r="15" />
+      </g><g class="mini-star agent" data-index="5" transform="translate(468 302)">
+        <circle class="halo" r="21" fill="currentColor" />
+        <path class="spike" d="M -11.9 0 H 11.9 M 0 -11.9 V 11.9" />
+        <circle class="core" r="7" />
+        <circle class="lock" r="15" />
+      </g><g class="mini-star boundary" data-index="6" transform="translate(190 342)">
+        <circle class="halo" r="27" fill="currentColor" />
+        <path class="spike" d="M -19.8 0 H 19.8 M 0 -19.8 V 19.8 M -14.0 -14.0 L 14.0 14.0 M -14.0 14.0 L 14.0 -14.0" />
+        <circle class="core" r="9" />
+        <circle class="lock" r="17" />
+      </g><g class="mini-star artifact" data-index="7" transform="translate(632 220)">
+        <circle class="halo" r="27" fill="currentColor" />
+        <path class="spike" d="M -15.3 0 H 15.3 M 0 -15.3 V 15.3" />
+        <circle class="core" r="9" />
+        <circle class="lock" r="17" />
+      </g></g>
+    </svg>
+    <div class="mini-side"><b data-i18n="miniSideTitle">NODE TYPES</b><span data-mini-type="project" data-i18n="miniProject">Project</span><span data-mini-type="server" data-i18n="miniServer">Server</span><span data-mini-type="agent" data-i18n="miniAgent">Agent</span><span data-mini-type="boundary" data-i18n="miniBoundary">Boundary</span><span data-mini-type="artifact" data-i18n="miniArtifact">Artifact</span></div>
+    <div class="mini-readout"><b data-i18n="miniReadoutTitle">PRESENCE LAYER</b><span data-i18n="miniReadout">multi-user hub / agent status / encrypted boundary</span></div>
+  </div>
+</div>
+
+    </div>
+    <div class="cine-caption">
+      <span class="cine-brand">AGENT MEMORY GALAXY</span>
+      <span class="cine-tagline" data-i18n="cineTag">One galaxy. Every agent.</span>
+    </div>
+  </div>
+  <button class="intro-skip" type="button" data-intro-skip data-i18n="skipIntro" aria-label="Skip the intro animation">Skip intro</button>
+</div>
+
 
 <div class="modal" data-galaxy-modal hidden>
   <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Expanded galaxy demo">

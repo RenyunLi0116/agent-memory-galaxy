@@ -3,6 +3,7 @@
 This file is both a lightweight project log and an example of the `agent_memory.md` format.
 
 ## doing / in progress
+- [done] 2026-07-08 (claude/team-leader) Public git history scrubbed: rewrote the two commits whose agent_memory.md verification lines had quoted the leak-scan denylist regex verbatim (which itself listed real machine/IP/project identifiers). filter-branch tree-filter over the affected range replaced those literals with a neutral description; empty scrub commit pruned; force-pushed. Full-history scan now 0 hits; pages/demo/docs were never affected. Local backup branch kept for rollback (not pushed). Note: GitHub may retain the old commit objects reachable by direct SHA until its GC runs.
 - [done] 2026-07-08 (claude/team-leader) Round 6b — cinematic 渐入渐出 intro rebuilt (FIXED) on the committed V2 base (f003a46). See the 2026-07-08 round6b entry below. Screenshots delivered for user review, NOT committed.
 
 ## 2026-07-08 - Round-6b: fixed cinematic 渐入渐出 intro overlay (claude/team-leader)

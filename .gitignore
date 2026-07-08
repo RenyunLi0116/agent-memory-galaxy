@@ -27,3 +27,5 @@ cron.log
 contribute.log
 # 系统
 .DS_Store
+# 隐私守卫的私有标识词表——只留本地、绝不入库
+/.amg-privacy-denylist

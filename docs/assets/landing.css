@@ -1551,27 +1551,28 @@ html.intro-cine.intro-landed #after-galaxy { visibility: visible; }
    hold forwards or it would out-rank the inline FLIP transform the head script sets
    for the fly; once it ends the element rests at its base (transform none) — the "hold". */
 html.intro-cine .cine-galaxy { animation: cineShowGalaxy 1s cubic-bezier(.2, .65, .2, 1) backwards; }
-.cine-galaxy .galaxy-still { box-shadow: 0 30px 90px rgba(0, 0, 0, .5), 0 0 60px rgba(96, 128, 255, .14); }
-.cine-caption { position: relative; z-index: 1; text-align: center; }
-html.intro-cine .cine-caption { animation: cineShowCap 1.1s ease backwards; }
-html.intro-flying .cine-caption,
-html.intro-landed .cine-caption { opacity: 0; transition: opacity .5s ease; }
-.cine-brand {
-  display: block;
-  color: var(--accent);
-  font: 800 11px/1.2 "JetBrains Mono", "Cascadia Code", monospace;
-  letter-spacing: .42em;
-  text-indent: .42em;
-  margin-bottom: 8px;
-  opacity: .92;
+/* The opening card IS the demo card: a faithful, INERT clone of the hero galaxy_card
+   (same .galaxy-card frame → identical border/radius/chrome). Sized a touch larger than
+   its landing slot so it reads as "big & centered" before it shrinks in; pointer-events
+   are off so it is purely decorative (the Skip pill, a sibling of .cine-inner, stays
+   clickable). No extra brand/tagline chrome — just one quiet hint line. */
+.cine-galaxy .galaxy-card {
+  height: clamp(380px, 60vh, 560px);
+  pointer-events: none;
+  cursor: default;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .5), 0 0 60px rgba(96, 128, 255, .14);
 }
-.cine-tagline {
-  display: block;
-  color: #eaf0ff;
-  font-size: clamp(18px, 2.6vw, 26px);
-  font-weight: 600;
-  letter-spacing: .01em;
+.cine-hint {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--muted);
+  font: 600 13px/1.5 "JetBrains Mono", "Cascadia Code", monospace;
+  letter-spacing: .02em;
 }
+html.intro-cine .cine-hint { animation: cineShowCap 1.1s ease backwards; }
+html.intro-flying .cine-hint,
+html.intro-landed .cine-hint { opacity: 0; transition: opacity .5s ease; }
 
 @keyframes cineShowGalaxy {
   0%   { opacity: 0; transform: scale(.9); }
@@ -1632,4 +1633,8 @@ html.intro-landed .cine-caption { opacity: 0; transition: opacity .5s ease; }
   .stage-frame .galaxy-card { height: clamp(320px, 76vw, 400px); }
   .landing-v2 .hero-split .hero-def { max-width: none; }
   .landing-v2 .hero-split .hero-scene { max-width: none; }
+  /* Intro card on phones: wider veil, shorter card so the centered demo clone stays
+     roughly the shape of its near-full-width landing slot under the headline. */
+  .cine-inner { width: min(760px, 88vw); }
+  .cine-galaxy .galaxy-card { height: clamp(280px, 66vw, 360px); }
 }

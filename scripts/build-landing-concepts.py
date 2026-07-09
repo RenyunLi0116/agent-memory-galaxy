@@ -1671,27 +1671,28 @@ html.intro-cine.intro-landed #after-galaxy { visibility: visible; }
    hold forwards or it would out-rank the inline FLIP transform the head script sets
    for the fly; once it ends the element rests at its base (transform none) — the "hold". */
 html.intro-cine .cine-galaxy { animation: cineShowGalaxy 1s cubic-bezier(.2, .65, .2, 1) backwards; }
-.cine-galaxy .galaxy-still { box-shadow: 0 30px 90px rgba(0, 0, 0, .5), 0 0 60px rgba(96, 128, 255, .14); }
-.cine-caption { position: relative; z-index: 1; text-align: center; }
-html.intro-cine .cine-caption { animation: cineShowCap 1.1s ease backwards; }
-html.intro-flying .cine-caption,
-html.intro-landed .cine-caption { opacity: 0; transition: opacity .5s ease; }
-.cine-brand {
-  display: block;
-  color: var(--accent);
-  font: 800 11px/1.2 "JetBrains Mono", "Cascadia Code", monospace;
-  letter-spacing: .42em;
-  text-indent: .42em;
-  margin-bottom: 8px;
-  opacity: .92;
+/* The opening card IS the demo card: a faithful, INERT clone of the hero galaxy_card
+   (same .galaxy-card frame → identical border/radius/chrome). Sized a touch larger than
+   its landing slot so it reads as "big & centered" before it shrinks in; pointer-events
+   are off so it is purely decorative (the Skip pill, a sibling of .cine-inner, stays
+   clickable). No extra brand/tagline chrome — just one quiet hint line. */
+.cine-galaxy .galaxy-card {
+  height: clamp(380px, 60vh, 560px);
+  pointer-events: none;
+  cursor: default;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .5), 0 0 60px rgba(96, 128, 255, .14);
 }
-.cine-tagline {
-  display: block;
-  color: #eaf0ff;
-  font-size: clamp(18px, 2.6vw, 26px);
-  font-weight: 600;
-  letter-spacing: .01em;
+.cine-hint {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--muted);
+  font: 600 13px/1.5 "JetBrains Mono", "Cascadia Code", monospace;
+  letter-spacing: .02em;
 }
+html.intro-cine .cine-hint { animation: cineShowCap 1.1s ease backwards; }
+html.intro-flying .cine-hint,
+html.intro-landed .cine-hint { opacity: 0; transition: opacity .5s ease; }
 
 @keyframes cineShowGalaxy {
   0%   { opacity: 0; transform: scale(.9); }
@@ -1752,6 +1753,10 @@ html.intro-landed .cine-caption { opacity: 0; transition: opacity .5s ease; }
   .stage-frame .galaxy-card { height: clamp(320px, 76vw, 400px); }
   .landing-v2 .hero-split .hero-def { max-width: none; }
   .landing-v2 .hero-split .hero-scene { max-width: none; }
+  /* Intro card on phones: wider veil, shorter card so the centered demo clone stays
+     roughly the shape of its near-full-width landing slot under the headline. */
+  .cine-inner { width: min(760px, 88vw); }
+  .cine-galaxy .galaxy-card { height: clamp(280px, 66vw, 360px); }
 }
 """
 
@@ -1790,7 +1795,7 @@ JS = r"""
       privacyTeam: 'On a team, distilled fragments — safe session metadata, never raw conversations — sync as plaintext inside your private GitHub repo, readable only by the collaborators you add. The only thing that ever leaves that repo is a public Pages deploy, and that ships AES-256-GCM ciphertext, unlocked in the browser.',
       privacyMore: 'Full privacy model, roles, and URL map — see the README.',
       footerPrivacy: 'Demo data fictional. Real memory private.',
-      skipIntro: 'Skip intro', cineTag: 'One galaxy. Every agent.', stageHint: 'Interactive demo — drag, zoom, click a node.', stillTitle: 'one graph, settled',
+      skipIntro: 'Skip intro', stageHint: 'Interactive demo — drag, zoom, click a node.', stillTitle: 'one graph, settled',
       beforeTag: 'WITHOUT SHARED MEMORY', afterTag: 'WITH AGENT MEMORY GALAXY',
       beforeCaption: 'Five machines, zero shared context. Every window remembers a different slice of the day, and it all evaporates when the terminal closes.',
       afterCaption: 'One day of work across five machines, resolved into one graph — the same interactive map you can open at the top of the page.',
@@ -1853,7 +1858,7 @@ JS = r"""
       privacyTeam: '在团队里，提炼出的 fragment（只含安全的会话元数据，绝不含原始对话）会以明文形式同步进你的私有 GitHub 仓库，只有你添加的协作者能读到。真正会离开这个仓库的，只有公开的 Pages 部署，而它携带的只有 AES-256-GCM 密文，在浏览器端解锁。',
       privacyMore: '完整的隐私模型、角色分工与 URL 对照表见 README。',
       footerPrivacy: '演示数据均为虚构，真实记忆保持私有。',
-      skipIntro: '跳过', cineTag: '一张银河，容纳每个 agent。', stageHint: '可交互 demo——拖拽、缩放、点击节点。', stillTitle: '一张图，已汇合',
+      skipIntro: '跳过', stageHint: '可交互 demo——拖拽、缩放、点击节点。', stillTitle: '一张图，已汇合',
       beforeTag: '没有共享记忆的一天', afterTag: '接入 Agent Memory Galaxy 之后',
       beforeCaption: '五台机器，零共享上下文。每个窗口只记得这一天的一个切片，终端一关就全部蒸发。',
       afterCaption: '五台机器一天的工作，汇成一张图——就是页面顶部你能打开的那张可交互地图。',
@@ -2636,27 +2641,47 @@ def galaxy_still_markup(stats: dict) -> str:
 """
 
 
+def intro_card_markup(stats: dict) -> str:
+    """The opening card — a faithful, INERT visual clone of the hero galaxy_card. It reuses
+    the SAME .galaxy-card frame class, so its framebar ("demo graph preview" + counts), NODE
+    TYPES legend, PRESENCE LAYER panel, galaxy, Expand galaxy button and preview note look
+    exactly like the live hero card. But it carries no id / data-demo-src / role=button /
+    tabindex and no <canvas> (still=True → the static SVG galaxy), so the page keeps exactly
+    one interactive galaxy (<canvas> == 1). Counts come from the same graph stats the hero
+    card uses — never hardcoded. It omits its own SVG <defs> (via still=True) and borrows the
+    hero card's filter defs by id (this overlay is last in <body>)."""
+    return f"""
+<div class="galaxy-card intro-card" aria-hidden="true">
+  <div class="framebar">
+    <span class="lights"><i></i><i></i><i></i></span>
+    <span class="mono" data-i18n="previewTitle">demo graph preview</span>
+    <span class="status mono" data-preview-status data-nodes="{stats['nodes']}" data-edges="{stats['edges']}" data-machines="{stats['machines']}">{stats['nodes']} nodes / {stats['edges']} links / {stats['machines']} machines</span>
+  </div>
+{mini_preview_markup(stats, still=True)}
+  <p class="preview-note" data-i18n="previewNote">Compressed public preview. Open the full demo for search, filters, zoom, and readouts.</p>
+  <span class="expand-galaxy" data-i18n="expandGalaxy">Expand galaxy</span>
+</div>
+"""
+
+
 def intro_cine_markup(stats: dict) -> str:
-    """Cinematic FLIP opening overlay. The demo galaxy — the inert galaxy_still (no
-    canvas, no data hooks, no role=button, aria-hidden) — fades in big & center-stage on
-    a deep-space veil, holds, then shrinks and flies (a runtime FLIP transform the head
-    script measures against the live hero galaxy_card) onto that card's slot, crossfading
-    into the real card. data-cine-galaxy is the element the head script transforms. A
-    high-contrast gold Skip pill is present from the first frame. The overlay is
-    display:none by default, so no-JS / reduced-motion / repeat visits / ?intro=skip never
-    render it; only the head script's intro-cine class turns it on. Placed last in <body>
-    so it reuses the hero galaxy_card's SVG filter defs by id (backward reference, like the
-    contrast still), and adds no second interactive galaxy."""
+    """One-time cinematic opening — the opening IS the demo card. A faithful, inert clone of
+    the hero galaxy_card (intro_card_markup) fades in big & centered on a deep-space veil,
+    holds, then SHRINKS + FLIES (a runtime FLIP transform the head script measures against
+    the live hero galaxy_card, #after-galaxy) onto that card's slot, crossfading into the
+    real interactive card. No extra kicker/tagline chrome — just one quiet hint line, the
+    same copy the hero uses. data-cine-galaxy is the element the head script transforms. A
+    high-contrast gold Skip pill is present from the first frame. The overlay is display:none
+    by default, so no-JS / reduced-motion / repeat visits / ?intro=skip never render it; only
+    the head script's intro-cine class turns it on. Placed last in <body> so it reuses the
+    hero galaxy_card's SVG filter defs by id and adds no second interactive galaxy."""
     return f"""
 <div class="intro-veil" data-intro-cine>
   <div class="cine-inner">
     <div class="cine-galaxy" data-cine-galaxy>
-{galaxy_still_markup(stats)}
+{intro_card_markup(stats)}
     </div>
-    <div class="cine-caption">
-      <span class="cine-brand">AGENT MEMORY GALAXY</span>
-      <span class="cine-tagline" data-i18n="cineTag">One galaxy. Every agent.</span>
-    </div>
+    <p class="cine-hint" data-i18n="stageHint">Interactive demo &mdash; drag, zoom, click a node.</p>
   </div>
   <button class="intro-skip" type="button" data-intro-skip data-i18n="skipIntro" aria-label="Skip the intro animation">Skip intro</button>
 </div>

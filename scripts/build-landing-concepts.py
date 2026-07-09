@@ -3020,7 +3020,7 @@ def landing_html(stats: dict) -> str:
     /* Every load plays (no sessionStorage gate). Only reduced-motion / ?intro=skip suppress. */
     var shouldPlay = !reduce && (forcePlay || !forceSkip);
 
-    var HOLD_MS = 1600, FLY_MS = 1400, LAND_MS = 260;
+    var HOLD_MS = 3600, FLY_MS = 1400, LAND_MS = 260;
     var ended = false, armed = false, timers = [];
     var clearTimers = function () {{ for (var i = 0; i < timers.length; i++) clearTimeout(timers[i]); timers = []; }};
 

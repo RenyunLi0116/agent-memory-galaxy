@@ -1445,25 +1445,25 @@ html[lang="zh-CN"] .audience-tag { text-transform: none; letter-spacing: .02em; 
   pointer-events: none;
 }
 
-/* === Round-7: cinematic FLIP intro — galaxy shrinks + flies into the demo slot ==
-   A one-time opening. The DEMO galaxy (the inert galaxy_still — no canvas, no data
-   hooks, no role=button) fades in BIG and centered on a deep-space veil, holds, then
-   SHRINKS and FLIES (a runtime FLIP transform the head script measures against the
-   live hero galaxy_card) precisely onto that card's slot, where it crossfades into
-   the real interactive card. The veil background dissolves as it flies so the settled
-   hero arrives underneath —打开页面像电影一样先展示 demo 银河，随后它淡化+缩小+平移落到 demo 卡槽位.
-   The overlay is the still, so the single interactive-galaxy rule holds. Base (no
-   html.intro-cine) = no overlay + settled hero: no-JS, reduced-motion, repeat visits
-   and ?intro=skip all get the finished hero with zero motion, nothing ever covering
-   it. Orchestration + FLIP math + safety timers live in the head script, so content
-   is never permanently covered even if landing.js never loads or throws. */
+/* === Cinematic opening — the REAL hero demo card itself does the intro =============
+   On EVERY page load (no once-per-session gate) the live hero galaxy_card
+   (#after-galaxy — the actual animated canvas galaxy) is lifted onto a deep-space
+   backdrop, enlarged + centered ("cinematic"), holds, then a reverse-FLIP eases it back
+   to transform:none — its natural slot — while the backdrop dissolves and the rest of
+   the hero is revealed beneath it. Because the opening animates the SAME element / SAME
+   canvas, the opening galaxy is pixel-identical to the settled one, and the page still
+   has exactly ONE canvas element. 打开页面像电影一样把真正的 demo 银河放大居中，随后它缩小归位到
+   demo 卡槽位。Base (no html.intro-cine) = the settled hero with zero motion: no-JS,
+   reduced-motion, ?intro=skip. Orchestration + safety timers live in the head script and
+   landing.js, so the card is ALWAYS returned to transform:none and the backdrop removed
+   even if landing.js never loads or throws — content is never permanently covered. */
 
 /* Skip: high-contrast gold pill, top-right, rendered from the first frame. */
 .intro-skip {
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 90;
+  z-index: 1200;
   display: none;
   align-items: center;
   gap: 8px;
@@ -1491,98 +1491,69 @@ html[lang="zh-CN"] .audience-tag { text-transform: none; letter-spacing: .02em; 
 }
 html.intro-cine .intro-skip { display: inline-flex; }
 
-/* Deep-space veil. The opaque background lives on ::before so it can dissolve
-   without fading the flying galaxy that sits above it. Shown only under
-   html.intro-cine; the gate class rides on <html>, so a bare `.intro-cine{display:none}`
-   would blank the page — hence the veil carries its own class. */
-.intro-veil {
+/* Deep-space backdrop that "lifts" the real card into the foreground. Its opaque paint
+   lives on ::before so it can dissolve without touching the card above it. Shown only
+   under html.intro-cine; the gate class rides on <html>, so a bare
+   `.intro-cine{display:none}` would blank the page — hence the backdrop carries its own
+   class. It sits above nav/page (z 900) but below the lifted card (z 1000). */
+.intro-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 70;
+  z-index: 900;
   display: none;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
 }
-.intro-veil::before {
+.intro-backdrop::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 0;
   opacity: 1;
   background:
     radial-gradient(ellipse at 24% 28%, rgba(104, 66, 222, .30), transparent 55%),
     radial-gradient(ellipse at 78% 72%, rgba(40, 92, 214, .26), transparent 58%),
     radial-gradient(ellipse at 52% 46%, rgba(255, 196, 128, .08), transparent 44%),
     radial-gradient(circle at 50% 46%, #0a102e 0%, #05071c 55%, #01020a 100%);
-  transition: opacity 1.5s ease;
+  transition: opacity 1.15s ease;
 }
-html.intro-cine .intro-veil { display: flex; }
-/* Veil dissolves as the galaxy begins to fly, so the settled hero arrives beneath it. */
-html.intro-flying .intro-veil::before,
-html.intro-landed .intro-veil::before { opacity: 0; }
+html.intro-cine .intro-backdrop { display: block; }
+/* The backdrop dissolves as the card reverse-FLIPs home, so the settled hero is revealed
+   beneath it (title/CTA fade in as the veil clears). */
+html.intro-flying .intro-backdrop::before { opacity: 0; }
 
-/* Keep the settled page hidden while the veil is up, then reveal it the instant the
-   galaxy starts flying. visibility (not display) preserves layout so the head script
-   can measure the live card's real rect while it is still hidden. */
-html.intro-cine body > :not(.intro-veil) { visibility: hidden; }
-html.intro-cine.intro-flying body > :not(.intro-veil) { visibility: visible; }
-/* The one interactive card stays hidden until the flown galaxy lands on its slot and
-   crossfades in — so exactly one galaxy is ever on screen. */
-html.intro-cine #after-galaxy { visibility: hidden; }
-html.intro-cine.intro-landed #after-galaxy { visibility: visible; }
-
-.cine-inner {
+/* Lift the ONE real hero card above the backdrop for the duration of the intro. It stays
+   in normal flow, so its resting state is exactly transform:none → perfect alignment with
+   its static slot, no target measurement needed. It is kept invisible until the head
+   script has (a) confirmed the canvas galaxy is drawn (canvas-on) and (b) applied the
+   enlarge+centre transform — so the sparse SVG fallback is never shown blown up and there
+   is no flash in the natural slot. The head script then fades opacity 0→1 (inline). */
+html.intro-cine #after-galaxy {
   position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  width: min(760px, 82vw);
-}
-.cine-galaxy {
-  width: 100%;
-  container-type: inline-size;
-  transform-origin: 50% 50%;
+  z-index: 1000;
+  opacity: 0;
   will-change: transform, opacity;
 }
-/* Cinematic fade-in of the big centered galaxy. fill: backwards ONLY — it must not
-   hold forwards or it would out-rank the inline FLIP transform the head script sets
-   for the fly; once it ends the element rests at its base (transform none) — the "hold". */
-html.intro-cine .cine-galaxy { animation: cineShowGalaxy 1s cubic-bezier(.2, .65, .2, 1) backwards; }
-/* The opening card IS the demo card: a faithful, INERT clone of the hero galaxy_card
-   (same .galaxy-card frame → identical border/radius/chrome). Sized a touch larger than
-   its landing slot so it reads as "big & centered" before it shrinks in; pointer-events
-   are off so it is purely decorative (the Skip pill, a sibling of .cine-inner, stays
-   clickable). No extra brand/tagline chrome — just one quiet hint line. */
-.cine-galaxy .galaxy-card {
-  height: clamp(380px, 60vh, 560px);
-  pointer-events: none;
-  cursor: default;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, .5), 0 0 60px rgba(96, 128, 255, .14);
-}
+/* Hide the little "Interactive demo…" caption pinned under the slot while the card flies. */
+html.intro-cine .stage-hint { opacity: 0; }
+
+/* One quiet hint line, centred low on the backdrop during the hold; fades before the fly. */
 .cine-hint {
-  position: relative;
-  z-index: 1;
+  position: fixed;
+  left: 0; right: 0;
+  bottom: 8vh;
+  z-index: 1001;
+  margin: 0;
+  padding: 0 20px;
   text-align: center;
   color: var(--muted);
   font: 600 13px/1.5 "JetBrains Mono", "Cascadia Code", monospace;
   letter-spacing: .02em;
+  display: none;
+  opacity: 0;
+  transition: opacity .6s ease;
+  pointer-events: none;
 }
-html.intro-cine .cine-hint { animation: cineShowCap 1.1s ease backwards; }
-html.intro-flying .cine-hint,
-html.intro-landed .cine-hint { opacity: 0; transition: opacity .5s ease; }
-
-@keyframes cineShowGalaxy {
-  0%   { opacity: 0; transform: scale(.9); }
-  100% { opacity: 1; transform: none; }
-}
-@keyframes cineShowCap {
-  0%   { opacity: 0; transform: translateY(10px); }
-  32%  { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
+html.intro-cine .cine-hint { display: block; }
+html.intro-cine.intro-armed .cine-hint { opacity: 1; }
+html.intro-flying .cine-hint { opacity: 0; }
 
 /* Decorative before/after still: mirrors the galaxy_card frame but is inert. */
 .galaxy-still {
@@ -1602,12 +1573,16 @@ html.intro-landed .cine-hint { opacity: 0; transition: opacity .5s ease; }
 @media (prefers-reduced-motion: reduce) {
   /* Honesty + a11y: never play the intro for reduced-motion visitors. Base state is the
      settled hero, so this is a belt-and-braces guard on top of the head script never
-     adding intro-cine — it hides the veil and forces every hidden element back to
-     visible even if the gate class somehow lands. */
-  html.intro-cine .intro-veil { display: none !important; }
-  html.intro-cine body > :not(.intro-veil) { visibility: visible !important; }
-  html.intro-cine #after-galaxy { visibility: visible !important; }
+     adding intro-cine — it hides the backdrop/hint/skip and forces the real card back to
+     its settled state even if the gate class somehow lands. */
+  html.intro-cine .intro-backdrop,
+  html.intro-cine .cine-hint,
   .intro-skip { display: none !important; }
+  html.intro-cine #after-galaxy {
+    opacity: 1 !important;
+    transform: none !important;
+    z-index: auto !important;
+  }
 }
 
 /* Mobile: single column, galaxy pulled up right under the definition so the demo (or at
@@ -1633,8 +1608,8 @@ html.intro-landed .cine-hint { opacity: 0; transition: opacity .5s ease; }
   .stage-frame .galaxy-card { height: clamp(320px, 76vw, 400px); }
   .landing-v2 .hero-split .hero-def { max-width: none; }
   .landing-v2 .hero-split .hero-scene { max-width: none; }
-  /* Intro card on phones: wider veil, shorter card so the centered demo clone stays
-     roughly the shape of its near-full-width landing slot under the headline. */
-  .cine-inner { width: min(760px, 88vw); }
-  .cine-galaxy .galaxy-card { height: clamp(280px, 66vw, 360px); }
+  /* On phones the card is already near full width, so the reverse-FLIP mostly re-centres
+     it vertically (scale is capped by width in the head script). Keep the hint clear of
+     the home-bar area. */
+  .cine-hint { bottom: 5vh; font-size: 12px; }
 }

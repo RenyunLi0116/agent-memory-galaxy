@@ -720,4 +720,12 @@
   startMiniGalaxy();
   hydrateMiniPreview();
   wireIntroSkip();
+  /* The cinematic opening animates the REAL hero card, so it can only start once its
+     canvas galaxy is drawn. startMiniGalaxy() paints frame 0 synchronously and sets
+     canvas-on, so hand off to the head script's orchestrator now. If the intro isn't
+     playing (reduced-motion / ?intro=skip / no gate hit), __amgIntroPlay is a no-op. */
+  var d = document.documentElement;
+  if (typeof d.__amgIntroPlay === 'function') {
+    try { d.__amgIntroPlay(); } catch (e) {}
+  }
 }());

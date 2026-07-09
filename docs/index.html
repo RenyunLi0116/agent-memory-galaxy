@@ -7,15 +7,19 @@
 <title>Agent Memory Galaxy</title>
 <link rel="stylesheet" href="assets/landing.css">
 <script>
-/* Cinematic FLIP intro (self-contained). Decide BEFORE first paint whether to play, so
-   the settled hero never flashes under the veil. If it plays: the demo galaxy fades in
-   big & centered on a deep-space veil, holds, then SHRINKS + FLIES — a runtime FLIP
-   transform measured against the live hero galaxy_card — into that card's slot and
-   crossfades into the real interactive card. Honest defaults: reduced-motion, repeat
-   visits (sessionStorage amg_intro_cine) and ?intro=skip present the finished hero
-   immediately with no overlay; ?intro=play forces it for capture/regression. Safety
-   timers guarantee teardown even if anything throws, so content is never permanently
-   covered. Total show+fly+land ~3.8s. */
+/* Cinematic reverse-FLIP intro (self-contained). The opening animates the REAL hero demo
+   card (#after-galaxy — the live canvas galaxy) itself: it is lifted onto a deep-space
+   backdrop, enlarged + centred, held, then eased back to transform:none (its natural slot)
+   while the backdrop dissolves and the hero is revealed. Same element / same canvas → the
+   opening galaxy is pixel-identical to the settled one, and there is still exactly ONE
+   canvas element. The decision is made BEFORE first paint (adds html.intro-cine, hiding the
+   card + shows the backdrop) so the settled hero never flashes; the actual lift/measure
+   happens once landing.js has drawn the canvas (it calls d.__amgIntroPlay after
+   startMiniGalaxy), so the sparse SVG fallback is never shown enlarged. Plays on EVERY load
+   — there is NO once-per-session gate. Honest defaults: reduced-motion and ?intro=skip
+   present the settled hero immediately with no overlay; ?intro=play forces it (debug/capture).
+   Safety timers guarantee teardown — the card is always returned to transform:none and the
+   backdrop removed — even if landing.js never loads or throws. */
 (function () {
   try {
     var d = document.documentElement;
@@ -24,15 +28,30 @@
     var qs = location.search || '';
     var forceSkip = /[?&]intro=skip/.test(qs);
     var forcePlay = /[?&]intro=play/.test(qs);
-    var played = false;
-    try { played = sessionStorage.getItem('amg_intro_cine') === '1'; } catch (e) {}
-    var shouldPlay = !reduce && (forcePlay || (!played && !forceSkip));
-    if (!forcePlay) { try { sessionStorage.setItem('amg_intro_cine', '1'); } catch (e) {} }
+    /* Every load plays (no sessionStorage gate). Only reduced-motion / ?intro=skip suppress. */
+    var shouldPlay = !reduce && (forcePlay || !forceSkip);
 
-    var ended = false;
+    var HOLD_MS = 1600, FLY_MS = 1400, LAND_MS = 260;
+    var ended = false, armed = false, timers = [];
+    var clearTimers = function () { for (var i = 0; i < timers.length; i++) clearTimeout(timers[i]); timers = []; };
+
+    /* Teardown: always leaves the card at transform:none and removes the backdrop, so the
+       settled hero is never permanently covered. Idempotent. */
     var end = function () {
       if (ended) return; ended = true;
-      d.classList.remove('intro-cine', 'intro-flying', 'intro-landed');
+      clearTimers();
+      try {
+        var c = document.getElementById('after-galaxy');
+        if (c) {
+          c.style.transition = '';
+          c.style.transform = '';
+          c.style.transformOrigin = '';
+          c.style.opacity = '';
+          c.style.zIndex = '';
+          c.style.willChange = '';
+        }
+      } catch (e) {}
+      d.classList.remove('intro-cine', 'intro-armed', 'intro-flying', 'intro-landed');
     };
     d.__amgIntroEnd = end;
 
@@ -43,57 +62,69 @@
       if (t && t.closest && t.closest('[data-intro-skip]')) { ev.preventDefault(); end(); }
     }, true);
 
-    if (!shouldPlay) return;
-
-    /* Cinematic hold, then a slow eased shrink-and-fly, then a short crossfade. */
-    var SHOW_MS = 1900, FLY_MS = 1600, LAND_MS = 300;
-
-    /* FLIP: measure the big centered overlay galaxy and the live hero card at fly time
-       (layout is final by SHOW_MS), then transform the overlay so its centre and width
-       land exactly on the card's slot. Returns false if elements/layout aren't ready, so
-       the caller can degrade gracefully (galaxy just fades without flying). */
-    var applyFlip = function () {
-      var g = document.querySelector('[data-cine-galaxy]');
-      var card = document.getElementById('after-galaxy');
-      if (!g || !card) return false;
-      g.style.animation = 'none';
-      g.style.transition = 'none';
-      g.style.transform = 'none';
-      var src = g.getBoundingClientRect();   /* untransformed rect (reflow committed) */
-      var tgt = card.getBoundingClientRect();
-      if (!src.width || !tgt.width) return false;
-      var s = tgt.width / src.width;
-      var tx = (tgt.left + tgt.width / 2) - (src.left + src.width / 2);
-      var ty = (tgt.top + tgt.height / 2) - (src.top + src.height / 2);
-      g.style.transformOrigin = '50% 50%';
-      void g.offsetWidth;
-      g.style.transition = 'transform ' + FLY_MS + 'ms cubic-bezier(.45,.05,.2,1), opacity 320ms ease';
-      g.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + s.toFixed(4) + ')';
-      return true;
-    };
+    if (!shouldPlay) { d.__amgIntroPlay = function () {}; return; }
 
     var land = function () {
       if (ended) return;
-      try {
-        d.classList.add('intro-landed');   /* reveal the real interactive card */
-        var g = document.querySelector('[data-cine-galaxy]');
-        if (g) g.style.opacity = '0';      /* crossfade the flown still out — masks any delta */
-      } catch (e) {}
-      setTimeout(end, LAND_MS);
+      d.classList.add('intro-landed');
+      timers.push(setTimeout(end, LAND_MS));
     };
+    /* Reverse-FLIP: ease the card back to transform:none (its exact static slot) while the
+       backdrop dissolves and the hint fades. transform:none = perfect alignment, no target
+       measurement needed. */
     var fly = function () {
       if (ended) return;
       try {
-        d.classList.add('intro-flying');   /* reveal hero behind, dissolve veil, fade caption */
-        applyFlip();
+        d.classList.add('intro-flying');
+        var c = document.getElementById('after-galaxy');
+        if (c) {
+          c.style.transition = 'transform ' + FLY_MS + 'ms cubic-bezier(.45,.05,.2,1)';
+          c.style.transform = 'none';
+        }
       } catch (e) {}
-      setTimeout(land, FLY_MS);
+      timers.push(setTimeout(land, FLY_MS));
     };
 
-    d.classList.add('intro-cine');
-    setTimeout(fly, SHOW_MS);
-    setTimeout(end, 4200);   /* hard safety net — content is never blocked past this */
-  } catch (e) {}
+    /* Arm: called by landing.js once the real canvas galaxy is drawn (canvas-on). Measure
+       the natural slot, lift + enlarge + centre the live card, fade it in, hold, then fly. */
+    var play = function () {
+      if (armed || ended) return;
+      armed = true;
+      try {
+        var card = document.getElementById('after-galaxy');
+        var preview = card ? card.querySelector('[data-mini-preview]') : null;
+        /* Only enlarge the REAL canvas galaxy. If the canvas never turned on, don't blow up
+           the sparse SVG fallback — just settle. */
+        if (!card || !preview || !preview.classList.contains('canvas-on')) { end(); return; }
+        var vw = d.clientWidth || window.innerWidth || 0;
+        var vh = d.clientHeight || window.innerHeight || 0;
+        var rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height || !vw || !vh) { end(); return; }
+        var scale = Math.min(1.36, (vw * 0.92) / rect.width, (vh * 0.86) / rect.height);
+        if (!(scale > 0) || scale < 1) scale = 1;
+        var tx = (vw / 2) - (rect.left + rect.width / 2);
+        var ty = (vh / 2) - (rect.top + rect.height / 2);
+        card.style.transformOrigin = '50% 50%';
+        card.style.transition = 'none';
+        card.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + scale.toFixed(4) + ')';
+        void card.offsetWidth;                 /* commit the cinematic transform before fading in */
+        card.style.transition = 'opacity 550ms ease';
+        d.classList.add('intro-armed');        /* reveal the quiet hint */
+        card.style.opacity = '1';              /* fade the enlarged real galaxy in */
+      } catch (e) { end(); return; }
+      timers.push(setTimeout(fly, HOLD_MS));
+      timers.push(setTimeout(end, HOLD_MS + FLY_MS + LAND_MS + 900));  /* local safety */
+    };
+    d.__amgIntroPlay = play;
+
+    d.classList.add('intro-cine');   /* pre-paint: hide the card, show the backdrop */
+    /* Guards: if landing.js never arms us (didn't load / threw), reveal the settled page;
+       plus a hard cap so content is never blocked. */
+    timers.push(setTimeout(function () { if (!armed) end(); }, 4500));
+    timers.push(setTimeout(end, 9000));
+  } catch (e) {
+    try { document.documentElement.classList.remove('intro-cine', 'intro-armed', 'intro-flying', 'intro-landed'); } catch (e2) {}
+  }
 })();
 </script>
 </head>
@@ -522,90 +553,9 @@ python3 -m http.server 8765 --directory docs</code></pre>
   <span data-i18n="footerPrivacy">Demo data fictional. Real memory private.</span>
 </div></footer>
 
-<div class="intro-veil" data-intro-cine>
-  <div class="cine-inner">
-    <div class="cine-galaxy" data-cine-galaxy>
-
-<div class="galaxy-card intro-card" aria-hidden="true">
-  <div class="framebar">
-    <span class="lights"><i></i><i></i><i></i></span>
-    <span class="mono" data-i18n="previewTitle">demo graph preview</span>
-    <span class="status mono" data-preview-status data-nodes="445" data-edges="1893" data-machines="5">445 nodes / 1893 links / 5 machines</span>
-  </div>
-
-  <div class="mini-galaxy-preview" aria-hidden="true">
-    <svg class="mini-map" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet">
-      <ellipse class="mini-orbit gold" cx="400" cy="260" rx="244" ry="126" />
-      <ellipse class="mini-orbit" cx="400" cy="260" rx="310" ry="166" transform="rotate(-17 400 260)" />
-      <path class="mini-coreline" d="M 148 332 C 248 198 350 154 472 204 S 620 356 704 210" />
-      <g class="mini-dust-layer"><circle class="mini-dust" cx="120" cy="130" r="1.4" />
-<circle class="mini-dust" cx="152" cy="398" r="1.1" />
-<circle class="mini-dust" cx="286" cy="114" r="1.2" />
-<circle class="mini-dust" cx="368" cy="422" r="1.4" />
-<circle class="mini-dust" cx="430" cy="126" r="1.1" />
-<circle class="mini-dust" cx="690" cy="150" r="1.5" />
-<circle class="mini-dust" cx="706" cy="386" r="1.1" />
-<circle class="mini-dust" cx="88" cy="276" r="1.0" />
-<circle class="mini-dust" cx="548" cy="92" r="1.0" />
-<circle class="mini-dust" cx="610" cy="420" r="1.2" />
-<circle class="mini-dust" cx="254" cy="444" r="1.0" />
-<circle class="mini-dust" cx="742" cy="264" r="1.2" /></g>
-      <g class="mini-links"><line class="mini-edge warm" data-pair="0-1" x1="384" y1="252" x2="505" y2="178" /><line class="mini-edge" data-pair="0-2" x1="384" y1="252" x2="232" y2="180" /><line class="mini-edge live" data-pair="0-4" x1="384" y1="252" x2="330" y2="354" /><line class="mini-edge live" data-pair="0-5" x1="384" y1="252" x2="468" y2="302" /><line class="mini-edge secure" data-pair="1-7" x1="505" y1="178" x2="632" y2="220" /><line class="mini-edge secure" data-pair="2-6" x1="232" y1="180" x2="190" y2="342" /><line class="mini-edge" data-pair="3-5" x1="586" y1="338" x2="468" y2="302" /><line class="mini-edge warm" data-pair="4-6" x1="330" y1="354" x2="190" y2="342" /><line class="mini-edge secure" data-pair="5-7" x1="468" y1="302" x2="632" y2="220" /><line class="mini-edge" data-pair="1-3" x1="505" y1="178" x2="586" y2="338" /></g>
-      <path class="mini-scan" d="M 146 394 C 264 222 406 146 570 206 C 650 236 702 286 724 342" />
-      <g class="mini-nodes"><g class="mini-star project" data-index="0" transform="translate(384 252)">
-        <circle class="halo" r="36" fill="currentColor" />
-        <path class="spike" d="M -26.4 0 H 26.4 M 0 -26.4 V 26.4 M -18.6 -18.6 L 18.6 18.6 M -18.6 18.6 L 18.6 -18.6" />
-        <circle class="core" r="12" />
-        <circle class="lock" r="20" />
-      </g><g class="mini-star project" data-index="1" transform="translate(505 178)">
-        <circle class="halo" r="30" fill="currentColor" />
-        <path class="spike" d="M -22.0 0 H 22.0 M 0 -22.0 V 22.0 M -15.5 -15.5 L 15.5 15.5 M -15.5 15.5 L 15.5 -15.5" />
-        <circle class="core" r="10" />
-        <circle class="lock" r="18" />
-      </g><g class="mini-star server" data-index="2" transform="translate(232 180)">
-        <circle class="halo" r="24" fill="currentColor" />
-        <path class="spike" d="M -13.6 0 H 13.6 M 0 -13.6 V 13.6" />
-        <circle class="core" r="8" />
-        <circle class="lock" r="16" />
-      </g><g class="mini-star server" data-index="3" transform="translate(586 338)">
-        <circle class="halo" r="24" fill="currentColor" />
-        <path class="spike" d="M -13.6 0 H 13.6 M 0 -13.6 V 13.6" />
-        <circle class="core" r="8" />
-        <circle class="lock" r="16" />
-      </g><g class="mini-star agent" data-index="4" transform="translate(330 354)">
-        <circle class="halo" r="21" fill="currentColor" />
-        <path class="spike" d="M -11.9 0 H 11.9 M 0 -11.9 V 11.9" />
-        <circle class="core" r="7" />
-        <circle class="lock" r="15" />
-      </g><g class="mini-star agent" data-index="5" transform="translate(468 302)">
-        <circle class="halo" r="21" fill="currentColor" />
-        <path class="spike" d="M -11.9 0 H 11.9 M 0 -11.9 V 11.9" />
-        <circle class="core" r="7" />
-        <circle class="lock" r="15" />
-      </g><g class="mini-star boundary" data-index="6" transform="translate(190 342)">
-        <circle class="halo" r="27" fill="currentColor" />
-        <path class="spike" d="M -19.8 0 H 19.8 M 0 -19.8 V 19.8 M -14.0 -14.0 L 14.0 14.0 M -14.0 14.0 L 14.0 -14.0" />
-        <circle class="core" r="9" />
-        <circle class="lock" r="17" />
-      </g><g class="mini-star artifact" data-index="7" transform="translate(632 220)">
-        <circle class="halo" r="27" fill="currentColor" />
-        <path class="spike" d="M -15.3 0 H 15.3 M 0 -15.3 V 15.3" />
-        <circle class="core" r="9" />
-        <circle class="lock" r="17" />
-      </g></g>
-    </svg>
-    <div class="mini-side"><b data-i18n="miniSideTitle">NODE TYPES</b><span data-mini-type="project" data-i18n="miniProject">Project</span><span data-mini-type="server" data-i18n="miniServer">Server</span><span data-mini-type="agent" data-i18n="miniAgent">Agent</span><span data-mini-type="boundary" data-i18n="miniBoundary">Boundary</span><span data-mini-type="artifact" data-i18n="miniArtifact">Artifact</span></div>
-    <div class="mini-readout"><b data-i18n="miniReadoutTitle">PRESENCE LAYER</b><span data-i18n="miniReadout">multi-user hub / agent status / encrypted boundary</span></div>
-  </div>
-  <p class="preview-note" data-i18n="previewNote">Compressed public preview. Open the full demo for search, filters, zoom, and readouts.</p>
-  <span class="expand-galaxy" data-i18n="expandGalaxy">Expand galaxy</span>
-</div>
-
-    </div>
-    <p class="cine-hint" data-i18n="stageHint">Interactive demo &mdash; drag, zoom, click a node.</p>
-  </div>
-  <button class="intro-skip" type="button" data-intro-skip data-i18n="skipIntro" aria-label="Skip the intro animation">Skip intro</button>
-</div>
+<div class="intro-backdrop" data-intro-cine aria-hidden="true"></div>
+<p class="cine-hint" data-i18n="stageHint">Interactive demo &mdash; drag, zoom, click a node.</p>
+<button class="intro-skip" type="button" data-intro-skip data-i18n="skipIntro" aria-label="Skip the intro animation">Skip intro</button>
 
 
 <div class="modal" data-galaxy-modal hidden>

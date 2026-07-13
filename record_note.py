@@ -18,7 +18,7 @@ from pathlib import Path
 SCHEMA_VERSION = "note_lineage_event.v0.5"
 LINEAGE_DIR = ".amg_lineage"
 LINEAGE_FILE = "note_lineage.jsonl"
-TOOLS = {"claude", "codex", "cursor", "human", "agent"}
+TOOLS = {"claude", "codex", "cursor"}
 SESSION_ENV = ("AMG_AGENT_SESSION_ID", "CODEX_SESSION_ID", "CLAUDE_SESSION_ID", "CURSOR_SESSION_ID")
 
 
@@ -105,7 +105,6 @@ def main() -> None:
         "record_kind": "lineage_event",
         "event_id_hash": stable_hash(f"{root}|{section_index}|{anchor}|{args.tool}", 32),
         "created_at": created_at,
-        "section_index": section_index,
         "note_id_hash": stable_hash(f"{root}|{section_index}", 24),
         "note_anchor_hash": anchor,
         "agent_tool": args.tool,

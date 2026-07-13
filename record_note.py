@@ -115,7 +115,7 @@ def main() -> None:
         "source_event_kind": "note_lineage_event",
         "evidence_pointer_ids": [f"amg-note:{stable_hash(anchor, 16)}"],
         "capture_status": "captured",
-        "privacy_boundary": "safe_hashes_only",
+        "privacy_boundary": "safe_hashes_and_pointer_ids_only",
     }
     append_note(memory_path, heading, body)
     sidecar = write_lineage(root, event)

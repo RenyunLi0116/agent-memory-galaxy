@@ -24,6 +24,50 @@ def squash(s: str) -> str:
 def short_hash(s: str) -> str:
     return hashlib.md5(s.encode('utf-8')).hexdigest()[:8]
 
+def stable_hash(s: str, n: int = 24) -> str:
+    return hashlib.sha256((s or "").encode("utf-8")).hexdigest()[:n]
+
+def note_anchor_hash(head: str, body: str) -> str:
+    # Hash normalized note structure rather than raw text in lineage sidecars.
+    norm = "\n".join((head or "").strip().split()) + "\n" + "\n".join((body or "").strip().split())
+    return stable_hash(norm, 24)
+
+def load_note_lineage(path: str):
+    """Load private per-project note-lineage sidecar for one agent_memory.md file.
+
+    The sidecar is optional and intentionally ignored by Git. It carries hashed
+    write-time provenance so manual notes do not need explicit "(codex)" tags.
+    """
+    sidecar = os.path.join(os.path.dirname(path), LINEAGE_DIR, LINEAGE_FILE)
+    by_anchor, by_index = {}, {}
+    if not os.path.isfile(sidecar):
+        return by_anchor, by_index
+    try:
+        with open(sidecar, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    rec = json.loads(line)
+                except Exception:
+                    continue
+                if rec.get("schema_version") != LINEAGE_SCHEMA_VERSION:
+                    continue
+                if rec.get("capture_status") != "captured":
+                    continue
+                tool = str(rec.get("agent_tool") or "").lower()
+                if tool not in LINEAGE_TOOLS:
+                    continue
+                anchor = str(rec.get("note_anchor_hash") or "")
+                if anchor:
+                    by_anchor[anchor] = rec
+                if isinstance(rec.get("section_index"), int):
+                    by_index[int(rec["section_index"])] = rec
+    except Exception as e:
+        print(f"  ! note lineage sidecar 读不了 {sidecar}: {e}", file=sys.stderr)
+    return by_anchor, by_index
+
 # ----------------------------- 实体抽取规则 -----------------------------
 # (实体类型, 正则, 边类型)。group(1) 若存在则取之，否则取整个匹配。
 # 这里只放【通用】实体规则；团队/项目专有的数据集、模型名等，请在 projects.json 的
@@ -44,6 +88,10 @@ AGENT_RE  = re.compile(r'(?i)\(\s*(claude|codex|cursor|gpt[\w\-]*|gemini|team[\s
 DATE_RE   = re.compile(r'(20\d{2}-\d{2}-\d{2})')
 SESSION_RE= re.compile(r'(?i)session\s*(\d+)')
 LINK_RE   = re.compile(r'\[\[([^\]]+)\]\]')
+LINEAGE_SCHEMA_VERSION = "note_lineage_event.v0.5"
+LINEAGE_DIR = ".amg_lineage"
+LINEAGE_FILE = "note_lineage.jsonl"
+LINEAGE_TOOLS = {"claude", "codex", "cursor", "human", "agent"}
 
 MAX_FILES_PER_ENTRY = 6      # 每条记录最多抽几个文件，防爆炸
 EXCERPT_LEN = 600
@@ -289,6 +337,7 @@ def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude", user: 
     proj_id = g.node(f"project:{pkey}", "project", plabel, machines=[machine])
     mach_id = g.node(f"machine:{machine}", "machine", machine, user=user)
     g.edge(proj_id, mach_id, "on")
+    lineage_by_anchor, lineage_by_index = load_note_lineage(path)
 
     # 按 ## 分节（# 一级标题作为文件简介，忽略其内容做节点）
     lines = txt.splitlines()
@@ -312,8 +361,16 @@ def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude", user: 
         date = (DATE_RE.search(head) or DATE_RE.search(body))
         date = date.group(1) if date else None
         am = AGENT_RE.search(head) or AGENT_RE.search(body[:300])
-        # 只对显式标注的 agent 建节点/连边，避免未标注记录全堆给 claude 形成巨型枢纽
-        agent = re.sub(r'[\s\-]', '', am.group(1)).lower() if am else None
+        explicit_agent = re.sub(r'[\s\-]', '', am.group(1)).lower() if am else None
+        section_anchor = note_anchor_hash(head, body)
+        lineage = lineage_by_anchor.get(section_anchor) or lineage_by_index.get(idx)
+        lineage_tool = None
+        if lineage:
+            candidate_tool = str(lineage.get("agent_tool") or "").lower()
+            if candidate_tool in LINEAGE_TOOLS:
+                lineage_tool = candidate_tool
+        # 显式正文标注优先；未标注时允许 write-time lineage 生成 agent 边。
+        agent = explicit_agent or lineage_tool
         sess = SESSION_RE.search(head)
         session = sess.group(1) if sess else None
         scope = head + body[:250]
@@ -330,12 +387,30 @@ def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude", user: 
         title = title.strip(" -—:：") or (date or f"entry {idx}")
 
         eid = f"entry:{machine}:{short_hash(path)}:{idx}"
-        g.node(eid, "entry", title[:80],
-               date=date, agent=agent, status=status, session=session, tool=tool,
-               task=classify_task(blob),         # 任务类型：训练/数据/评测/部署/调研/同步/规划/其他
-               machine=machine, project=plabel, source=path, user=user,
-               weight=len(body),                 # job 体量 = 记录正文长度
-               excerpt=body[:EXCERPT_LEN])
+        attrs = dict(
+            date=date, agent=agent, status=status, session=session, tool=tool,
+            task=classify_task(blob),         # 任务类型：训练/数据/评测/部署/调研/同步/规划/其他
+            machine=machine, project=plabel, source=path, user=user,
+            weight=len(body),                 # job 体量 = 记录正文长度
+            excerpt=body[:EXCERPT_LEN],
+        )
+        if lineage:
+            attrs.update(
+                note_lineage_status=lineage.get("capture_status"),
+                note_lineage_tool=lineage_tool,
+                note_lineage_event=lineage.get("event_id_hash"),
+                note_lineage_session=lineage.get("agent_session_id_hash"),
+                note_lineage_anchor=section_anchor,
+            )
+            if explicit_agent:
+                attrs["agent_source"] = "explicit"
+                if lineage_tool and lineage_tool != explicit_agent:
+                    attrs["note_lineage_conflict"] = True
+            elif lineage_tool:
+                attrs["agent_source"] = "note_lineage_event"
+        elif explicit_agent:
+            attrs["agent_source"] = "explicit"
+        g.node(eid, "entry", title[:80], **attrs)
         g.edge(eid, proj_id, "in")
         g.edge(eid, mach_id, "located")
         if agent:

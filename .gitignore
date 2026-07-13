@@ -9,6 +9,9 @@
 !/fragments/README.md
 /presence/*.json
 !/presence/README.md
+# Per-project note lineage sidecars are private write-time provenance.
+.amg_lineage/
+**/.amg_lineage/
 # 加密密码——绝不入库（请 chmod 600）；双密码方案两文件都不入库
 .amg_password
 .amg_password2

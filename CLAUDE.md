@@ -18,6 +18,15 @@ AMG_PRIVATE_HUB=1 ./contribute.sh workstation-a claude ~/projects/my-app
 
 In a multi-user team hub, append the push identity (GitHub username) as an optional 4th argument or set `AMG_USER`; it defaults to `git config user.name`, then `$USER`. See the Team Work section in `README.md` and `team.json.example`. The push identity (`user`) is distinct from the agent label inside entries.
 
+When adding reviewed memory, prefer write-time lineage capture:
+
+```bash
+python3 record_note.py --root <project-root> --tool codex --machine <machine> \
+  --title "Short title" --status done --body-file /tmp/note.md
+```
+
+This appends `agent_memory.md` and writes a private `.amg_lineage/note_lineage.jsonl` sidecar. `collect.py` can then recover the agent from `agent_source=note_lineage_event` even when the note heading has no visible tool tag.
+
 Aggregator examples:
 
 ```bash

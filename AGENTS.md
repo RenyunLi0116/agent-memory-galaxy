@@ -59,6 +59,15 @@ Maintain an `agent_memory.md` file in each project:
 
 The collector also understands limited structured metadata from native Claude/Codex/Cursor sessions through `distill.py`. It is intended to fill gaps, not replace reviewed project memory.
 
+For write-time provenance, prefer the recorder when adding a reviewed note:
+
+```bash
+python3 record_note.py --root <project-root> --tool codex --machine <machine> \
+  --title "Short title" --status done --body-file /tmp/note.md
+```
+
+It appends `agent_memory.md` and writes a private `.amg_lineage/note_lineage.jsonl` sidecar. The collector uses that sidecar to set `agent_source=note_lineage_event`, so provenance still works when the visible heading does not contain `(codex)` or another tool tag. Use `--no-heading-tool-tag` only when intentionally testing lineage-only attribution.
+
 ## Privacy Rules
 
 - Never commit real `graph.json`, `standalone.html`, `.amg_password*`, `sources_cache/`, logs, credentials, raw session logs, or private fragments to a public repo.

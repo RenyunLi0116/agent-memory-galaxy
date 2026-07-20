@@ -554,16 +554,19 @@ function radiusOf(n){return 2.4+26*(Math.sqrt(n.weight||1)/wmax);}
 
 function step3d(){
   const ns=visN,n=ns.length;if(!n)return;
-  const kr=2600,ks=.024,L=72,kg=.018,dp=.9;
+  // 斥力按可见节点数归一(n>220 时 kr∝1/n)：斥力总量恒定→布局尺度不随图增大而膨胀。否则 n 大时 O(n²) 合力压垮显式欧拉积分→坐标发散(节点飞到~1e11、_sc≈0 全部不可见=空图)。n≤220 保持原 kr=2600(不改变小图/筛选子集观感)。
+  const kr=2600*Math.min(1,220/n),ks=.024,L=72,kg=.018,dp=.9,MV=25;   // MV=每步位移上限：正常沉降不触发，仅兜底封顶异常爆冲
   for(let i=0;i<n;i++){const a=ns[i];a._fx=0;a._fy=0;a._fz=0;}
   for(let i=0;i<n;i++){const a=ns[i];
-    for(let j=i+1;j<n;j++){const b=ns[j];let dx=a.x-b.x,dy=a.y-b.y,dz=a.z-b.z,d2=dx*dx+dy*dy+dz*dz||.01;
+    for(let j=i+1;j<n;j++){const b=ns[j];let dx=a.x-b.x,dy=a.y-b.y,dz=a.z-b.z,d2=dx*dx+dy*dy+dz*dz||.01;if(d2<36)d2=36;   // 最小距离软化(d≥6)：封顶近距斥力，防两点几乎重合时合力尖峰
       const f=kr/d2,d=Math.sqrt(d2),ux=dx/d*f,uy=dy/d*f,uz=dz/d*f;a._fx+=ux;a._fy+=uy;a._fz+=uz;b._fx-=ux;b._fy-=uy;b._fz-=uz;}
     a._fx-=a.x*kg;a._fy-=a.y*kg;a._fz-=a.z*kg;}
   for(const e of E){if(!visSet.has(e.source)||!visSet.has(e.target))continue;const a=byId[e.source],b=byId[e.target];
     let dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z,d=Math.sqrt(dx*dx+dy*dy+dz*dz)||.01;const f=ks*(d-L),ux=dx/d*f,uy=dy/d*f,uz=dz/d*f;
     a._fx+=ux;a._fy+=uy;a._fz+=uz;b._fx-=ux;b._fy-=uy;b._fz-=uz;}
-  for(const a of ns){a.vx=(a.vx+a._fx)*dp*alpha;a.vy=(a.vy+a._fy)*dp*alpha;a.vz=(a.vz+a._fz)*dp*alpha;a.x+=a.vx;a.y+=a.vy;a.z+=a.vz;}
+  for(const a of ns){a.vx=(a.vx+a._fx)*dp*alpha;a.vy=(a.vy+a._fy)*dp*alpha;a.vz=(a.vz+a._fz)*dp*alpha;
+    const sp=Math.sqrt(a.vx*a.vx+a.vy*a.vy+a.vz*a.vz);if(sp>MV){const k=MV/sp;a.vx*=k;a.vy*=k;a.vz*=k;}   // 位移钳制兜底
+    a.x+=a.vx;a.y+=a.vy;a.z+=a.vz;}
   alpha*=.985;if(alpha<.02)alpha=.02;
 }
 function project(p){const cy2=Math.cos(yaw),sy=Math.sin(yaw);let x1=p.x*cy2-p.z*sy,z1=p.x*sy+p.z*cy2;

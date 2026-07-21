@@ -139,3 +139,11 @@ This file is both a lightweight project log and an example of the `agent_memory.
 - Status: done. NOT committed/pushed (per task).
 - Verification: python ast parse OK; rebuilt; on docs/index.html — exactly 1 galaxy-card / 1 <canvas> / 1 data-mini-canvas, galaxy-still has no canvas/expand/role=button; all 141 data-i18n keys present in both en+zh; leak scan the private-identifier denylist 0 hits; no " - " in i18n values or index prose; no 「合成」; no MIT; STEP 01-05 present; text-wrap:balance on h1/h2; CTA curly quotes en/zh. Headless Chrome (virtual-time 200/900/1800/3500 en+zh intro; folds 1920/1366/390 en+zh; reduced-motion en+zh; CDP full-page en+zh; CDP sessionreload proving intro plays on load #1 and NOT on load #2; concepts gallery) all reviewed: fold shows stats+HUD+caption at 1920/1366, mobile 390 collapses HUD/stats by container query (clean, not broken) with caption below, reduced-motion shows the static SVG galaxy with no overlay. Only console noise is the environmental /favicon.ico 404 (no JS exceptions/console.error). Shots in scratchpad round6/synth/.
 - Files: scripts/build-landing-concepts.py, docs/index.html, docs/assets/landing.css, docs/assets/landing.js, docs/concepts/*.html
+
+
+## 2026-07-21 - Fail-closed lineage collector deployment (codex) [done]
+- What changed: deployed the authorized fail-closed note-lineage collector change, removing section-index fallback and rejecting ambiguous duplicate anchors.
+- Why: insertions, reorderings, and cloned blocks must abstain instead of silently attaching the wrong recorder assertion.
+- Status: done.
+- Verification: SHA-locked patch/applicator checks, isolated mutation gates, source syntax/CLI checks, and post-apply hash/reverse checks passed. A recorder assertion remains distinct from semantic authorship.
+- Files: collect.py.

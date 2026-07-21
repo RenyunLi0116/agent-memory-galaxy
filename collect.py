@@ -39,9 +39,9 @@ def load_note_lineage(path: str):
     write-time provenance so manual notes do not need explicit "(codex)" tags.
     """
     sidecar = os.path.join(os.path.dirname(path), LINEAGE_DIR, LINEAGE_FILE)
-    by_anchor, by_index = {}, {}
+    by_anchor, ambiguous_anchors = {}, set()
     if not os.path.isfile(sidecar):
-        return by_anchor, by_index
+        return by_anchor, ambiguous_anchors
     try:
         with open(sidecar, encoding="utf-8") as f:
             for line in f:
@@ -61,12 +61,16 @@ def load_note_lineage(path: str):
                     continue
                 anchor = str(rec.get("note_anchor_hash") or "")
                 if anchor:
-                    by_anchor[anchor] = rec
-                if isinstance(rec.get("section_index"), int):
-                    by_index[int(rec["section_index"])] = rec
+                    if anchor in ambiguous_anchors:
+                        continue
+                    if anchor in by_anchor:
+                        by_anchor.pop(anchor, None)
+                        ambiguous_anchors.add(anchor)
+                    else:
+                        by_anchor[anchor] = rec
     except Exception as e:
         print(f"  ! note lineage sidecar 读不了 {sidecar}: {e}", file=sys.stderr)
-    return by_anchor, by_index
+    return by_anchor, ambiguous_anchors
 
 # ----------------------------- 实体抽取规则 -----------------------------
 # (实体类型, 正则, 边类型)。group(1) 若存在则取之，否则取整个匹配。
@@ -337,7 +341,7 @@ def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude", user: 
     proj_id = g.node(f"project:{pkey}", "project", plabel, machines=[machine])
     mach_id = g.node(f"machine:{machine}", "machine", machine, user=user)
     g.edge(proj_id, mach_id, "on")
-    lineage_by_anchor, lineage_by_index = load_note_lineage(path)
+    lineage_by_anchor, ambiguous_lineage_anchors = load_note_lineage(path)
 
     # 按 ## 分节（# 一级标题作为文件简介，忽略其内容做节点）
     lines = txt.splitlines()
@@ -353,6 +357,11 @@ def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude", user: 
                 cur_body.append(ln)
     if cur_head is not None:
         sections.append((cur_head, cur_body))
+    section_anchors = [
+        note_anchor_hash(head, "\n".join(body_lines).strip())
+        for head, body_lines in sections
+    ]
+    section_anchor_counts = collections.Counter(section_anchors)
 
     count = 0
     for idx, (head, body_lines) in enumerate(sections):
@@ -362,8 +371,13 @@ def parse_manual(g: Graph, path: str, machine: str, tool: str = "claude", user: 
         date = date.group(1) if date else None
         am = AGENT_RE.search(head) or AGENT_RE.search(body[:300])
         explicit_agent = re.sub(r'[\s\-]', '', am.group(1)).lower() if am else None
-        section_anchor = note_anchor_hash(head, body)
-        lineage = lineage_by_anchor.get(section_anchor) or lineage_by_index.get(idx)
+        section_anchor = section_anchors[idx]
+        lineage = None
+        if (
+            section_anchor_counts[section_anchor] == 1
+            and section_anchor not in ambiguous_lineage_anchors
+        ):
+            lineage = lineage_by_anchor.get(section_anchor)
         lineage_tool = None
         if lineage:
             candidate_tool = str(lineage.get("agent_tool") or "").lower()

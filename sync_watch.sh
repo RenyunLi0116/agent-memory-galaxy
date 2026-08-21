@@ -22,7 +22,8 @@
 #   AMG_WIN       presence 新鲜窗口(分钟)，默认 45
 #   AMG_RELAY_PUSH=0   只在本地同步、不 commit/push（调试用）
 #   AMG_SCAN_MIN   --hub 时本机快扫的最小间隔(秒)，默认 180
-#   AMG_COMMIT_MIN 仅 presence 变化时的最小提交间隔(秒)，默认 300；有中继载荷则立即提交
+#   AMG_COMMIT_MIN 仅 presence 变化时的最小提交间隔(秒)，默认 900；有中继载荷则立即提交
+#   AMG_PRESENCE_MIN 心跳前移不足 N 分钟就不落盘(默认 10)——在场只用于 45min 的在线判定
 #   AMG_PRIVATE_HUB=1 / AMG_TRACK_PRIVATE=1  公开模板默认 gitignore presence/relay，
 #                  设其一才 `git add -f` 真正推送（私有仓两目录本就受追踪，无需设置）
 set -uo pipefail
@@ -31,7 +32,7 @@ cd "$(dirname "$0")"
 MACHINE="${1:?用法: ./sync_watch.sh <本机唯一名> [--hub] [--once] [--interval N]}"
 shift
 HUB=0; ONCE=0; INTERVAL="${AMG_WATCH_INTERVAL:-30}"; IDLE_INTERVAL="${AMG_WATCH_IDLE:-300}"
-AGENT=""; WIN="${AMG_WIN:-45}"; SCAN_MIN="${AMG_SCAN_MIN:-180}"; COMMIT_MIN="${AMG_COMMIT_MIN:-300}"
+AGENT=""; WIN="${AMG_WIN:-45}"; SCAN_MIN="${AMG_SCAN_MIN:-180}"; COMMIT_MIN="${AMG_COMMIT_MIN:-900}"; PRES_MIN="${AMG_PRESENCE_MIN:-10}"
 while [ $# -gt 0 ]; do
   case "$1" in
     --hub) HUB=1;;
@@ -95,7 +96,10 @@ tick_body() {
   fi
 
   # ② 本机在不在干活（只有实质变化才落盘 → 30s 轮询也不会刷屏提交）
-  "$PY" relay.py presence-sync --machine "$MACHINE" --win "$WIN" >/dev/null 2>>.amg_relay/watch.err || true
+  # --min-delta-min：心跳只前移不到 N 分钟就不落盘。在场信息只用来判「45 分钟内在不在干活」，
+  # 10 分钟的陈旧度完全够用，却能把提交量压掉一大截。
+  "$PY" relay.py presence-sync --machine "$MACHINE" --win "$WIN" --min-delta-min "$PRES_MIN" \
+      >/dev/null 2>>.amg_relay/watch.err || true
 
   # ②' 主脑快扫本机记忆（<1s）：主脑自己干完的活也要能秒级中继，不能只等 15min 的 update.sh
   if [ "$HUB" = 1 ]; then

@@ -700,8 +700,8 @@ def cmd_wake(args):
     for m in targets:
         s = by_machine[m]
         tgt = f"{s['user']}@{s['host']}" if s.get("user") else s["host"]
-        base = ["ssh", "-o", "ConnectTimeout=10", "-o", "BatchMode=yes",
-                "-o", "ServerAliveInterval=10"]
+        base = ["ssh", "-o", "ConnectTimeout=6", "-o", "BatchMode=yes",
+                "-o", "ServerAliveInterval=5", "-o", "ServerAliveCountMax=3"]
         if s.get("port"):
             base += ["-p", str(s["port"])]
         raw = str(s.get("repo") or "~/agent-memory-galaxy")
@@ -889,7 +889,7 @@ def main():
     p = sub.add_parser("wake", help="ssh 唤醒在线 peer 立刻拉取")
     common(p, "发送方机器名（不唤醒自己）")
     p.add_argument("--only", default="", help="只唤醒指定机器")
-    p.add_argument("--timeout", type=int, default=45)
+    p.add_argument("--timeout", type=int, default=25)
     p.set_defaults(fn=cmd_wake)
 
     p = sub.add_parser("gc", help="清理自己写的过期收件条目")

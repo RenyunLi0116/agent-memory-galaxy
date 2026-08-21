@@ -109,9 +109,13 @@ tick_body() {
   fi
 
   # ③ 主脑代发：把各机（含本机快扫）的新增记忆投给此刻在线的机器
+  local delivered=0
   if [ "$HUB" = 1 ]; then
-    "$PY" relay.py fanout --machine "$MACHINE" --scan-all --include-local \
-        ${AGENT:+--agent "$AGENT"} --win "$WIN" 2>&1 | grep -E '\[fanout\]' || true
+    local fo; fo="$("$PY" relay.py fanout --machine "$MACHINE" --scan-all --include-local \
+        ${AGENT:+--agent "$AGENT"} --win "$WIN" 2>&1 | grep -E '\[fanout\]' || true)"
+    # 只回显「真投了」或「出错」的行——配成每分钟 cron 时，每轮都打「无新增记录」会把日志刷爆
+    printf '%s' "$fo" | grep -E '→|✗|失败' || true
+    printf '%s' "$fo" | grep -q '→' && delivered=1
   fi
 
   # ④ 收件：渲染 SYNC_INBOX.md。注意 apply 不推进「已读」游标（那是 agent 处理完才做的事），
@@ -150,15 +154,18 @@ tick_body() {
             -- presence relay 2>>.amg_relay/watch.err && touch .amg_relay/last_commit
         push_retry || log "· 推送失败（本地 commit 已保留，下轮补推）"
       fi
-    elif [ "${AMG_PRIVATE_HUB:-0}" != "1" ] && [ "${AMG_TRACK_PRIVATE:-0}" != "1" ] \
-         && [ ! -f .amg_relay/.warned_ignore ]; then
+    elif [ ! -f .amg_relay/.warned_ignore ] \
+         && git check-ignore -q presence/x.json 2>/dev/null \
+         && [ "${AMG_PRIVATE_HUB:-0}" != "1" ] && [ "${AMG_TRACK_PRIVATE:-0}" != "1" ]; then
+      # 只有**真的被 gitignore**（公开模板）才提示；私有 hub 两目录本就受追踪，别虚惊一场
       log "· presence/relay 被 gitignore 且未设 AMG_PRIVATE_HUB=1 → 本机只在本地同步，不推送"
       : > .amg_relay/.warned_ignore
     fi
   fi
 
-  # ⑥ 主脑：ssh 可达的在线 peer 立刻拉取
-  if [ "$HUB" = 1 ]; then
+  # ⑥ 主脑：ssh 可达的在线 peer 立刻拉取。**只在真投出去东西时才唤醒**——对端不可达时
+  #    每轮都要白等一次 ssh 超时，配成每分钟的 cron 就会一直卡在这里。
+  if [ "$HUB" = 1 ] && [ "$delivered" = 1 ]; then
     "$PY" relay.py wake --machine "$MACHINE" --win "$WIN" 2>&1 | grep -E '\[wake\]' || true
   fi
 

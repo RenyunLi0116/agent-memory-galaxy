@@ -64,7 +64,10 @@ for src in cfg['sources']:
     # 远端代码若还是旧版（没有 relay.py），presence 这步失败即删包，hub 保留旧 presence，不影响采集主路径。
     pres = (f'python3 auto_presence.py --machine {m} >> /tmp/amg_{m}.log 2>&1; '
             f'python3 relay.py presence-bundle --machine {m} --out /tmp/amg_{m}-presence.json '
-            f'>> /tmp/amg_{m}.log 2>&1 || rm -f /tmp/amg_{m}-presence.json; ')
+            f'>> /tmp/amg_{m}.log 2>&1 || rm -f /tmp/amg_{m}-presence.json; '
+            # 顺手在远端渲染收件箱：这台机不跑 watcher，wake 又可能被网络抖动挡掉，
+            # 没有这一步它「收得到、却看不见」。渲染的是上一轮投给它的内容(15min 兜底)。
+            f'python3 relay.py apply --machine {m} >> /tmp/amg_{m}.log 2>&1 || true; ')
     # 远端更新：先 ff-only，只有真分叉才强制对齐（`--ff-only` 静默失败会让 server 永远跑旧代码）
     rc = (f'cd {qrepo} && git fetch -q origin main 2>/dev/null; '
           # 只在「本地没有自己的 commit」(HEAD 是 origin/main 的祖先) 时才硬对齐——那时 reset

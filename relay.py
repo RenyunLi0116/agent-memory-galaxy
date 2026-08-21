@@ -714,7 +714,17 @@ def cmd_wake(args):
                f"{{ git merge -q --ff-only origin/main || echo AMG_DIVERGED; }}; "
                f"python3 relay.py apply --machine {shlex.quote(m)} 2>&1 | tail -2")
         try:
-            r = subprocess.run(base + [tgt, cmd], capture_output=True, text=True, timeout=args.timeout)
+            r = None
+            for _try in range(2):      # 链路时好时坏：一次不够，但也别为它拖住每分钟的轮询
+                try:
+                    r = subprocess.run(base + [tgt, cmd], capture_output=True, text=True,
+                                       timeout=args.timeout)
+                except subprocess.TimeoutExpired:
+                    r = None
+                if r is not None and r.returncode == 0:
+                    break
+            if r is None:
+                raise subprocess.TimeoutExpired(cmd, args.timeout)
             if r.returncode == 0:
                 if "AMG_DIVERGED" in (r.stdout or ""):
                     print(f"  [wake] ⚠ {m} 的仓库已与 origin/main 分叉（有未推送的本地 commit？）——"

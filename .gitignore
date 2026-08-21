@@ -9,6 +9,18 @@
 !/fragments/README.md
 /presence/*.json
 !/presence/README.md
+# Live-relay inboxes carry plaintext memory summaries — same sensitivity as fragments/.
+# Private hubs opt in with AMG_PRIVATE_HUB=1 / AMG_TRACK_PRIVATE=1 (which git add -f them).
+/relay/*/
+!/relay/README.md
+# Locally rendered relay inbox + relay state (rebuilt on every machine — never commit).
+/SYNC_INBOX.md
+.amg_relay/
+# Atomic-write temp files (they hold plaintext) — never let `git add -A` sweep them up.
+.tmp-relay-*
+**/.tmp-relay-*
+.tmp-install-*
+sync_watch.log
 # Per-project note lineage sidecars are private write-time provenance.
 .amg_lineage/
 **/.amg_lineage/

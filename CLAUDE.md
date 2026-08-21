@@ -35,9 +35,15 @@ Aggregator examples:
 AMG_TRACK_PRIVATE=1 ./update.sh
 ```
 
+Live up/down sync (relay): before starting work, read `SYNC_INBOX.md` in the repo root — it is the
+locally rendered inbox of what other agents just finished, same-project items first. Mark it handled with
+`python3 relay.py read --machine <machine>`. Relaying happens automatically inside `contribute.sh`,
+`heartbeat.sh` and `update.sh` (`AMG_RELAY=0` disables it); for second-level latency also run
+`nohup ./sync_watch.sh <machine> [--hub] >> sync_watch.log 2>&1 &` on each machine. See `AGENTS.md`.
+
 Privacy reminders:
 
-- Do not commit real `fragments/*.json`, `presence/*.json`, `graph.json`, `standalone.html`, passwords, logs, raw session files, hostnames, IPs, or private project names to a public repo.
+- Do not commit real `fragments/*.json`, `presence/*.json`, `relay/*/*.jsonl`, `graph.json`, `standalone.html`, passwords, logs, raw session files, hostnames, IPs, or private project names to a public repo.
 - Keep public demo data synthetic.
 - If publishing online, publish `docs/galaxy/index.html` plus encrypted `docs/galaxy/graph.enc.json`, not plaintext graph data.
 - GitHub Pages is publicly reachable; privacy comes from encryption and private handling of plaintext artifacts.

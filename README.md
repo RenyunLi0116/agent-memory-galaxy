@@ -38,6 +38,7 @@ Use this public repo as the reusable framework and demo package. Keep real memor
 - **🪶 The memory layer barely adds tokens** — the graph is built by zero-dependency Python: heuristics by default, LLM optional and off. Indexing your agents' work doesn't burn tokens.
 - **🐙 All you need is a GitHub account** — no server, no database, no SaaS signup, no API key. Just a git repo and the Python standard library; collaborate by adding a GitHub collaborator and pushing.
 - **♻️ It refreshes itself and lights up live work** — a cron job rebuilds the graph on a schedule; auto-presence detects working agents and pulses them red, no manual heartbeat.
+- **📨 Finish work here, it lands on whoever is working there** — the moment a machine's new memory reaches the hub, every agent currently working gets it pushed into their `SYNC_INBOX.md` in seconds, not at the next scheduled rebuild.
 - **🛰️ A live map for team leads** — see who's on which machine and project at a glance: red means working now, gold lines mean cross-project references.
 
 ## See it
@@ -221,6 +222,7 @@ Core pieces:
 - `distill.py` fills gaps from native agent-session metadata without copying raw conversation text.
 - `fragments/*.json` lets many machines contribute to one private hub.
 - `presence/*.json` lights up currently active agents in the viewer.
+- `relay.py` + `sync_watch.sh` + `relay/*/` push freshly finished memory straight to whoever is working right now, rendered locally as `SYNC_INBOX.md` (see `ONBOARDING.md` §5.5).
 - `viewer/index.html` is the runtime galaxy viewer.
 - `docs/index.html` is the public promo landing page.
 - `docs/demo/` contains the fully synthetic public demo.
@@ -297,7 +299,7 @@ Contributors do not need encryption passwords and should not touch `docs/galaxy/
 
 Nodes include `project`, `entry`, `fact`, `agent`, `liveagent`, `machine`, `user`, `dataset`, `server`, `model`, `method`, `file`, `wandb`, `tech`, `notion`, `boundary`, and `artifact`.
 
-Edges include `in`, `did`, `located`, `uses`, `touches`, `trains`, `tracks`, `syncs`, `explores`, `references`, `depends_on`, `inherits_from`, `exports_to`, `working_on`, `handoff_to`, `owns`, `shared_on`, `cached_on`, `redacts`, `encrypts`, `publishes`, `keeps_private`, `validates`, `serves`, `replicates_to`, `link`, and `on`.
+Edges include `in`, `did`, `located`, `uses`, `touches`, `trains`, `tracks`, `syncs`, `explores`, `references`, `depends_on`, `inherits_from`, `exports_to`, `working_on`, `relay` (machine→machine: an up/down sync that happened in the last three days, carrying `count` and `last`), `handoff_to`, `owns`, `shared_on`, `cached_on`, `redacts`, `encrypts`, `publishes`, `keeps_private`, `validates`, `serves`, `replicates_to`, `link`, and `on`.
 
 Shared entities automatically connect projects across machines. For example, two different agents touching the same dataset, file, model, or Notion page will become connected in the graph.
 

@@ -90,6 +90,118 @@ The public template intentionally does not stage real fragments, live presence, 
 AMG_TRACK_PRIVATE=1 ./update.sh
 ```
 
+
+## 5.5 Live Up/Down Sync (relay)
+
+Heartbeats (`heartbeat.sh`) are *near*-realtime — roughly 10 minutes, and the other side has to come and
+pull. The relay turns that into a push: the moment A's work reaches the hub, every machine whose
+`presence/` says `status=working` with a fresh heartbeat gets A's new memory, in seconds to tens of
+seconds.
+
+```
+A finishes ──contribute.sh / heartbeat.sh──► hub (private repo)
+                                               │  1. relay.py fanout — read presence/, deliver to
+                                               │     whoever is working right now
+                                               ├─► relay/<B>/by-<writer>.jsonl   (over git)
+                                               │  2. relay.py wake — ssh-reachable peers pull at once
+                                               ▼
+                                        B's sync_watch.sh / heartbeat.sh
+                                               └─► relay.py apply → B's SYNC_INBOX.md
+```
+
+**Already wired in** (`AMG_RELAY=0` turns it off):
+
+- `contribute.sh` — fans out while pushing, then `wake`s ssh-reachable peers.
+- `heartbeat.sh` — every check-in (including `--idle`, i.e. "done for now") fans out and re-renders the
+  local inbox.
+- `update.sh` — the aggregator relays **on behalf of** every fragment, including servers that are only
+  harvested over ssh and never run `contribute.sh` themselves. This is the coarse (per-run) backstop.
+
+**For second-level latency, run the poller** (one per machine; add `--hub` on the aggregator):
+
+```bash
+nohup ./sync_watch.sh <machine> [--hub] >> sync_watch.log 2>&1 &
+# or, without a daemon (built-in flock keeps runs from overlapping):
+# * * * * * cd /path/to/repo && ./sync_watch.sh <machine> --once >> sync_watch.log 2>&1
+```
+
+Each pass: compare `git ls-remote` against the local `origin/main` (cheap — does nothing when unchanged)
+→ `pull --rebase` only if it moved → refresh this machine's presence (**written only when something
+substantive changed**, so a 30s poll does not spam commits) → render `SYNC_INBOX.md` and run
+`$AMG_ON_SYNC` if there is anything new → commit **only** `presence/` and `relay/` (never `git add -A`)
+→ on `--hub`, also fan out and `wake` peers. It backs off to `--idle-interval` (default 300s) when
+nobody is working.
+
+**Using it as an agent**
+
+```bash
+python3 relay.py status                     # who is online, unread per inbox
+cat SYNC_INBOX.md                           # unread first; same canonical project pinned with ★
+python3 relay.py read --machine <machine>   # mark handled
+```
+
+Put "read `SYNC_INBOX.md` before starting" into that machine's `CLAUDE.md`/`AGENTS.md`, or hook a
+notification: `export AMG_ON_SYNC='notify-send "$AMG_NEW new syncs" "$AMG_INBOX"'`.
+`$AMG_NEW` is what arrived **this pass** (not the standing unread count, so the hook does not re-fire
+every 30s), `$AMG_UNREAD` is the total unread, `$AMG_INBOX` is the file. The hook runs with the lock
+file descriptors closed, so backgrounding something from it cannot pin the repo lock.
+
+**Why concurrent pushes never conflict** (invariants — understand these before changing the code)
+
+- `relay/<recipient>/by-<writer>.jsonl` — **only the writer writes it** (append-only). `by-<X>` is the
+  *writer*, not the memory's origin: when the hub relays for a harvested-only server it writes
+  `by-<hub>.jsonl`, and the line's `from.machine` holds the origin. That keeps hub-proxy relaying
+  single-writer too.
+- `relay/<recipient>/_ack.json` — **only the recipient writes it**, and only when a substantive field
+  changes (not on every render), so it never becomes a commit treadmill.
+- `SYNC_INBOX.md` and `.amg_relay/` (ledger, read cursor, locks) — **never committed**; rebuilt locally.
+- Item `id`s are content-derived, so the same entry relayed by both its origin and the hub de-duplicates
+  at the recipient.
+- Same-machine races (`update.sh` cron + poller + `contribute.sh`) serialize on one repo-wide
+  `flock` at `.amg_relay/repo.lock`, taken by all four entry points in the same order.
+
+**Delivery semantics**
+
+- The ledger records `sent`: **bootstrap only registers, it never counts as delivered** — otherwise the
+  catch-up window would replay a machine's entire history the moment anyone came online.
+- **When nobody is online, nothing is recorded** — the items stay pending until someone starts working
+  (`--drop-pending` restores the older discard-it behaviour).
+- **Catch-up window `--catchup-min` (default 1440 min)**: already-delivered items stay in the candidate
+  pool for that long, so a machine that starts working 30 seconds *after* the fan-out still receives
+  them; the recipient de-duplicates by item id, so nobody is bothered twice.
+- **A peer is never `reset --hard`**: `wake` does `--ff-only` only and reports `AMG_DIVERGED` for a
+  human to resolve — the peer may be holding local commits it deliberately kept for a later retry
+  (`contribute.sh` promises exactly that). `pull_remote.sh` force-aligns only when the remote has no
+  commits of its own (`git merge-base --is-ancestor`).
+
+**Keeping it from becoming noise**
+
+- Item identity is `machine|project|title|date` — **not** the node id, because `collect.py`'s entry ids
+  embed a section index that shifts whenever a note is inserted at the top of a file.
+- Only a changed body counts as an "update", and the same item is not re-sent within 20 minutes
+  (`--repeat-min`).
+- Only entries from the last 14 days (`--max-age-days`), at most 60 per pass (`--max`); the rest carry
+  over to the next pass.
+- The **first** time a machine's fragment is seen it is only recorded, never delivered — otherwise its
+  entire history would land on whoever happens to be online.
+- `relay` edges in the graph carry only a count and a date (no exact timestamp), so relaying does not
+  change `graph.json`'s hash on every pass.
+- **Commit rate-limiting**: the poller commits and pushes immediately when `relay/` actually gained
+  payload; when only heartbeats moved it commits at most once per `AMG_COMMIT_MIN` (default 300s) —
+  otherwise a 30s loop turns into thousands of commits a day.
+- `_ack.json` is written only when a substantive field changes, and so is `presence/`
+  (`presence-sync --min-delta-min`).
+- **The lock wraps the git section only.** `heartbeat.sh --loop` runs all day; holding a script-level
+  lock would starve the aggregation cron (it times out on `flock -w 600` and exits 0, so cron sees
+  nothing wrong). All four entry points share `.amg_relay/repo.lock` in the same order (repo lock →
+  `relay.lock`), so they cannot deadlock; without `flock` installed they degrade to no lock and say so.
+- On the public template `presence/` and `relay/` are gitignored, so the poller only commits them when
+  `AMG_PRIVATE_HUB=1` (or `AMG_TRACK_PRIVATE=1`); it logs once when it is running in local-only mode.
+
+**Privacy**: `relay/*/by-*.jsonl` is plaintext (600-char body summaries) — the same tier as `fragments/`.
+This public template gitignores it and excludes it from `update.sh`'s `git add`; a private hub opts in
+with `AMG_PRIVATE_HUB=1` / `AMG_TRACK_PRIVATE=1`. It must never reach `docs/`.
+
 ## 6. Optional Encrypted Pages Viewer
 
 Create two strong local password files:

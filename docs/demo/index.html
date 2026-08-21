@@ -746,6 +746,13 @@ function render(){
       ctx.strokeStyle=`rgba(255,66,80,${(0.35+0.4*br)*dd})`;ctx.lineWidth=1.1+br*0.9;
       ctx.beginPath();ctx.moveTo(a._sx,a._sy);ctx.lineTo(b._sx,b._sy);ctx.stroke();
       const ph=(tick*0.015+a._sx*0.004)%1;ctx.fillStyle=`rgba(255,170,175,${0.6+0.35*br})`;ctx.beginPath();ctx.arc(a._sx+(b._sx-a._sx)*ph,a._sy+(b._sy-a._sy)*ph,2,0,6.2832);ctx.fill();
+    }else if(e.type==='relay'&&!dim){   // 青色同步链路：记忆刚从 A 机中继到「此刻正在干活」的 B 机（上下同步）
+      const br=0.5+0.5*Math.sin(tick*0.05+a._sx*0.01);
+      ctx.strokeStyle=`rgba(46,230,197,${(0.30+0.35*br)*dd})`;ctx.lineWidth=1.0+Math.min(1.8,Math.log2(1+(e.count||1))*0.55)+br*0.5;
+      ctx.beginPath();ctx.moveTo(a._sx,a._sy);ctx.lineTo(b._sx,b._sy);ctx.stroke();
+      if(!_fxLite){const ph=(tick*0.022+a._sx*0.002)%1;   // 光点沿 A→B 流动 = 同步方向
+        ctx.fillStyle=`rgba(185,255,242,${0.5+0.4*br})`;ctx.beginPath();
+        ctx.arc(a._sx+(b._sx-a._sx)*ph,a._sy+(b._sy-a._sy)*ph,1.8,0,6.2832);ctx.fill();}
     }else if(act&&!dim){               // 呼吸灯连线：颜色深浅随时间远近
       const rc=Math.max(a._rec||0,b._rec||0),sh=gShade(rc),br=0.5+0.5*Math.sin(tick*0.06+(a._sx+a._sy)*0.012);
       ctx.strokeStyle=`rgba(${sh},${(0.08+0.37*rc)*(0.55+0.45*br)*dd})`;ctx.lineWidth=0.6+rc*1.3+br*0.55;

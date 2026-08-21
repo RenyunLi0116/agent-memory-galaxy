@@ -19,11 +19,21 @@ Treat privacy review as a checklist task that can apply to any path, not as a da
 
 A Claude Code plugin skill installation gives the agent these instructions; it does not by itself provide a checked-out repo. If the current directory is not an Agent Memory Galaxy checkout, first guide the user to clone the repo or switch to the private hub checkout.
 
+## Live Up/Down Sync (relay)
+
+`relay.py` + `sync_watch.sh` push a machine's freshly-finished memory to whoever is working right now
+instead of waiting for the next aggregation. It is already wired into `contribute.sh`, `heartbeat.sh`
+and `update.sh` (`AMG_RELAY=0` disables it); `./sync_watch.sh <machine> [--hub]` adds second-level
+latency. Recipients read the locally rendered `SYNC_INBOX.md`, then `relay.py read --machine <machine>`.
+
+Treat `relay/*/by-*.jsonl` exactly like `fragments/`: plaintext, private-hub-only, gitignored and
+excluded from `update.sh` in the public template, never published to `docs/`.
+
 ## Privacy Rules
 
 Treat memory artifacts as sensitive by default.
 
-- Never publish real `graph.json`, `standalone.html`, `fragments/*.json`, `presence/*.json`, passwords, raw session logs, absolute personal paths, IPs, hostnames, private project names, credentials, or raw confidential conversation text.
+- Never publish real `graph.json`, `standalone.html`, `fragments/*.json`, `presence/*.json`, `relay/*/*.jsonl`, `SYNC_INBOX.md`, passwords, raw session logs, absolute personal paths, IPs, hostnames, private project names, credentials, or raw confidential conversation text.
 - Public repos may include code, docs, skill/plugin packaging, and synthetic demo graphs only.
 - Real fragments belong in a private repo/fork or local machine.
 - GitHub Pages is not private access control. `/galaxy/` may be publicly reachable; publish only `docs/galaxy/index.html` plus encrypted `docs/galaxy/graph.enc.json`.

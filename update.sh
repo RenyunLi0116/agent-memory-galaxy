@@ -7,6 +7,22 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 PULL="${1:-}"
+LOCALN="${AMG_LOCAL_NAME:-local}"    # 本机在图/中继里的机器名（[0.5] 提炼与 [1.5] 中继共用）
+
+# 仓库级 git 写锁：本机上 update.sh / contribute.sh / heartbeat.sh / sync_watch.sh 共用这一把，
+# 加锁顺序统一（先仓库锁、再 relay.py 内部的 relay.lock）故不会死锁。没有它的话，watcher 每 30s
+# 一次 git add 会与它们撞 .git/index.lock，而被 `2>/dev/null` 吞掉的失败会被误判成「无改动」。
+mkdir -p .amg_relay
+exec 9>.amg_relay/repo.lock
+if command -v flock >/dev/null 2>&1; then
+  # 区分「超时」与「flock 本身出错」：`! flock` 对 127(没装) / 64(用法错) 也为真，
+  # 会打出一句「等了 600s」的假话、还 exit 0 让 cron 以为一切正常。
+  flock -w 600 9; _rc=$?
+  if [ "$_rc" = 1 ]; then echo "· 仓库锁等待 600s 未获得（上一轮还在跑？），跳过本轮"; exit 0
+  elif [ "$_rc" != 0 ]; then echo "✗ flock 异常退出($_rc)，中止本轮以免撞 .git/index.lock"; exit 1; fi
+else
+  echo "· 未找到 flock（util-linux），本轮不加仓库锁——与 watcher/心跳并发时可能撞 index.lock"
+fi
 
 echo "[0/5] git pull（取回各电脑推上来的 fragments/）"
 git pull -q --no-edit 2>/dev/null || true
@@ -23,7 +39,6 @@ python3 auto_presence.py --machine "${AMG_LOCAL_NAME:-local}" 2>&1 | tail -1 || 
 
 # [0.5] 提炼本机 Claude/Codex/Cursor 原生会话里「没写 agent_memory.md」的缺口项目（仅结构化字段·derived 次级）
 # 写 fragments/<local>-distilled.json，下一步 collect --merge 的 fragments/*.json glob 自动吸收。AMG_DISTILL=0 关闭。
-LOCALN="${AMG_LOCAL_NAME:-local}"
 if [ "${AMG_DISTILL:-1}" != "0" ]; then
   echo "[0.5] 提炼本机原生会话缺口 → fragments/$LOCALN-distilled.json"
   python3 distill.py --machine "$LOCALN" --out "fragments/$LOCALN-distilled.json" >/dev/null 2>&1 \
@@ -33,6 +48,19 @@ fi
 
 echo "[1/5] 采集 ${PULL:-(仅本地)} + 合并其他电脑的 fragments/"
 python3 collect.py $PULL --merge || { echo "采集失败"; exit 1; }
+
+# [1.5] 上下同步中继（主脑代发）：**必须在 collect 之后**——主脑自己的记忆从不落 fragments/，
+# 只有刚写出的 graph.json 里才有；放在 collect 前会漏掉本机（最大的记忆产地）。
+# 由 pull_remote 远程采集、自己从不跑 contribute.sh 的 server 也全靠这一步代发。
+# 图里的 relay 同步链路边于下一轮 collect 生效（延迟一拍，符合预期）。
+if [ "${AMG_RELAY:-1}" != "0" ] && [ -f relay.py ]; then
+  echo "[1.5] 中继：把各机新增记忆投给此刻在线的 agent"
+  # stderr 单独落盘：早先 `2>&1 | grep` 会把 python traceback 一起吞掉，再被
+  # `|| echo 无可投递（非致命）` 掩盖成一句无害提示——中继坏了也看不出来。
+  if python3 relay.py fanout --machine "$LOCALN" --scan-all --include-local 2>>relay.err; then :
+  else echo "      ✗ 中继失败（见 relay.err 末尾），本轮跳过下行同步"; fi
+  python3 relay.py apply --machine "$LOCALN" --print-new 3 2>>relay.err >/dev/null || true
+fi
 
 # 内容哈希（忽略 meta.generated 时间戳）：图无实质变化时可跳过重新加密，
 # 但不要跳过静态文件/代码提交；viewer 或 docs 可能已经更新。
@@ -79,9 +107,12 @@ if [ "${AMG_TRACK_PRIVATE:-0}" = "1" ]; then
   # Private hubs may intentionally track ignored plaintext fragments/presence and encrypted Pages blobs.
   find fragments -maxdepth 1 -type f -name '*.json' -exec git add -f {} + 2>/dev/null || true
   find presence -maxdepth 1 -type f -name '*.json' -exec git add -f {} + 2>/dev/null || true
+  # relay/ 收件箱同属「私有 hub 才追踪」的明文：与 fragments/presence 同一档待遇
+  find relay -mindepth 2 -type f \( -name '*.jsonl' -o -name '_ack.json' \) -exec git add -f {} + 2>/dev/null || true
   [ -f docs/galaxy/graph.enc.json ] && git add -f docs/galaxy/graph.enc.json
 else
-  git add -A -- ':!fragments/*.json' ':!presence/*.json' ':!docs/galaxy/graph.enc.json' 2>/dev/null
+  git add -A -- ':!fragments/*.json' ':!presence/*.json' ':!docs/galaxy/graph.enc.json' \
+                ':!relay/*/*' ':!SYNC_INBOX.md' 2>/dev/null
 fi
 if git diff --cached --quiet; then echo "无改动，跳过推送"; exit 0; fi
 git commit -q -m "refresh: $(date +%F) 采集+加密快照"
@@ -90,6 +121,10 @@ echo "[5/5] 推送 → 触发 GitHub Pages 重建"
 if git push -q origin main; then
   [ -n "$NEWHASH" ] && echo "$NEWHASH" > .last_graph_hash
   echo "✓ 已推送，Pages 将自动重建"
+  # 立刻唤醒 ssh 可达的在线 peer（真正的“秒级下行”；够不着的机器靠自己的 sync_watch.sh）
+  if [ "${AMG_RELAY:-1}" != "0" ] && [ -f relay.py ]; then
+    python3 relay.py wake --machine "$LOCALN" 2>&1 | grep -E '\[wake\]' || true
+  fi
 else
   echo "✗ 推送失败"; exit 1
 fi

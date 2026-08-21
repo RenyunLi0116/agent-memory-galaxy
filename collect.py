@@ -722,6 +722,54 @@ def load_presence(g):
         print(f"  [presence] 注入 {cnt} 个 agent 报到状态", file=sys.stderr)
     return cnt
 
+def load_relay(g, days=3):
+    """读 relay/（上下同步中继收件箱）→ 机器间 `relay` 同步链路边。
+    只看最近 days 天、只带「条数 + 最后日期」（**不带精确时间戳**）——否则每轮中继都会
+    让 graph.json 的哈希变化、把 update.sh 的闸门变成每 15min 必发布的噪声源。"""
+    import glob
+    rdir = os.path.join(HERE, "relay")
+    if not os.path.isdir(rdir):
+        return 0
+    cutoff = (datetime.datetime.now(datetime.timezone.utc)
+              - datetime.timedelta(days=days))
+    pairs = {}          # (src_machine, dst_machine) -> [count, last_date]
+    for fp in glob.glob(os.path.join(rdir, "*", "by-*.jsonl")):
+        dst = os.path.basename(os.path.dirname(fp))
+        try:
+            fh = open(fp, encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        with fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    it = json.loads(line)
+                    ts = datetime.datetime.fromisoformat(str(it.get("ts", "")).replace("Z", "+00:00"))
+                except Exception:
+                    continue
+                if ts.tzinfo is None:
+                    ts = ts.replace(tzinfo=datetime.timezone.utc)
+                if ts < cutoff:
+                    continue
+                src = str((it.get("from") or {}).get("machine") or "")
+                if not src or src == dst:
+                    continue
+                cur = pairs.setdefault((src, dst), [0, ""])
+                cur[0] += 1
+                cur[1] = max(cur[1], ts.strftime("%Y-%m-%d"))
+    for (src, dst), (n, last) in pairs.items():
+        sid = g.node(f"machine:{src}", "machine", src)
+        did = g.node(f"machine:{dst}", "machine", dst)
+        g.edge(sid, did, "relay")
+        e = g.edges.get((sid, did, "relay"))
+        if e:
+            e["count"], e["last"] = n, last
+    if pairs:
+        print(f"  [relay] {len(pairs)} 条同步链路（近 {days} 天）", file=sys.stderr)
+    return len(pairs)
+
 SANITIZE_DROP = ("excerpt", "source", "paths", "description", "origin", "current", "user")
 _IP = re.compile(r'\b\d{1,3}(?:\.\d{1,3}){3}\b')
 
@@ -906,6 +954,7 @@ def main():
 
     if not args.roots:       # 汇总端读 presence/（贡献端 --roots 模式不注入，避免碎片里带 liveagent）
         load_presence(g)
+        load_relay(g)        # 上下同步中继链路（machine→machine 的 relay 边），同样只在汇总端注入
 
     link_projects(g)         # 项目间引用/派生边（每次都跑；贡献端会把边嵌入 fragment）
     if not args.roots:       # 汇总端 finalize 阶段：default_user 兜底 + user 节点/owns 边（碎片不内嵌）

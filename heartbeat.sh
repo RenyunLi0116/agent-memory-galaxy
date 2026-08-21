@@ -7,9 +7,12 @@
 #   ./heartbeat.sh <machine> <agent> <canonical_project> "<...>" --loop     # 每 10 分钟自动上报
 #   ./heartbeat.sh <machine> <agent> --idle                                 # 收工，置 idle
 # 环境变量: AMG_TOOL=claude|codex|human（默认 agent）
+#           AMG_RELAY=0 关闭「上下同步中继」（默认开：报到时把自己的新记忆投给在线的人，
+#                       并把别人投给自己的渲染成 SYNC_INBOX.md）
 # 依赖: python3 + git；需对仓库 push 权限。
 set -uo pipefail
 cd "$(dirname "$0")"
+mkdir -p .amg_relay
 MACHINE="${1:?用法: ./heartbeat.sh <machine> <agent> <canonical_project> \"<做什么>\" [--loop]  或  ./heartbeat.sh <machine> <agent> --idle}"
 AGENT="${2:?缺 agent 名}"
 shift 2
@@ -58,9 +61,25 @@ PY
 
 report() {
   local hb; hb="$(write_presence)"
+  # 上下同步中继：① 把本机新增记忆投给此刻在线的其他 agent（收工 --idle 时同样有效——
+  # 「A 干完活儿」正是这一刻）；② 把别人投给本机的渲染成 SYNC_INBOX.md（本地文件，不入库）。非致命。
+  if [ "${AMG_RELAY:-1}" != "0" ] && [ -f relay.py ]; then
+    python3 relay.py fanout --machine "$MACHINE" --agent "$AGENT" 2>&1 \
+      | grep -E '\[fanout\] →' || true
+    python3 relay.py apply --machine "$MACHINE" --print-new 3 2>&1 | grep -E '\[apply\]|^    ' || true
+  fi
+  # 仓库级 git 写锁：**只包住 git 段**。绝不在脚本级 exec 9>——`--loop` 会持锁一整天，
+  # 把 15min 的发布 cron 每轮饿死（它 flock -w 600 超时后 exit 0，cron 看不出任何异常）。
+  (
+  flock -w 300 8 || { echo "  · 仓库锁被占用超过 300s，本次上报跳过（下轮重试）"; exit 1; }
   # 先提交自己（保证工作区干净，pull --rebase 才不会因脏树失败）
   git add "$FILE" 2>/dev/null
-  if git diff --cached --quiet; then echo "[$hb] $STATUS（无变化）"; return 0; fi
+  # relay/ 与 presence/ 在公开仓默认 gitignore；私有 hub 才强制追踪
+  if [ "${AMG_PRIVATE_HUB:-0}" = "1" ]; then
+    git add -f "$FILE" 2>/dev/null
+    find relay -mindepth 2 -type f \( -name '*.jsonl' -o -name '_ack.json' \) -exec git add -f {} + 2>/dev/null || true
+  fi
+  if git diff --cached --quiet; then echo "[$hb] $STATUS（无变化）"; exit 0; fi
   git commit -q -m "presence: ${MACHINE}/${AGENT} ${STATUS} ${hb}" 2>/dev/null
   for i in 1 2 3 4 5; do
     # 拉回别人的状态与记忆；rebase 冲突（同名文件被并发改）时 abort 兜底，绝不提交冲突标记
@@ -68,7 +87,8 @@ report() {
     if git push -q 2>/dev/null; then echo "[$hb] ✓ 已上报 $STATUS ${PROJECT:+@$PROJECT}"; return 0; fi
     echo "  远端领先，pull --rebase 后重试 $i/5"; sleep 3
   done
-  echo "  ✗ 上报失败（检查网络/push 权限；如反复冲突说明同名 agent 被并发运行）"; return 1
+  echo "  ✗ 上报失败（检查网络/push 权限；如反复冲突说明同名 agent 被并发运行）"; exit 1
+  ) 8>.amg_relay/repo.lock
 }
 
 echo "== 报到前先看别的 agent 在做什么（避免撞车）=="

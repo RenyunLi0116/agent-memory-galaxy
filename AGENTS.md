@@ -44,6 +44,29 @@ Aggregator outputs:
 
 `update.sh` excludes private artifacts by default. In a private hub, use `AMG_TRACK_PRIVATE=1 ./update.sh` only when the user intentionally wants private fragments or encrypted graph blobs tracked.
 
+## Live Up/Down Sync (relay)
+
+When A finishes a unit of work and it reaches the hub, anyone **working right now** should not have to
+wait for the next 15-minute aggregation or 10-minute heartbeat. `relay.py` closes that loop:
+
+- **It already runs for you.** `contribute.sh`, `heartbeat.sh` and the aggregator's `update.sh` each
+  fan out new memory to machines whose `presence/` says `status=working` with a fresh heartbeat
+  (`AMG_RELAY=0` disables it). Machines that are only harvested over ssh and never run `contribute.sh`
+  are relayed *on their behalf* by the hub.
+- **What you must do:** read `SYNC_INBOX.md` in the repo root before you start and whenever you are
+  prompted — it lists what other agents just finished, with same-project items pinned to the top. Then
+  `python3 relay.py read --machine <this-machine>` to mark it handled.
+- **Want seconds instead of minutes?** run the poller on each machine (add `--hub` on the aggregator):
+  ```bash
+  nohup ./sync_watch.sh <machine> [--hub] >> sync_watch.log 2>&1 &
+  # or, without a daemon:  * * * * * cd <repo> && ./sync_watch.sh <machine> --once
+  ```
+- `python3 relay.py status` shows who is online and how much is unread per inbox. In the viewer, the
+  **cyan streaks between machines** are syncs that happened in the last three days.
+- **Privacy:** `relay/*/by-*.jsonl` is plaintext, same tier as `fragments/` — gitignored and excluded
+  from `update.sh` in this public template; private hubs opt in with `AMG_PRIVATE_HUB=1` /
+  `AMG_TRACK_PRIVATE=1`. Never publish it to `docs/`.
+
 ## Memory Format
 
 Maintain an `agent_memory.md` file in each project:
@@ -85,3 +108,5 @@ It appends `agent_memory.md` and writes a private `.amg_lineage/note_lineage.jso
 - `docs/index.html`: public promo landing page.
 - `docs/demo/`: synthetic demo only.
 - `docs/galaxy/`: optional encrypted viewer shell.
+- `relay.py` / `sync_watch.sh` / `relay/`: live up/down sync between machines (see the section above).
+- `SYNC_INBOX.md`: locally rendered inbox of what other agents just finished (never committed).

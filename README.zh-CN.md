@@ -38,6 +38,7 @@ Agent Memory Galaxy 会把分散在多台机器、多种 AI agent 工具中的�
 - **🪶 这层记忆几乎不额外烧 token** —— 图谱由零依赖的 Python 标准库构建：默认启发式，LLM 可选且默认关闭。给 agent 的工作建索引本身不烧 token。
 - **🐙 你只需要一个 GitHub 账号** —— 不用服务器、不用数据库、不用注册 SaaS、不用 API key。一个 git 仓库加 Python 标准库即可；协作只需把队友加为 GitHub collaborator 再 push。
 - **♻️ 自动刷新，自动点亮在线工作** —— cron 定时重建图谱；auto-presence 自动检测正在工作的 agent 并亮起红色脉冲，无需手动心跳。
+- **📨 这边干完，那边正在干活的人立刻收到** —— 某台机器的新记忆一到主脑，此刻还在工作的每个 agent 就会在数十秒内把它收进自己的 `SYNC_INBOX.md`，而不是等下一次定时重建。
 - **🛰️ 给负责人的一张实时地图** —— 一眼看清谁在哪台机器、哪个项目：红色代表正在工作，金线代表跨项目引用。
 
 ## 看一眼
@@ -221,6 +222,7 @@ agent_memory.md   Claude/Codex/Cursor   fragments/*.json        presence/*.json
 - `distill.py` 从 agent 原生会话元数据中补全结构化事实，不复制原始对话。
 - `fragments/*.json` 允许多台机器向同一个私有 hub 贡献。
 - `presence/*.json` 让 viewer 显示当前活跃 agent。
+- `relay.py` + `sync_watch.sh` + `relay/*/`：把刚干完的记忆直接推给此刻正在工作的人，收件端本地渲染成 `SYNC_INBOX.md`（见 `ONBOARDING.md` §5.5）。
 - `viewer/index.html` 是运行时 Galaxy Viewer。
 - `docs/index.html` 是公开宣传页，支持 `?lang=en` / `?lang=zh`。
 - `docs/demo/` 是完全合成的公开 demo，支持中英文 UI 与节点内容。
@@ -299,7 +301,7 @@ Contributors 不需要加密密码，也不应修改 `docs/galaxy/`。
 
 节点包括 `project`、`entry`、`fact`、`agent`、`liveagent`、`machine`、`user`、`dataset`、`server`、`model`、`method`、`file`、`wandb`、`tech`、`notion`、`boundary`、`artifact`。
 
-边包括 `in`、`did`、`located`、`uses`、`touches`、`trains`、`tracks`、`syncs`、`explores`、`references`、`depends_on`、`inherits_from`、`exports_to`、`working_on`、`handoff_to`、`owns`、`shared_on`、`cached_on`、`redacts`、`encrypts`、`publishes`、`keeps_private`、`validates`、`serves`、`replicates_to`、`link`、`on`。
+边包括 `in`、`did`、`located`、`uses`、`touches`、`trains`、`tracks`、`syncs`、`explores`、`references`、`depends_on`、`inherits_from`、`exports_to`、`working_on`、`relay`（机器→机器：近 3 天发生过的上下同步，带 `count`/`last`）、`handoff_to`、`owns`、`shared_on`、`cached_on`、`redacts`、`encrypts`、`publishes`、`keeps_private`、`validates`、`serves`、`replicates_to`、`link`、`on`。
 
 共享实体会自动连接跨机器项目。例如两个 agent 触碰同一数据集、文件、模型或 Notion 页面，它们会在图谱中相连。
 

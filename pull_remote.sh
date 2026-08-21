@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # 基站模式(2026-07-02)：local 作为主基站，主动访问各 server——
-#   ssh 远程跑 collect(--local-only)+distill 生成 fragment → 轮询完成 → scp 取回 fragments/。
+#   ssh 远程跑 collect(--local-only)+distill+auto_presence → 轮询完成 → scp 取回 fragments/ 与 presence/。
+# presence 回传：只被远程采集、自己不跑 cron 的 server 原本从不上报「在不在干活」，于是在上下同步
+#   中继(relay)里永远算不上在线、收不到别人刚干完的活。远端顺手跑一次 auto_presence.py 并用
+#   relay.py presence-bundle 打包回传，该 server 才能成为中继收件人。
 # server 侧只需有本仓库副本(供 collect.py/distill.py)，**无需 git push 权限、无需自己的 cron**。
 # 配置：sources.json 里 type=ssh 且 "remote_collect": true 的源（enabled 仍设 false，
 #       collect.py 的旧 md-拉取路径不启用，避免与 fragment 重复）。
@@ -58,11 +61,22 @@ for src in cfg['sources']:
     print(f'[remote] {m}: 远程采集+提炼（更新远端代码 → nohup 后台跑）', file=sys.stderr)
     # 1) 远程后台任务：先 git pull 保证远端用最新解析逻辑；collect+distill 写 /tmp；done 标记收尾
     qrepo, qroots, qtool = shlex.quote(repo), shlex.quote(roots), shlex.quote(tool)   # 防路径含空格/元字符
-    rc = (f'cd {qrepo} && git pull -q --ff-only 2>/dev/null; rm -f /tmp/amg_{m}.done; '
+    # 远端代码若还是旧版（没有 relay.py），presence 这步失败即删包，hub 保留旧 presence，不影响采集主路径。
+    pres = (f'python3 auto_presence.py --machine {m} >> /tmp/amg_{m}.log 2>&1; '
+            f'python3 relay.py presence-bundle --machine {m} --out /tmp/amg_{m}-presence.json '
+            f'>> /tmp/amg_{m}.log 2>&1 || rm -f /tmp/amg_{m}-presence.json; ')
+    # 远端更新：先 ff-only，只有真分叉才强制对齐（`--ff-only` 静默失败会让 server 永远跑旧代码）
+    rc = (f'cd {qrepo} && git fetch -q origin main 2>/dev/null; '
+          # 只在「本地没有自己的 commit」(HEAD 是 origin/main 的祖先) 时才硬对齐——那时 reset
+          # 只会丢弃我们刚采完就取走的 presence 脏文件。真分叉说明那台机上有人提交过东西，绝不替他抹掉。
+          f'if git merge-base --is-ancestor HEAD origin/main 2>/dev/null; then '
+          f'git reset -q --hard origin/main 2>/dev/null; '
+          f'else echo AMG_DIVERGED >&2; fi; '
+          f'rm -f /tmp/amg_{m}.done /tmp/amg_{m}-presence.json; '
           f'nohup bash -c "python3 collect.py --local-only --machine {m} --tool {qtool} '
           f'--roots {qroots} --out /tmp/amg_{m}.json > /tmp/amg_{m}.log 2>&1; '
           f'python3 distill.py --machine {m} --out /tmp/amg_{m}-distilled.json >> /tmp/amg_{m}.log 2>&1 '
-          f'|| rm -f /tmp/amg_{m}-distilled.json; touch /tmp/amg_{m}.done" >/dev/null 2>&1 &')
+          f'|| rm -f /tmp/amg_{m}-distilled.json; {pres}touch /tmp/amg_{m}.done" >/dev/null 2>&1 &')
     if run(rc) is None:
         print(f'  ✗ {m}: 无法启动远程采集（ssh 不通）', file=sys.stderr); fail += 1; continue
     # 2) 轮询完成标记（10s×30 ≈ 5min 上限）
@@ -83,5 +97,29 @@ for src in cfg['sources']:
     if run(f'test -f /tmp/amg_{m}-distilled.json && echo Y', to=25, tries=2) and \
        fetch(f'/tmp/amg_{m}-distilled.json', f'fragments/{m}-distilled.json'):
         print(f'  ✓ {m}: fragments/{m}-distilled.json（派生）', file=sys.stderr)
+
+    # presence 回传：拿到包才动本地文件——ssh 挂了就保留旧状态，别把还在干活的机器误判成离线。
+    tmpp = f'/tmp/amg_local_{m}-presence.json'
+    if run(f'test -f /tmp/amg_{m}-presence.json && echo Y', to=25, tries=2) and fetch(
+            f'/tmp/amg_{m}-presence.json', tmpp):
+        try:
+            bundle = json.load(open(tmpp, encoding='utf-8'))
+        except Exception:
+            bundle = None
+        if isinstance(bundle, dict):
+            os.makedirs('presence', exist_ok=True)
+            import glob as _g
+            for old in _g.glob(f'presence/{m}__auto-*.json'):   # 先清旧的：远端会话停了灯要灭，
+                os.remove(old)                                   # 否则会留下永远“在线”的幽灵收件人
+            for name, doc in bundle.items():
+                if not isinstance(name, str) or '/' in name or not name.startswith(f'{m}__auto-'):
+                    continue
+                with open(os.path.join('presence', name), 'w', encoding='utf-8') as fh:
+                    json.dump(doc, fh, ensure_ascii=False, indent=1)
+            print(f'  ✓ {m}: presence 回传 {len(bundle)} 个活跃会话', file=sys.stderr)
+        try:
+            os.remove(tmpp)
+        except OSError:
+            pass
 sys.exit(1 if fail else 0)
 PY

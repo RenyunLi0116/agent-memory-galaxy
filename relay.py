@@ -709,9 +709,15 @@ def cmd_wake(args):
         repo = ("\"$HOME\"/" + shlex.quote(raw[2:])) if raw.startswith("~/") else shlex.quote(raw)
         # **绝不 reset 对端**：对方可能正留着「push 失败、下次补推」的本地 commit（contribute.sh
         # 明确承诺保留），reset --hard 会把那份还没上线的记忆连同 relay 载荷一起抹掉。
-        # 只做 ff-only；真分叉就如实报出来让人去修，apply 照常跑（至少把已有的渲染出来）。
+        # 只做 ff-only。但 ff-only 也会因**脏树**失败，而被远程采集的机器上 auto_presence 每轮都会
+        # 改写自己的 presence/ —— 那份脏是机器自己产生、hub 早已取走的，不该被当成「分叉」。
+        # 所以：ff-only 失败先只丢弃 presence/ 的本地改动再试一次；还不行才是真分叉，如实报出来。
+        # 无论如何 apply 照常跑（至少把已有的渲染出来）。
         cmd = (f"cd {repo} && git fetch -q origin main && "
-               f"{{ git merge -q --ff-only origin/main || echo AMG_DIVERGED; }}; "
+               f"{{ git merge -q --ff-only origin/main 2>/dev/null "
+               f"|| {{ git checkout -q -- presence 2>/dev/null; "
+               f"git merge -q --ff-only origin/main 2>/dev/null; }} "
+               f"|| echo AMG_DIVERGED; }}; "
                f"python3 relay.py apply --machine {shlex.quote(m)} 2>&1 | tail -2")
         try:
             r = None

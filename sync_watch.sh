@@ -75,7 +75,17 @@ dirty_outside() {
 # 一轮的实际工作，整段持**仓库级 git 写锁**：期间 update.sh / heartbeat.sh / contribute.sh
 # 不会与我们撞 .git/index.lock（它们等锁，我们用 -n 不等——反正 30s 后还有下一轮）。
 tick() {
-  ( flock -n 8 || { log "· 仓库锁被别的同步任务占用，跳过本轮"; exit 0; }; tick_body ) 8>.amg_relay/repo.lock
+  # 让路是常态（汇总端 update.sh 每轮要持锁数分钟），所以**不是每次都喊**——否则一天几百行
+  # "跳过本轮"会把真正的事件淹掉。只在连续让路超过 SKIP_WARN 次（≈那么多分钟）时报一次，
+  # 那才说明锁真的卡住了；拿到锁就清零。
+  ( flock -n 8 || {
+      local sk=0; [ -f .amg_relay/lock_skips ] && sk="$(cat .amg_relay/lock_skips 2>/dev/null || echo 0)"
+      sk=$((sk+1)); echo "$sk" > .amg_relay/lock_skips
+      [ "$sk" -ge "${AMG_SKIP_WARN:-15}" ] && [ $((sk % ${AMG_SKIP_WARN:-15})) = 0 ] \
+        && log "· 仓库锁已被别的同步任务连续占用 $sk 轮（update.sh 在跑？超过半小时请人工看一眼）"
+      exit 0; }
+    rm -f .amg_relay/lock_skips
+    tick_body ) 8>.amg_relay/repo.lock
   LAST_NEW="$(cat .amg_relay/last_new 2>/dev/null || echo 0)"
 }
 
